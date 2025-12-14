@@ -77,9 +77,10 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
         
+        /* UPDATED DARK MODE DOCK to match Cards */
         .dark .ios-dock {
-            background: rgba(20, 20, 20, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(30, 41, 59, 0.90); /* Matched to glass-card */
+            border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
@@ -113,7 +114,7 @@
             en: {
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "Hello, I'm Anaghan",
-                welcomeSub: "Digital Marketer",
+                welcomeSub: "Digital Marketer & Tech Enthusiast",
                 titles: {
                     info: "Personal Information",
                     edu: "Education",
@@ -214,10 +215,7 @@
 
         const cardStyle = "bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow";
         
-        // --- SMART FONT SIZING LOGIC ---
         const InfoCard = ({ label, value, fullWidth, lang }) => {
-            // IF Gujarati: text-[15px] and font-semibold (Larger & clearer)
-            // IF English: text-[11px] and tracking-widest (Small & compact)
             const labelClass = lang === 'gu' 
                 ? 'text-[15px] font-bold' 
                 : 'text-[11px] font-bold uppercase tracking-widest';
@@ -306,7 +304,7 @@
                                         <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
                                     </div>
 
-                                    {/* Personal Info Grid - Passing 'lang' prop */}
+                                    {/* Personal Info Grid */}
                                     <div className="text-left">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3">
@@ -321,7 +319,7 @@
                             {/* RIGHT CONTENT */}
                             <div className="lg:col-span-8 space-y-8">
                                 
-                                {/* Education - Passing 'lang' prop */}
+                                {/* Education */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -331,7 +329,7 @@
                                     </div>
                                 </div>
 
-                                {/* Family - Passing 'lang' prop */}
+                                {/* Family */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -341,7 +339,7 @@
                                     </div>
                                 </div>
 
-                                {/* Siblings - Passing 'lang' prop */}
+                                {/* Siblings */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
