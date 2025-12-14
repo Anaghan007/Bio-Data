@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V52 Perfect 3-Page Layout</title>
+    <title>Anaghan's Profile</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -13,8 +13,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -34,7 +32,6 @@
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'zoom-in': 'zoomIn 0.3s ease-out forwards',
-                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -67,74 +64,6 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
-
-        .pdf-hidden { display: none !important; }
-        
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid #ffffff;
-            width: 24px;
-            height: 24px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* --- PDF SPECIFIC LAYOUT --- */
-        .pdf-layout {
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            background: white !important;
-        }
-
-        .pdf-layout .grid { display: block !important; }
-        .pdf-layout .lg\:col-span-4, .pdf-layout .lg\:col-span-8 { width: 100% !important; margin: 0 !important; }
-
-        /* The Page Container */
-        .pdf-layout .pdf-page-section {
-            width: 100% !important;
-            min-height: 1080px !important; /* Forces Full Page Height */
-            display: flex !important;
-            flex-direction: column !important;
-            justify-content: center !important; /* Vertically Center Content */
-            align-items: center !important;
-            padding: 40px !important;
-            page-break-after: always !important;
-            break-after: page !important;
-            box-sizing: border-box !important;
-            gap: 25px !important; /* Gap between cards on the page */
-        }
-
-        /* Reset Card Styles for PDF */
-        .pdf-layout .glass-card {
-            width: 100% !important;
-            box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
-            background: #ffffff !important;
-            margin: 0 !important;
-        }
-
-        /* Gallery Tweaks for PDF */
-        .pdf-layout .gallery-grid {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 20px !important;
-        }
-        .pdf-layout .aspect-square {
-            height: 280px !important;
-        }
-
-        /* Logic to show/hide specific elements in PDF vs Screen */
-        .show-in-pdf-only { display: none; }
-        .pdf-layout .show-in-pdf-only { display: flex !important; }
-        .pdf-layout .hide-in-pdf { display: none !important; }
-        
-        /* Hide Phone Number Text specific to PDF */
-        .pdf-layout .pdf-phone-text { display: none !important; }
     </style>
 </head>
 <body class="antialiased text-slate-800 bg-gray-50">
@@ -249,10 +178,10 @@
             }
         };
 
-        const SocialAppIcon = ({ icon, href, isMobile, isBrand, large }) => (
-            <a href={href} target={isMobile ? "_self" : "_blank"} className={`icon-3d relative group rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110 ${large ? 'w-24 h-24' : 'w-12 h-12'}`}>
+        const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
+            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
-                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} ${large ? 'text-5xl' : 'text-2xl'} text-white drop-shadow-md`}></i>
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
             </a>
         );
 
@@ -288,77 +217,20 @@
             );
         };
 
-        const PdfModal = ({ isOpen, onClose, onGenerate, isGenerating }) => {
-            if (!isOpen) return null;
-            const [format, setFormat] = useState('a4');
-
-            return (
-                <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-zoom-in" onClick={onClose}>
-                    <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl relative" onClick={e => e.stopPropagation()}>
-                        <h3 className="text-xl font-bold text-slate-800 mb-4 text-center">Export PDF</h3>
-                        <div className="grid grid-cols-3 gap-3 mb-6">
-                            {['a4', 'letter', 'legal'].map((fmt) => (
-                                <button key={fmt} onClick={() => setFormat(fmt)} className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${format === fmt ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-slate-100 bg-slate-50 text-slate-500'}`}>
-                                    <div className={`border rounded shadow-sm bg-white ${fmt === 'a4' ? 'w-6 h-8' : fmt === 'letter' ? 'w-7 h-8' : 'w-6 h-10'}`}></div>
-                                    <span className="text-xs font-bold uppercase">{fmt}</span>
-                                </button>
-                            ))}
-                        </div>
-                        <div className="flex gap-3">
-                            <button onClick={onClose} className="flex-1 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Cancel</button>
-                            <button onClick={() => onGenerate(format)} disabled={isGenerating} className="flex-1 py-3 rounded-xl font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2">
-                                {isGenerating ? <div className="spinner"></div> : <span>Download</span>}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
         const App = () => {
             const [lang, setLang] = useState('en');
             const [isLoaded, setIsLoaded] = useState(false);
-            const [isGenerating, setIsGenerating] = useState(false);
             const [selectedImg, setSelectedImg] = useState(null);
-            const [showPdfModal, setShowPdfModal] = useState(false);
 
             useEffect(() => setIsLoaded(true), []);
             const t = translations[lang];
 
-            const handleDownloadPDF = (format) => {
-                setIsGenerating(true);
-                document.getElementById('main-container').classList.add('pdf-layout');
-                
-                setTimeout(() => {
-                    const element = document.getElementById('main-container');
-                    const opt = { 
-                        margin: 0,
-                        filename: `Anaghan_Profile_${format.toUpperCase()}.pdf`, 
-                        image: { type: 'jpeg', quality: 0.98 }, 
-                        html2canvas: { scale: 2, useCORS: true, scrollY: 0 }, 
-                        jsPDF: { unit: 'mm', format: format, orientation: 'portrait' },
-                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-                    };
-                    
-                    document.body.classList.add('generating-pdf');
-                    
-                    html2pdf().set(opt).from(element).save().then(() => {
-                        setIsGenerating(false);
-                        setShowPdfModal(false);
-                        document.body.classList.remove('generating-pdf');
-                        document.getElementById('main-container').classList.remove('pdf-layout');
-                    });
-                }, 300);
-            };
-
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
-                    <PdfModal isOpen={showPdfModal} onClose={() => setShowPdfModal(false)} onGenerate={handleDownloadPDF} isGenerating={isGenerating} />
                     
-                    <button onClick={() => setShowPdfModal(true)} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
-
-                    <div className={`w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
+                    {/* Navbar */}
+                    <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
                                 <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-indigo-200" />
@@ -373,13 +245,14 @@
                         </div>
                     </div>
 
+                    {/* Main Container */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* --- PAGE 1: Profile + Personal Info --- */}
-                            <div className="lg:col-span-4 pdf-page-section">
-                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 w-full">
+                            {/* LEFT SIDEBAR */}
+                            <div className="lg:col-span-4 space-y-6">
+                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-28">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" alt="Avatar"/>
@@ -388,14 +261,16 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap hide-in-pdf">
+                                    {/* Desktop Social Icons */}
+                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
                                         <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
                                     </div>
 
-                                    <div className="text-left mt-8">
+                                    {/* Personal Info Grid */}
+                                    <div className="text-left">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3">
                                             {t.infoData.map((item, i) => (
@@ -407,68 +282,55 @@
                             </div>
 
                             {/* RIGHT CONTENT */}
-                            <div className="lg:col-span-8 space-y-8 pdf-page-wrapper">
+                            <div className="lg:col-span-8 space-y-8">
                                 
-                                {/* --- PAGE 2: Education + Family + Siblings (COMBINED) --- */}
-                                <div className="pdf-page-section">
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
-                                        <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {t.educationData.map((item, i) => (
-                                                <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
-                                        <SectionHeader icon="fa-users" title={t.titles.fam} />
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {t.familyData.map((item, i) => (
-                                                <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
-                                        <SectionHeader icon="fa-user-group" title={t.titles.sib} />
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            {t.siblingData.map((item, i) => (
-                                                <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />
-                                            ))}
-                                        </div>
+                                {/* Education */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.educationData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* --- PAGE 3: Gallery + Connect (COMBINED) --- */}
-                                <div className="pdf-page-section">
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
-                                        <SectionHeader icon="fa-images" title={t.titles.gal} />
-                                        <div className="grid grid-cols-2 gap-4 gallery-grid">
-                                            {commonData.gallery.map((img, i) => (
-                                                <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
-                                                    <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                        <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
-                                                    </div>
+                                {/* Family */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                    <SectionHeader icon="fa-users" title={t.titles.fam} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.familyData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Siblings */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.siblingData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Gallery */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                    <SectionHeader icon="fa-images" title={t.titles.gal} />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {commonData.gallery.map((img, i) => (
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
+                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
                                                 </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Connect Section (PDF Only Version) */}
-                                    <div className="glass-card p-10 rounded-[30px] shadow-lg border border-white/50 w-full text-center flex flex-col items-center justify-center gap-8 show-in-pdf-only">
-                                        <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                        <div className="flex gap-6 justify-center flex-wrap">
-                                            <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} large={true} />
-                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} large={true} />
-                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} large={true} />
-                                            <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} large={true} />
-                                        </div>
-                                        {/* Phone Text (Hidden via CSS in PDF) */}
-                                        <p className="text-xl font-bold text-slate-600 mt-4 pdf-phone-text">{commonData.mobileNumber}</p>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
 
-                                {/* Mobile Dock (Screen Only) */}
-                                <div className="lg:hidden mt-6 mb-4 hide-in-pdf">
+                                {/* MOBILE DOCK (iOS Style) */}
+                                <div className="lg:hidden mt-6 mb-4">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
                                     <div className="ios-dock rounded-[35px] p-4 flex justify-between items-center px-6 mx-auto max-w-[340px]">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
