@@ -62,13 +62,7 @@
             -webkit-backdrop-filter: blur(25px);
         }
         
-        .ios-dock {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-        }
+        /* Mobile Dock Removed - We moved icons to main card for better visibility */
 
         /* --- PDF / PRINT SPECIFIC STYLES --- */
         @media print {
@@ -98,7 +92,7 @@
             }
 
             /* Remove Glass Effects for cleaner print */
-            .glass-card, .ios-dock {
+            .glass-card {
                 box-shadow: none !important;
                 border: 1px solid #ccc !important;
                 background: white !important;
@@ -115,7 +109,7 @@
             
             /* Text adjustments */
             h1, h2, h3, p { color: #000 !important; }
-            .text-indigo-600 { color: #4f46e5 !important; } /* Keep accent color but ensure contrast */
+            .text-indigo-600 { color: #4f46e5 !important; } 
             
             /* Ensure images print */
             img { max-width: 100% !important; page-break-inside: avoid; }
@@ -235,7 +229,6 @@
             }
         };
 
-        // --- NEW COMPONENT: PDF PRINT BUTTON ---
         const PdfButton = () => {
             const handlePrint = () => {
                 window.print();
@@ -244,7 +237,6 @@
             return (
                 <button 
                     onClick={handlePrint} 
-                    // UPDATED: Changed from 'from-red-500 to-pink-600' to 'from-indigo-500 to-purple-600'
                     className="print-hidden fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group"
                     title="Download as PDF"
                 >
@@ -255,7 +247,7 @@
         };
 
         const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
+            <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
                 <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
             </a>
@@ -329,7 +321,7 @@
                         
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR */}
+                            {/* LEFT SIDEBAR (Contains Profile Info + Contact) */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-28">
                                     <div className="relative inline-block mb-4 animate-float">
@@ -340,16 +332,22 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Desktop Social Icons */}
-                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
-                                        <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
-                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
-                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
-                                        <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
+                                    {/* Connect With Me - Now Visible on ALL Devices */}
+                                    <div className="mb-8">
+                                        <div className="flex items-center justify-center gap-2 mb-4 opacity-80">
+                                            <i className="fas fa-link text-indigo-500"></i>
+                                            <span className="text-sm font-bold uppercase tracking-widest text-slate-500">{t.titles.contact}</span>
+                                        </div>
+                                        <div className="flex justify-center gap-3 flex-wrap">
+                                            <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
+                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                            <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
+                                        </div>
                                     </div>
 
                                     {/* Personal Info Grid */}
-                                    <div className="text-left">
+                                    <div className="text-left border-t border-gray-100 pt-6">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3">
                                             {t.infoData.map((item, i) => (
@@ -407,18 +405,6 @@
                                         ))}
                                     </div>
                                 </div>
-
-                                {/* MOBILE DOCK (iOS Style) */}
-                                <div className="lg:hidden mt-6 mb-4 no-print-area">
-                                    <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                    <div className="ios-dock rounded-[35px] p-4 flex justify-between items-center px-6 mx-auto max-w-[340px]">
-                                        <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
-                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
-                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
-                                        <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
