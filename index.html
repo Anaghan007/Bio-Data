@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anaghan's Profile - V28 Colorful Dark Mode</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        gujarati: ['Noto Sans Gujarati', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#6366f1',
+                    },
+                    boxShadow: {
+                        'dock': '0 20px 40px -5px rgba(0,0,0,0.15)',
+                        'icon-pop': '0 10px 20px -5px rgba(99, 102, 241, 0.4)',
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'zoom-in': 'zoomIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        zoomIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        html { scroll-behavior: smooth; }
+        
+        /* Light Mode Glass */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(25px);
+        }
+        
+        /* UPDATED DARK MODE CARD (Blue-Slate Tone) */
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.90); /* Slate-800 with opacity */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(25px);
+        }
+        
+        .glass-dock {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.6);
+        }
+        
+        /* UPDATED DARK DOCK */
+        .dark .glass-dock {
+            background: rgba(15, 23, 42, 0.85); /* Slate-900 opacity */
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .pdf-hidden { display: none !important; }
+    </style>
+</head>
+<body class="antialiased text-slate-800 dark:text-slate-100 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const commonData = {
+            avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp",
+            mobileNumber: "8866722633",
+            gallery: [
+                "https://images.unsplash.com/photo-1462331940025-496dfa712568?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=1200&auto=format&fit=crop&q=90"
+            ],
+            social: {
+                whatsapp: "https://wa.me/918866722633",
+                instagram: "https://instagram.com",
+                snapchat: "https://snapchat.com",
+                youtube: "https://youtube.com",
+            }
+        };
+
+        const translations = {
+            en: {
+                headerName: "Anaghan's Profile",
+                welcomeTitle: "Hello, I'm Anaghan",
+                welcomeSub: "Digital Marketer & Tech Enthusiast",
+                titles: {
+                    info: "Personal Information",
+                    edu: "Education",
+                    fam: "Family Background",
+                    sib: "Sibling Details",
+                    gal: "Photo Gallery",
+                    contact: "Connect With Me"
+                },
+                infoData: [
+                    { label: "Full Name", value: "Anaghan Smit Ashokbhai" },
+                    { label: "Date Of Birth", value: "16-10-2002" },
+                    { label: "Age", value: "23 Years" },
+                    { label: "Height", value: "5' 10\"" },
+                    { label: "Caste", value: "Patel (Leuva)" },
+                    { label: "Village", value: "Sagapara" },
+                    { label: "District", value: "Bhavnagar" },
+                    { label: "Taluka", value: "Chorashi" },
+                    { label: "City", value: "Surat, Gujarat" },
+                    { label: "Job Title", value: "Digital Marketer" },
+                    { label: "Income", value: "18 LPA" },
+                ],
+                educationData: [
+                    { label: "Bachelor's (2025)", value: "BCA, VNSGU University" },
+                    { label: "Master's (Running)", value: "Digital Marketing" }
+                ],
+                familyData: [
+                    { label: "Father Name", value: "Mr. Ashokbhai Patel" },
+                    { label: "Father Occupation", value: "Textile Business Owner" },
+                    { label: "Mother Name", value: "Mrs. Patel" },
+                    { label: "Mother Occupation", value: "Homemaker" },
+                ],
+                siblingData: [
+                    { label: "Sister Name", value: "Priya Patel", fullWidth: true },
+                    { label: "Relation", value: "Younger Sister" },
+                    { label: "Bachelor's", value: "B.Com (Completed)" },
+                    { label: "Master's", value: "M.Com (Running)" },
+                    { label: "Occupation", value: "Student" },
+                ]
+            },
+            gu: {
+                headerName: "અનઘનની પ્રોફાઇલ",
+                welcomeTitle: "નમસ્તે, હું અનઘન છું",
+                welcomeSub: "ડિજિટલ માર્કેટર",
+                titles: {
+                    info: "વ્યક્તિગત માહિતી",
+                    edu: "શિક્ષણ",
+                    fam: "પારિવારિક વિગતો",
+                    sib: "ભાઈ-બહેનની વિગતો",
+                    gal: "ફોટો ગેલેરી",
+                    contact: "મારી સાથે જોડાઓ"
+                },
+                infoData: [
+                    { label: "પૂરું નામ", value: "અનઘન સ્મિત અશોકભાઈ" },
+                    { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
+                    { label: "ઉંમર", value: "૨૩ વર્ષ" },
+                    { label: "ઊંચાઈ", value: "૫ ફૂટ ૧૦ ઇંચ" },
+                    { label: "જ્ઞાતિ", value: "પટેલ (લેઉવા)" },
+                    { label: "ગામ", value: "સગાપરા" },
+                    { label: "જીલ્લો", value: "ભાવનગર" },
+                    { label: "તાલુકો", value: "ચોર્યાસી" },
+                    { label: "શહેર", value: "સુરત, ગુજરાત" },
+                    { label: "વ્યવસાય", value: "ડિજિટલ માર્કેટર" },
+                    { label: "આવક", value: "૧૮ લાખ / વર્ષ" },
+                ],
+                educationData: [
+                    { label: "સ્નાતક (૨૦૨૫)", value: "BCA, VNSGU" },
+                    { label: "અનુસ્નાતક (ચાલુ)", value: "ડિજિટલ માર્કેટિંગ" }
+                ],
+                familyData: [
+                    { label: "પિતાનું નામ", value: "શ્રી અશોકભાઈ પટેલ" },
+                    { label: "પિતાનો વ્યવસાય", value: "ટેક્સટાઈલ બિઝનેસ" },
+                    { label: "માતાનું નામ", value: "શ્રીમતી પટેલ" },
+                    { label: "માતાનો વ્યવસાય", value: "ગૃહિણી" },
+                ],
+                siblingData: [
+                    { label: "બહેનનું નામ", value: "પ્રિયા પટેલ", fullWidth: true },
+                    { label: "સંબંધ", value: "નાની બહેન" },
+                    { label: "સ્નાતક", value: "B.Com (પૂર્ણ)" },
+                    { label: "અનુસ્નાતક", value: "M.Com (ચાલુ)" },
+                    { label: "વ્યવસાય", value: "વિદ્યાર્થી" },
+                ]
+            }
+        };
+
+        const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
+            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
+                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
+            </a>
+        );
+
+        const SectionHeader = ({ title, icon }) => (
+            <div className="flex items-center gap-3 mb-6 mt-2">
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
+                <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">{title}</h2>
+            </div>
+        );
+
+        // Updated card background to Slate-800/50 for better contrast on Slate-900 body
+        const cardStyle = "bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow";
+        
+        const InfoCard = ({ label, value, fullWidth }) => (
+            <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{label}</p>
+                <p className="text-lg font-semibold text-slate-800 dark:text-white leading-tight">{value}</p>
+            </div>
+        );
+
+        const Lightbox = ({ imgSrc, onClose }) => {
+            if (!imgSrc) return null;
+            return (
+                <div className="fixed inset-0 z-[100] bg-black animate-zoom-in flex items-center justify-center" onClick={onClose}>
+                    <button className="absolute top-6 right-6 text-white/80 hover:text-white text-4xl z-50 drop-shadow-lg"><i className="fas fa-times"></i></button>
+                    <img src={imgSrc} className="w-full h-full object-contain" onClick={(e) => e.stopPropagation()} />
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [lang, setLang] = useState('en');
+            const [darkMode, setDarkMode] = useState(false);
+            const [isLoaded, setIsLoaded] = useState(false);
+            const [isGenerating, setIsGenerating] = useState(false);
+            const [selectedImg, setSelectedImg] = useState(null);
+
+            useEffect(() => setIsLoaded(true), []);
+            const t = translations[lang];
+
+            const handleDownloadPDF = () => {
+                setIsGenerating(true);
+                const element = document.getElementById('main-container');
+                const opt = { margin: 0, filename: 'Anaghan_Profile.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                document.body.classList.add('generating-pdf');
+                html2pdf().set(opt).from(element).save().then(() => { setIsGenerating(false); document.body.classList.remove('generating-pdf'); });
+            };
+
+            return (
+                <div className={`${darkMode ? "dark" : ""} ${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
+                    <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
+                    
+                    {/* Fixed PDF Button */}
+                    <button onClick={handleDownloadPDF} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 dark:bg-white text-white dark:text-slate-900 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
+
+                    {/* Navbar */}
+                    <div className={`w-full fixed top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
+                            <div className="flex items-center gap-2">
+                                <img src={commonData.avatar3D} className="w-8 h-8 rounded-full border border-indigo-200" />
+                                <h1 className="font-bold text-lg text-slate-800 dark:text-white truncate">{t.headerName}</h1>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="flex bg-gray-200 dark:bg-slate-800 rounded-full p-1 border border-gray-300 dark:border-slate-700">
+                                    <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'en' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>En</button>
+                                    <button onClick={() => setLang('gu')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'gu' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>Gu</button>
+                                </div>
+                                <button onClick={() => setDarkMode(!darkMode)} className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-slate-600 dark:text-yellow-400 border border-gray-200 dark:border-slate-700 hover:scale-105 transition-transform"><i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'} text-xs`}></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Main Container - Full Width on Desktop */}
+                    <div id="main-container" className={`max-w-7xl mx-auto pt-20 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                        
+                        {/* Grid System: 1 Col Mobile, 12 Col Desktop */}
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                            
+                            {/* LEFT SIDEBAR (Sticky on Desktop) */}
+                            <div className="lg:col-span-4 space-y-6">
+                                {/* Profile Card */}
+                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 dark:border-slate-800 lg:sticky lg:top-24">
+                                    <div className="relative inline-block mb-4 animate-float">
+                                        <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
+                                            <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" alt="Avatar"/>
+                                        </div>
+                                    </div>
+                                    <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
+                                    
+                                    {/* Desktop Social Icons (Full Set) */}
+                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
+                                        <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
+                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                        <SocialAppIcon icon="fa-snapchat" isBrand={true} href={commonData.social.snapchat} />
+                                        <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
+                                    </div>
+
+                                    {/* Personal Info Grid */}
+                                    <div className="text-left">
+                                        <SectionHeader icon="fa-user" title={t.titles.info} />
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {t.infoData.map((item, i) => (
+                                                <InfoCard key={i} label={item.label} value={item.value} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RIGHT CONTENT */}
+                            <div className="lg:col-span-8 space-y-8">
+                                
+                                {/* Education */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.educationData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Family */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                    <SectionHeader icon="fa-users" title={t.titles.fam} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.familyData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Siblings */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} />
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        {t.siblingData.map((item, i) => (
+                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} />
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Gallery */}
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                    <SectionHeader icon="fa-images" title={t.titles.gal} />
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {commonData.gallery.map((img, i) => (
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
+                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Mobile Dock */}
+                    <div className={`lg:hidden absolute bottom-6 left-1/2 -translate-x-1/2 w-[90%] z-50 ${isGenerating ? 'pdf-hidden' : ''}`}>
+                        <div className="glass-dock rounded-[24px] p-3 shadow-dock flex justify-center items-center gap-4 px-4 sm:px-6">
+                            <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
+                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                            <SocialAppIcon icon="fa-snapchat" isBrand={true} href={commonData.social.snapchat} />
+                            <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
+                        </div>
+                    </div>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
