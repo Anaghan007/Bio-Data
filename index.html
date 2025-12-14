@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V47 Larger Language Text</title>
+    <title>Anaghan's Profile</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -102,7 +102,7 @@
             en: {
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "Hello, I'm Anaghan",
-                welcomeSub: "Digital Marketer & Tech Enthusiast",
+                welcomeSub: "Digital Marketer",
                 titles: {
                     info: "Personal Information",
                     edu: "Education",
@@ -238,7 +238,7 @@
             const handleDownloadPDF = () => {
                 setIsGenerating(true);
                 const element = document.getElementById('main-container');
-                const opt = { margin: 0, filename: 'Anaghan_Profile.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } };
+                const opt = { margin: 0, filename: 'Anaghan_Profile.pdf', image: { type: 'pdf', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'ledger', orientation: 'portrait' } };
                 document.body.classList.add('generating-pdf');
                 html2pdf().set(opt).from(element).save().then(() => { setIsGenerating(false); document.body.classList.remove('generating-pdf'); });
             };
@@ -260,8 +260,8 @@
                             <div className="flex items-center gap-3">
                                 {/* Language Toggle: Increased text size to text-base (16px) */}
                                 <div className="flex bg-gray-200 rounded-full p-1.5 border border-gray-300">
-                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
-                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
+                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>English</button>
+                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gujarati</button>
                                 </div>
                             </div>
                         </div>
