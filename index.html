@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V38 Final Gujarati Correction</title>
+    <title>Anaghan's Profile - V39 Larger Labels</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -70,15 +70,15 @@
         
         /* iOS STYLE DOCK */
         .ios-dock {
-            background: rgba(255, 255, 255, 0.45); /* Highly transparent white */
-            backdrop-filter: blur(25px); /* Heavy blur */
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
         
         .dark .ios-dock {
-            background: rgba(20, 20, 20, 0.5); /* iOS Dark Mode Dock Color */
+            background: rgba(20, 20, 20, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
@@ -154,7 +154,6 @@
                 ]
             },
             gu: {
-                // Corrected Surname here: અણઘણ
                 headerName: "અણઘણની પ્રોફાઇલ",
                 welcomeTitle: "નમસ્તે, હું અણઘણ છું",
                 welcomeSub: "ડિજિટલ માર્કેટર",
@@ -167,7 +166,6 @@
                     contact: "મારી સાથે જોડાઓ"
                 },
                 infoData: [
-                    // Corrected Surname here: અણઘણ
                     { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ" },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
                     { label: "ઉંમર", value: "૨૩ વર્ષ" },
@@ -215,9 +213,11 @@
         );
 
         const cardStyle = "bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow";
+        
         const InfoCard = ({ label, value, fullWidth }) => (
             <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-1">{label}</p>
+                {/* INCREASED FONT SIZE HERE: text-xs instead of text-[10px] */}
+                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">{label}</p>
                 <p className="text-lg font-semibold text-slate-800 dark:text-white leading-tight">{value}</p>
             </div>
         );
