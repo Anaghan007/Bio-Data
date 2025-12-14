@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V41 Language Specific Sizing</title>
+    <title>Anaghan's Profile - V42 Smart Fonts</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -214,14 +214,17 @@
 
         const cardStyle = "bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow";
         
-        // UPDATED COMPONENT: Accepts 'lang' prop to adjust label size
+        // --- SMART FONT SIZING LOGIC ---
         const InfoCard = ({ label, value, fullWidth, lang }) => {
-            // Logic: If Gujarati ('gu'), use larger text (text-sm). If English, use compact text (text-xs).
-            const labelSize = lang === 'gu' ? 'text-sm' : 'text-xs';
+            // IF Gujarati: text-[15px] and font-semibold (Larger & clearer)
+            // IF English: text-[11px] and tracking-widest (Small & compact)
+            const labelClass = lang === 'gu' 
+                ? 'text-[15px] font-bold' 
+                : 'text-[11px] font-bold uppercase tracking-widest';
             
             return (
                 <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
-                    <p className={`${labelSize} font-bold uppercase tracking-widest text-slate-400 mb-1`}>{label}</p>
+                    <p className={`${labelClass} text-slate-400 mb-1`}>{label}</p>
                     <p className="text-lg font-semibold text-slate-800 dark:text-white leading-tight">{value}</p>
                 </div>
             );
