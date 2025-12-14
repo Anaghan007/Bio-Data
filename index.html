@@ -32,6 +32,7 @@
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'zoom-in': 'zoomIn 0.3s ease-out forwards',
+                        'bounce-slight': 'bounceSlight 2s infinite',
                     },
                     keyframes: {
                         float: {
@@ -41,6 +42,10 @@
                         zoomIn: {
                             '0%': { opacity: '0', transform: 'scale(0.9)' },
                             '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        bounceSlight: {
+                             '0%, 100%': { transform: 'translateY(0)' },
+                             '50%': { transform: 'translateY(-5px)' },
                         }
                     }
                 }
@@ -63,6 +68,57 @@
             -webkit-backdrop-filter: blur(25px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        /* --- PDF / PRINT SPECIFIC STYLES --- */
+        @media print {
+            /* Basic Page Setup */
+            @page { margin: 0.5cm; size: auto; }
+            
+            body { 
+                background: white !important; 
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important;
+                color: black !important;
+            }
+
+            /* Hide elements not needed in PDF */
+            .no-print-area, 
+            button.print-hidden,
+            .fixed.z-50.top-0 /* Navbar */ { 
+                display: none !important; 
+            }
+
+            /* Main Container Adjustment */
+            #main-container {
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+
+            /* Remove Glass Effects for cleaner print */
+            .glass-card, .ios-dock {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                background: white !important;
+                backdrop-filter: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+
+            /* Flatten Layout (Force blocks instead of complex grids) */
+            .lg\:col-span-4, .lg\:col-span-8 {
+                width: 100% !important;
+                display: block !important;
+            }
+            
+            /* Text adjustments */
+            h1, h2, h3, p { color: #000 !important; }
+            .text-indigo-600 { color: #4f46e5 !important; } /* Keep accent color but ensure contrast */
+            
+            /* Ensure images print */
+            img { max-width: 100% !important; page-break-inside: avoid; }
         }
     </style>
 </head>
@@ -179,6 +235,25 @@
             }
         };
 
+        // --- NEW COMPONENT: PDF PRINT BUTTON ---
+        const PdfButton = () => {
+            const handlePrint = () => {
+                window.print();
+            };
+
+            return (
+                <button 
+                    onClick={handlePrint} 
+                    // UPDATED: Changed from 'from-red-500 to-pink-600' to 'from-indigo-500 to-purple-600'
+                    className="print-hidden fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group"
+                    title="Download as PDF"
+                >
+                    <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce-slight"></i>
+                    <span className="absolute -top-10 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">PDF</span>
+                </button>
+            );
+        };
+
         const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
             <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
@@ -187,7 +262,7 @@
         );
 
         const SectionHeader = ({ title, icon }) => (
-            <div className="flex items-center gap-3 mb-6 mt-2">
+            <div className="flex items-center gap-3 mb-6 mt-2 break-inside-avoid">
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
                 <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
             </div>
@@ -201,7 +276,7 @@
                 : 'text-[11px] font-bold uppercase tracking-widest';
             
             return (
-                <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
+                <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
                     <p className={`${labelClass} text-slate-400 mb-1`}>{label}</p>
                     <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
                 </div>
@@ -211,7 +286,7 @@
         const Lightbox = ({ imgSrc, onClose }) => {
             if (!imgSrc) return null;
             return (
-                <div className="fixed inset-0 z-[100] bg-black animate-zoom-in flex items-center justify-center" onClick={onClose}>
+                <div className="fixed inset-0 z-[100] bg-black animate-zoom-in flex items-center justify-center no-print-area" onClick={onClose}>
                     <button className="absolute top-6 right-6 text-white/80 hover:text-white text-4xl z-50 drop-shadow-lg"><i className="fas fa-times"></i></button>
                     <img src={imgSrc} className="w-full h-full object-contain" onClick={(e) => e.stopPropagation()} />
                 </div>
@@ -228,10 +303,13 @@
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
+                    
+                    <PdfButton />
+
                     <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
                     
                     {/* Navbar */}
-                    <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all">
+                    <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all no-print-area">
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
                                 <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-indigo-200" />
@@ -286,7 +364,7 @@
                             <div className="lg:col-span-8 space-y-8">
                                 
                                 {/* Education */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.educationData.map((item, i) => (
@@ -296,7 +374,7 @@
                                 </div>
 
                                 {/* Family */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.familyData.map((item, i) => (
@@ -306,7 +384,7 @@
                                 </div>
 
                                 {/* Siblings */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.siblingData.map((item, i) => (
@@ -316,13 +394,13 @@
                                 </div>
 
                                 {/* Gallery */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4">
                                         {commonData.gallery.map((img, i) => (
                                             <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
                                                 <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center no-print-area">
                                                     <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
                                                 </div>
                                             </div>
@@ -331,7 +409,7 @@
                                 </div>
 
                                 {/* MOBILE DOCK (iOS Style) */}
-                                <div className="lg:hidden mt-6 mb-4">
+                                <div className="lg:hidden mt-6 mb-4 no-print-area">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
                                     <div className="ios-dock rounded-[35px] p-4 flex justify-between items-center px-6 mx-auto max-w-[340px]">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
