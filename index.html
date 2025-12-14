@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V49 Smart PDF Layout</title>
+    <title>Anaghan's Profile - V49 Single Page Sections</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -90,35 +90,51 @@
         }
 
         /* --- PDF SPECIFIC STYLES --- */
-        /* These styles only apply when the 'pdf-layout' class is added during generation */
+        /* Forces each section to be a single, vertically centered page */
         .pdf-layout {
-            width: 800px !important; /* Force standard A4 width */
-            margin: 0 auto !important;
-            padding: 20px !important;
-            background: white !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
-        .pdf-layout .grid-cols-12 {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 20px !important;
+        .pdf-layout .grid {
+            display: block !important; /* Stack columns */
         }
 
-        .pdf-layout .lg\:col-span-4, 
+        .pdf-layout .lg\:col-span-4,
         .pdf-layout .lg\:col-span-8 {
             width: 100% !important;
+            margin-bottom: 0 !important;
         }
 
-        /* Prevent sections from being split across pages */
+        /* This targets every Card (Profile, Edu, Fam, etc) in PDF mode */
         .pdf-layout .glass-card {
-            break-inside: avoid !important; 
-            page-break-inside: avoid !important;
-            margin-bottom: 15px !important;
+            /* Make each card take up a full page height visually */
+            height: 1100px !important; 
+            max-height: 1100px !important;
+            
+            /* Center Content Vertically */
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: center !important; 
+            
+            /* Clean up styling for print */
+            margin: 0 !important;
+            border-radius: 0 !important;
+            border: none !important;
             box-shadow: none !important;
-            border: 1px solid #e2e8f0 !important;
+            
+            /* FORCE PAGE BREAK AFTER EACH CARD */
+            page-break-after: always !important;
+            break-after: page !important;
         }
 
-        /* Hide interactive elements in PDF */
+        /* Ensure images in gallery don't overflow */
+        .pdf-layout .aspect-square {
+            height: 300px !important;
+            width: 100% !important;
+        }
+        
         .pdf-layout .hidden-in-pdf {
             display: none !important;
         }
@@ -314,17 +330,18 @@
 
             const handleDownloadPDF = (format) => {
                 setIsGenerating(true);
-                // Apply PDF-specific Layout Class
+                // Apply PDF Layout Class
                 document.getElementById('main-container').classList.add('pdf-layout');
                 
                 setTimeout(() => {
                     const element = document.getElementById('main-container');
                     const opt = { 
-                        margin: 10, // Added slight margin for cleaner edges
+                        margin: 0,
                         filename: `Anaghan_Profile_${format.toUpperCase()}.pdf`, 
                         image: { type: 'jpeg', quality: 0.98 }, 
-                        html2canvas: { scale: 2, useCORS: true }, 
-                        jsPDF: { unit: 'mm', format: format, orientation: 'portrait' } 
+                        html2canvas: { scale: 2, useCORS: true, scrollY: 0 }, 
+                        jsPDF: { unit: 'mm', format: format, orientation: 'portrait' },
+                        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
                     };
                     
                     document.body.classList.add('generating-pdf');
@@ -333,10 +350,10 @@
                         setIsGenerating(false);
                         setShowPdfModal(false);
                         document.body.classList.remove('generating-pdf');
-                        // Remove PDF-specific Layout Class to revert to normal
+                        // Remove PDF Layout Class
                         document.getElementById('main-container').classList.remove('pdf-layout');
                     });
-                }, 200); // Slight delay to ensure DOM update
+                }, 200);
             };
 
             return (
@@ -365,6 +382,7 @@
                         
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
+                            {/* LEFT SIDEBAR (Profile Section) */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-28">
                                     <div className="relative inline-block mb-4 animate-float">
@@ -393,8 +411,10 @@
                                 </div>
                             </div>
 
+                            {/* RIGHT CONTENT */}
                             <div className="lg:col-span-8 space-y-8">
                                 
+                                {/* Education */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -404,6 +424,7 @@
                                     </div>
                                 </div>
 
+                                {/* Family */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -413,6 +434,7 @@
                                     </div>
                                 </div>
 
+                                {/* Siblings */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -422,6 +444,7 @@
                                     </div>
                                 </div>
 
+                                {/* Gallery */}
                                 <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4">
