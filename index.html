@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V33 No Snapchat</title>
+    <title>Anaghan's Profile - V34 Compact Connect</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -100,7 +100,6 @@
             social: {
                 whatsapp: "https://wa.me/918866722633",
                 instagram: "https://www.instagram.com/_.anaghan._009",
-                // Snapchat Removed
                 youtube: "https://www.youtube.com/@AIMotionShorts-16"
             }
         };
@@ -195,9 +194,10 @@
         };
 
         const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
+            // Updated Size: w-10 h-10 on mobile (smaller), w-12 h-12 on desktop (standard)
+            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
-                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-xl sm:text-2xl text-white drop-shadow-md`}></i>
             </a>
         );
 
@@ -268,15 +268,13 @@
                         </div>
                     </div>
 
-                    {/* Main Container - Full Width on Desktop */}
+                    {/* Main Container */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-20 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
-                        {/* Grid System: 1 Col Mobile, 12 Col Desktop */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR (Sticky on Desktop) */}
+                            {/* LEFT SIDEBAR */}
                             <div className="lg:col-span-4 space-y-6">
-                                {/* Profile Card */}
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 dark:border-slate-800 lg:sticky lg:top-24">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
@@ -286,7 +284,7 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Desktop Social Icons (Now 4 icons: Phone, WhatsApp, Insta, YouTube) */}
+                                    {/* Desktop Social Icons */}
                                     <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
@@ -354,10 +352,11 @@
                                     </div>
                                 </div>
 
-                                {/* MOBILE DOCK SECTION (Appears at End of Page on Mobile) */}
-                                <div className="lg:hidden mt-12 mb-6">
+                                {/* MOBILE DOCK (Compact & Short) */}
+                                <div className="lg:hidden mt-6 mb-4">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                    <div className="glass-dock rounded-[24px] p-4 shadow-dock flex justify-between items-center px-4 sm:px-6">
+                                    {/* Reduced padding (p-2) and equal spacing (justify-between) */}
+                                    <div className="glass-dock rounded-[24px] p-2 shadow-dock flex justify-between items-center px-6">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
