@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V34 Compact Connect</title>
+    <title>Anaghan's Profile - V35 Compact Width</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -194,7 +194,7 @@
         };
 
         const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            // Updated Size: w-10 h-10 on mobile (smaller), w-12 h-12 on desktop (standard)
+            // Updated Size: w-10 h-10 on mobile, w-12 h-12 on desktop
             <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
                 <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-xl sm:text-2xl text-white drop-shadow-md`}></i>
@@ -352,11 +352,11 @@
                                     </div>
                                 </div>
 
-                                {/* MOBILE DOCK (Compact & Short) */}
+                                {/* MOBILE DOCK (Compact & Centered Width) */}
                                 <div className="lg:hidden mt-6 mb-4">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                    {/* Reduced padding (p-2) and equal spacing (justify-between) */}
-                                    <div className="glass-dock rounded-[24px] p-2 shadow-dock flex justify-between items-center px-6">
+                                    {/* Added max-w-[280px] and mx-auto here for compact width */}
+                                    <div className="glass-dock rounded-[24px] p-2 shadow-dock flex justify-between items-center px-6 mx-auto max-w-[280px]">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
