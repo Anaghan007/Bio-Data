@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V32 Final Links</title>
+    <title>Anaghan's Profile - V33 No Snapchat</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -100,7 +100,7 @@
             social: {
                 whatsapp: "https://wa.me/918866722633",
                 instagram: "https://www.instagram.com/_.anaghan._009",
-                snapchat: "https://snapchat.com", // Default placeholder as none provided
+                // Snapchat Removed
                 youtube: "https://www.youtube.com/@AIMotionShorts-16"
             }
         };
@@ -286,12 +286,11 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Desktop Social Icons (Full Set) */}
+                                    {/* Desktop Social Icons (Now 4 icons: Phone, WhatsApp, Insta, YouTube) */}
                                     <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
-                                        <SocialAppIcon icon="fa-snapchat" isBrand={true} href={commonData.social.snapchat} />
                                         <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
                                     </div>
 
@@ -358,12 +357,10 @@
                                 {/* MOBILE DOCK SECTION (Appears at End of Page on Mobile) */}
                                 <div className="lg:hidden mt-12 mb-6">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                    {/* Updated: justify-between for equal spacing */}
                                     <div className="glass-dock rounded-[24px] p-4 shadow-dock flex justify-between items-center px-4 sm:px-6">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
-                                        <SocialAppIcon icon="fa-snapchat" isBrand={true} href={commonData.social.snapchat} />
                                         <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
                                     </div>
                                 </div>
