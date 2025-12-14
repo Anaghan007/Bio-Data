@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V49 Single Page Sections</title>
+    <title>Anaghan's Profile - V50 6-Page Format</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -80,7 +80,6 @@
             border-top: 3px solid #ffffff;
             width: 24px;
             height: 24px;
-            -webkit-animation: spin 1s linear infinite;
             animation: spin 1s linear infinite;
         }
 
@@ -89,53 +88,66 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* --- PDF SPECIFIC STYLES --- */
-        /* Forces each section to be a single, vertically centered page */
+        /* --- PDF SPECIFIC STYLES (Strict Pagination) --- */
         .pdf-layout {
             width: 100% !important;
             margin: 0 !important;
             padding: 0 !important;
+            background: white !important;
         }
 
+        /* Flatten the grid to a single column */
         .pdf-layout .grid {
-            display: block !important; /* Stack columns */
+            display: block !important;
         }
 
         .pdf-layout .lg\:col-span-4,
         .pdf-layout .lg\:col-span-8 {
             width: 100% !important;
-            margin-bottom: 0 !important;
+            margin: 0 !important;
         }
 
-        /* This targets every Card (Profile, Edu, Fam, etc) in PDF mode */
-        .pdf-layout .glass-card {
-            /* Make each card take up a full page height visually */
-            height: 1100px !important; 
-            max-height: 1100px !important;
-            
-            /* Center Content Vertically */
+        /* Define a Page Class */
+        .pdf-layout .pdf-page-section {
+            width: 100% !important;
+            /* Using min-height to ensure centering but allowing expansion if needed */
+            min-height: 1050px !important; 
             display: flex !important;
             flex-direction: column !important;
-            justify-content: center !important; 
-            
-            /* Clean up styling for print */
-            margin: 0 !important;
-            border-radius: 0 !important;
-            border: none !important;
-            box-shadow: none !important;
-            
-            /* FORCE PAGE BREAK AFTER EACH CARD */
+            justify-content: center !important;
+            align-items: center !important;
+            padding: 40px !important;
             page-break-after: always !important;
             break-after: page !important;
+            box-sizing: border-box !important;
         }
 
-        /* Ensure images in gallery don't overflow */
-        .pdf-layout .aspect-square {
-            height: 300px !important;
+        /* Styling for the Cards inside PDF pages */
+        .pdf-layout .glass-card {
             width: 100% !important;
+            box-shadow: none !important;
+            border: 1px solid #e2e8f0 !important;
+            background: #ffffff !important;
+        }
+
+        /* Adjust Gallery Grid for PDF */
+        .pdf-layout .gallery-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px !important;
+        }
+        .pdf-layout .aspect-square {
+            height: 350px !important; /* Fixed height for PDF images */
+        }
+
+        /* Show the specific PDF Connect Section */
+        .show-in-pdf-only {
+            display: none;
+        }
+        .pdf-layout .show-in-pdf-only {
+            display: flex !important;
         }
         
-        .pdf-layout .hidden-in-pdf {
+        .pdf-layout .hide-in-pdf {
             display: none !important;
         }
     </style>
@@ -252,10 +264,10 @@
             }
         };
 
-        const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            <a href={href} target={isMobile ? "_self" : "_blank"} className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
+        const SocialAppIcon = ({ icon, href, isMobile, isBrand, large }) => (
+            <a href={href} target={isMobile ? "_self" : "_blank"} className={`icon-3d relative group rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110 ${large ? 'w-24 h-24' : 'w-12 h-12'}`}>
                 <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
-                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} ${large ? 'text-5xl' : 'text-2xl'} text-white drop-shadow-md`}></i>
             </a>
         );
 
@@ -330,7 +342,6 @@
 
             const handleDownloadPDF = (format) => {
                 setIsGenerating(true);
-                // Apply PDF Layout Class
                 document.getElementById('main-container').classList.add('pdf-layout');
                 
                 setTimeout(() => {
@@ -350,10 +361,9 @@
                         setIsGenerating(false);
                         setShowPdfModal(false);
                         document.body.classList.remove('generating-pdf');
-                        // Remove PDF Layout Class
                         document.getElementById('main-container').classList.remove('pdf-layout');
                     });
-                }, 200);
+                }, 300);
             };
 
             return (
@@ -380,11 +390,12 @@
 
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
+                        {/* GRID for Desktop / FLEX for PDF */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR (Profile Section) */}
-                            <div className="lg:col-span-4 space-y-6">
-                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-28">
+                            {/* --- PAGE 1: Intro & Personal Info --- */}
+                            <div className="lg:col-span-4 pdf-page-section">
+                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 w-full">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" alt="Avatar"/>
@@ -393,14 +404,14 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap hidden-in-pdf">
+                                    <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap hide-in-pdf">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
                                         <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} />
                                     </div>
 
-                                    <div className="text-left">
+                                    <div className="text-left mt-8">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3">
                                             {t.infoData.map((item, i) => (
@@ -411,55 +422,78 @@
                                 </div>
                             </div>
 
-                            {/* RIGHT CONTENT */}
-                            <div className="lg:col-span-8 space-y-8">
+                            {/* RIGHT CONTENT WRAPPER */}
+                            <div className="lg:col-span-8 space-y-8 pdf-page-wrapper">
                                 
-                                {/* Education */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
-                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.educationData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />
-                                        ))}
+                                {/* --- PAGE 2: Education --- */}
+                                <div className="pdf-page-section">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
+                                        <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.educationData.map((item, i) => (
+                                                <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Family */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
-                                    <SectionHeader icon="fa-users" title={t.titles.fam} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.familyData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
-                                        ))}
+                                {/* --- PAGE 3: Family --- */}
+                                <div className="pdf-page-section">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
+                                        <SectionHeader icon="fa-users" title={t.titles.fam} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.familyData.map((item, i) => (
+                                                <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Siblings */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
-                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.siblingData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />
-                                        ))}
+                                {/* --- PAGE 4: Siblings --- */}
+                                <div className="pdf-page-section">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
+                                        <SectionHeader icon="fa-user-group" title={t.titles.sib} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.siblingData.map((item, i) => (
+                                                <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Gallery */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
-                                    <SectionHeader icon="fa-images" title={t.titles.gal} />
-                                    <div className="grid grid-cols-2 gap-4">
-                                        {commonData.gallery.map((img, i) => (
-                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
-                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                    <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
+                                {/* --- PAGE 5: Gallery --- */}
+                                <div className="pdf-page-section">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
+                                        <SectionHeader icon="fa-images" title={t.titles.gal} />
+                                        <div className="grid grid-cols-2 gap-4 gallery-grid">
+                                            {commonData.gallery.map((img, i) => (
+                                                <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
+                                                    <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div className="lg:hidden mt-6 mb-4 hidden-in-pdf">
+                                {/* --- PAGE 6: Connect With Me (Full Page for PDF) --- */}
+                                <div className="pdf-page-section show-in-pdf-only">
+                                    <div className="glass-card p-10 rounded-[30px] shadow-lg border border-white/50 w-full text-center flex flex-col items-center justify-center gap-8">
+                                        <SectionHeader icon="fa-address-book" title={t.titles.contact} />
+                                        <div className="flex gap-6 justify-center flex-wrap">
+                                            <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} large={true} />
+                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} large={true} />
+                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} large={true} />
+                                            <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} large={true} />
+                                        </div>
+                                        <p className="text-xl font-bold text-slate-600 mt-4">{commonData.mobileNumber}</p>
+                                    </div>
+                                </div>
+
+                                {/* Mobile Dock (Screen Only) */}
+                                <div className="lg:hidden mt-6 mb-4 hide-in-pdf">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
                                     <div className="ios-dock rounded-[35px] p-4 flex justify-between items-center px-6 mx-auto max-w-[340px]">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
