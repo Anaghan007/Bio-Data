@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile</title>
+    <title>Anaghan's Profile - V48 Smart PDF System</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -38,6 +38,7 @@
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'zoom-in': 'zoomIn 0.3s ease-out forwards',
+                        'spin-slow': 'spin 3s linear infinite',
                     },
                     keyframes: {
                         float: {
@@ -63,7 +64,6 @@
             -webkit-backdrop-filter: blur(25px);
         }
         
-        /* iOS STYLE DOCK */
         .ios-dock {
             background: rgba(255, 255, 255, 0.45);
             backdrop-filter: blur(25px);
@@ -72,7 +72,24 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
+        /* Classes to hide elements during PDF generation */
         .pdf-hidden { display: none !important; }
+        
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #ffffff;
+            width: 24px;
+            height: 24px;
+            -webkit-animation: spin 1s linear infinite; /* Safari */
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="antialiased text-slate-800 bg-gray-50">
@@ -102,7 +119,7 @@
             en: {
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "Hello, I'm Anaghan",
-                welcomeSub: "Digital Marketer",
+                welcomeSub: "Digital Marketer & Tech Enthusiast",
                 titles: {
                     info: "Personal Information",
                     edu: "Education",
@@ -226,29 +243,84 @@
             );
         };
 
+        // --- NEW: PDF Options Modal ---
+        const PdfModal = ({ isOpen, onClose, onGenerate, isGenerating }) => {
+            if (!isOpen) return null;
+            const [format, setFormat] = useState('a4');
+
+            return (
+                <div className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-zoom-in" onClick={onClose}>
+                    <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl relative" onClick={e => e.stopPropagation()}>
+                        <h3 className="text-xl font-bold text-slate-800 mb-4 text-center">Export PDF</h3>
+                        
+                        <div className="grid grid-cols-3 gap-3 mb-6">
+                            {['a4', 'letter', 'legal'].map((fmt) => (
+                                <button 
+                                    key={fmt}
+                                    onClick={() => setFormat(fmt)}
+                                    className={`p-3 rounded-xl border-2 transition-all flex flex-col items-center gap-2 ${format === fmt ? 'border-indigo-600 bg-indigo-50 text-indigo-700' : 'border-slate-100 bg-slate-50 text-slate-500'}`}
+                                >
+                                    <div className={`border rounded shadow-sm bg-white ${fmt === 'a4' ? 'w-6 h-8' : fmt === 'letter' ? 'w-7 h-8' : 'w-6 h-10'}`}></div>
+                                    <span className="text-xs font-bold uppercase">{fmt}</span>
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button onClick={onClose} className="flex-1 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors">Cancel</button>
+                            <button 
+                                onClick={() => onGenerate(format)}
+                                disabled={isGenerating}
+                                className="flex-1 py-3 rounded-xl font-bold bg-indigo-600 text-white shadow-lg shadow-indigo-200 hover:bg-indigo-700 transition-all flex items-center justify-center gap-2"
+                            >
+                                {isGenerating ? <div className="spinner"></div> : <span>Download</span>}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [lang, setLang] = useState('en');
             const [isLoaded, setIsLoaded] = useState(false);
             const [isGenerating, setIsGenerating] = useState(false);
             const [selectedImg, setSelectedImg] = useState(null);
+            const [showPdfModal, setShowPdfModal] = useState(false);
 
             useEffect(() => setIsLoaded(true), []);
             const t = translations[lang];
 
-            const handleDownloadPDF = () => {
+            const handleDownloadPDF = (format) => {
                 setIsGenerating(true);
-                const element = document.getElementById('main-container');
-                const opt = { margin: 0, filename: 'Anaghan_Profile.pdf', image: { type: 'pdf', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'mm', format: 'ledger', orientation: 'portrait' } };
-                document.body.classList.add('generating-pdf');
-                html2pdf().set(opt).from(element).save().then(() => { setIsGenerating(false); document.body.classList.remove('generating-pdf'); });
+                // Tiny timeout to allow UI update before heavy processing
+                setTimeout(() => {
+                    const element = document.getElementById('main-container');
+                    const opt = { 
+                        margin: 0, 
+                        filename: `Anaghan_Profile_${format.toUpperCase()}.pdf`, 
+                        image: { type: 'jpeg', quality: 0.98 }, 
+                        html2canvas: { scale: 2, useCORS: true }, // Optimized scale
+                        jsPDF: { unit: 'mm', format: format, orientation: 'portrait' } 
+                    };
+                    
+                    document.body.classList.add('generating-pdf');
+                    
+                    html2pdf().set(opt).from(element).save().then(() => {
+                        setIsGenerating(false);
+                        setShowPdfModal(false);
+                        document.body.classList.remove('generating-pdf');
+                    });
+                }, 100);
             };
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
+                    <PdfModal isOpen={showPdfModal} onClose={() => setShowPdfModal(false)} onGenerate={handleDownloadPDF} isGenerating={isGenerating} />
                     
-                    {/* Fixed PDF Button */}
-                    <button onClick={handleDownloadPDF} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
+                    {/* Fixed PDF Button - Triggers Modal */}
+                    <button onClick={() => setShowPdfModal(true)} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
 
                     {/* Navbar */}
                     <div className={`w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
@@ -258,10 +330,9 @@
                                 <h1 className="font-bold text-xl text-slate-800 truncate">{t.headerName}</h1>
                             </div>
                             <div className="flex items-center gap-3">
-                                {/* Language Toggle: Increased text size to text-base (16px) */}
                                 <div className="flex bg-gray-200 rounded-full p-1.5 border border-gray-300">
-                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>English</button>
-                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gujarati</button>
+                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
+                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
                                 </div>
                             </div>
                         </div>
