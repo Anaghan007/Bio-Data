@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile</title>
+    <title>Anaghan's Profile - Light Mode Only</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -22,7 +22,6 @@
 
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -61,11 +60,7 @@
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(25px);
-        }
-        .dark .glass-card {
-            background: rgba(30, 41, 59, 0.90);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
         }
         
         /* iOS STYLE DOCK */
@@ -76,18 +71,11 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
-        
-        /* UPDATED DARK MODE DOCK to match Cards */
-        .dark .ios-dock {
-            background: rgba(30, 41, 59, 0.90); /* Matched to glass-card */
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        }
 
         .pdf-hidden { display: none !important; }
     </style>
 </head>
-<body class="antialiased text-slate-800 dark:text-slate-100 bg-gray-50 dark:bg-slate-900 transition-colors duration-300">
+<body class="antialiased text-slate-800 bg-gray-50">
 
     <div id="root"></div>
 
@@ -208,12 +196,12 @@
 
         const SectionHeader = ({ title, icon }) => (
             <div className="flex items-center gap-3 mb-6 mt-2">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-slate-700 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
-                <h2 className="text-xl font-bold text-slate-800 dark:text-white tracking-tight">{title}</h2>
+                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
+                <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
             </div>
         );
 
-        const cardStyle = "bg-slate-50 dark:bg-slate-800/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-700 hover:shadow-md transition-shadow";
+        const cardStyle = "bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow";
         
         const InfoCard = ({ label, value, fullWidth, lang }) => {
             const labelClass = lang === 'gu' 
@@ -223,7 +211,7 @@
             return (
                 <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
                     <p className={`${labelClass} text-slate-400 mb-1`}>{label}</p>
-                    <p className="text-lg font-semibold text-slate-800 dark:text-white leading-tight">{value}</p>
+                    <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
                 </div>
             );
         };
@@ -240,7 +228,6 @@
 
         const App = () => {
             const [lang, setLang] = useState('en');
-            const [darkMode, setDarkMode] = useState(false);
             const [isLoaded, setIsLoaded] = useState(false);
             const [isGenerating, setIsGenerating] = useState(false);
             const [selectedImg, setSelectedImg] = useState(null);
@@ -257,25 +244,24 @@
             };
 
             return (
-                <div className={`${darkMode ? "dark" : ""} ${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
+                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
                     
                     {/* Fixed PDF Button */}
-                    <button onClick={handleDownloadPDF} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 dark:bg-white text-white dark:text-slate-900 w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
+                    <button onClick={handleDownloadPDF} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
 
                     {/* Navbar */}
-                    <div className={`w-full fixed top-0 z-50 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
+                    <div className={`w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
                             <div className="flex items-center gap-2">
                                 <img src={commonData.avatar3D} className="w-8 h-8 rounded-full border border-indigo-200" />
-                                <h1 className="font-bold text-lg text-slate-800 dark:text-white truncate">{t.headerName}</h1>
+                                <h1 className="font-bold text-lg text-slate-800 truncate">{t.headerName}</h1>
                             </div>
                             <div className="flex items-center gap-3">
-                                <div className="flex bg-gray-200 dark:bg-slate-800 rounded-full p-1 border border-gray-300 dark:border-slate-700">
-                                    <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'en' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>En</button>
-                                    <button onClick={() => setLang('gu')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'gu' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-gray-500 dark:text-gray-400'}`}>Gu</button>
+                                <div className="flex bg-gray-200 rounded-full p-1 border border-gray-300">
+                                    <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
+                                    <button onClick={() => setLang('gu')} className={`px-3 py-1 rounded-full text-xs font-bold transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
                                 </div>
-                                <button onClick={() => setDarkMode(!darkMode)} className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center text-slate-600 dark:text-yellow-400 border border-gray-200 dark:border-slate-700 hover:scale-105 transition-transform"><i className={`fas ${darkMode ? 'fa-sun' : 'fa-moon'} text-xs`}></i></button>
                             </div>
                         </div>
                     </div>
@@ -287,14 +273,14 @@
                             
                             {/* LEFT SIDEBAR */}
                             <div className="lg:col-span-4 space-y-6">
-                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 dark:border-slate-800 lg:sticky lg:top-24">
+                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-24">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" alt="Avatar"/>
                                         </div>
                                     </div>
-                                    <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
+                                    <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
                                     {/* Desktop Social Icons */}
                                     <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
@@ -320,7 +306,7 @@
                             <div className="lg:col-span-8 space-y-8">
                                 
                                 {/* Education */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.educationData.map((item, i) => (
@@ -330,7 +316,7 @@
                                 </div>
 
                                 {/* Family */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.familyData.map((item, i) => (
@@ -340,7 +326,7 @@
                                 </div>
 
                                 {/* Siblings */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         {t.siblingData.map((item, i) => (
@@ -350,7 +336,7 @@
                                 </div>
 
                                 {/* Gallery */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 dark:border-slate-800">
+                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4">
                                         {commonData.gallery.map((img, i) => (
