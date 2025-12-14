@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V39 Larger Labels</title>
+    <title>Anaghan's Profile - V40 Larger Gujarati Text</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -216,8 +216,8 @@
         
         const InfoCard = ({ label, value, fullWidth }) => (
             <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''}`}>
-                {/* INCREASED FONT SIZE HERE: text-xs instead of text-[10px] */}
-                <p className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-1">{label}</p>
+                {/* CHANGED: text-sm (14px) for larger labels */}
+                <p className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-1">{label}</p>
                 <p className="text-lg font-semibold text-slate-800 dark:text-white leading-tight">{value}</p>
             </div>
         );
@@ -274,15 +274,13 @@
                         </div>
                     </div>
 
-                    {/* Main Container - Full Width on Desktop */}
+                    {/* Main Container */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-20 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
-                        {/* Grid System: 1 Col Mobile, 12 Col Desktop */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR (Sticky on Desktop) */}
+                            {/* LEFT SIDEBAR */}
                             <div className="lg:col-span-4 space-y-6">
-                                {/* Profile Card */}
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 dark:border-slate-800 lg:sticky lg:top-24">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
@@ -292,7 +290,7 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Desktop Social Icons (Full Set) */}
+                                    {/* Desktop Social Icons */}
                                     <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
