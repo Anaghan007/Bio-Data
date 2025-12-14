@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V30 End Page Icons</title>
+    <title>Anaghan's Profile - V32 Final Links</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -99,9 +99,9 @@
             ],
             social: {
                 whatsapp: "https://wa.me/918866722633",
-                instagram: "https://instagram.com",
-                snapchat: "https://snapchat.com",
-                youtube: "https://youtube.com",
+                instagram: "https://www.instagram.com/_.anaghan._009",
+                snapchat: "https://snapchat.com", // Default placeholder as none provided
+                youtube: "https://www.youtube.com/@AIMotionShorts-16"
             }
         };
 
@@ -132,21 +132,21 @@
                     { label: "Income", value: "18 LPA" },
                 ],
                 educationData: [
-                    { label: "Bachelor's (2025)", value: "BCA, VNSGU University" },
-                    { label: "Master's (Running)", value: "Digital Marketing" }
+                    { label: "Bachelor's", value: "Bachelor in Computer Application (VNSGU)" },
+                    { label: "Master's", value: "MSc in Digital Marketing & Analytics (Dublin Business School)" }
                 ],
                 familyData: [
-                    { label: "Father Name", value: "Mr. Ashokbhai Patel" },
+                    { label: "Father Name", value: "Ashokbhai Ganeshbhai Anaghan" },
                     { label: "Father Occupation", value: "Textile Business Owner" },
-                    { label: "Mother Name", value: "Mrs. Patel" },
-                    { label: "Mother Occupation", value: "Homemaker" },
+                    { label: "Mother Name", value: "Jayshriben Ashokbhai Anaghan" },
+                    { label: "Mother Occupation", value: "Housewife" },
                 ],
                 siblingData: [
-                    { label: "Sister Name", value: "Priya Patel", fullWidth: true },
-                    { label: "Relation", value: "Younger Sister" },
-                    { label: "Bachelor's", value: "B.Com (Completed)" },
-                    { label: "Master's", value: "M.Com (Running)" },
-                    { label: "Occupation", value: "Student" },
+                    { label: "Brother Name", value: "Darshil Ashokbhai Anaghan", fullWidth: true },
+                    { label: "Relation", value: "Elder Brother" },
+                    { label: "Bachelor's", value: "B.Com (VNSGU)" },
+                    { label: "Master's", value: "MBA (LMU, London)" },
+                    { label: "Occupation", value: "Job in Marketing" },
                 ]
             },
             gu: {
@@ -175,21 +175,21 @@
                     { label: "આવક", value: "૧૮ લાખ / વર્ષ" },
                 ],
                 educationData: [
-                    { label: "સ્નાતક (૨૦૨૫)", value: "BCA, VNSGU" },
-                    { label: "અનુસ્નાતક (ચાલુ)", value: "ડિજિટલ માર્કેટિંગ" }
+                    { label: "સ્નાતક", value: "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (VNSGU)" },
+                    { label: "અનુસ્નાતક", value: "MSc ઇન ડિજિટલ માર્કેટિંગ (ડબલિન બિઝનેસ સ્કૂલ)" }
                 ],
                 familyData: [
-                    { label: "પિતાનું નામ", value: "શ્રી અશોકભાઈ પટેલ" },
+                    { label: "પિતાનું નામ", value: "અશોકભાઈ ગણેશભાઈ અણઘણ" },
                     { label: "પિતાનો વ્યવસાય", value: "ટેક્સટાઈલ બિઝનેસ" },
-                    { label: "માતાનું નામ", value: "શ્રીમતી પટેલ" },
+                    { label: "માતાનું નામ", value: "જયશ્રીબેન અશોકભાઈ અણઘણ" },
                     { label: "માતાનો વ્યવસાય", value: "ગૃહિણી" },
                 ],
                 siblingData: [
-                    { label: "બહેનનું નામ", value: "પ્રિયા પટેલ", fullWidth: true },
-                    { label: "સંબંધ", value: "નાની બહેન" },
-                    { label: "સ્નાતક", value: "B.Com (પૂર્ણ)" },
-                    { label: "અનુસ્નાતક", value: "M.Com (ચાલુ)" },
-                    { label: "વ્યવસાય", value: "વિદ્યાર્થી" },
+                    { label: "ભાઈનું નામ", value: "દર્શિલ અશોકભાઈ અણઘણ", fullWidth: true },
+                    { label: "સંબંધ", value: "મોટો ભાઈ" },
+                    { label: "સ્નાતક", value: "B.Com (VNSGU)" },
+                    { label: "અનુસ્નાતક", value: "MBA (LMU, લંડન)" },
+                    { label: "વ્યવસાય", value: "માર્કેટિંગ જોબ" },
                 ]
             }
         };
@@ -358,7 +358,8 @@
                                 {/* MOBILE DOCK SECTION (Appears at End of Page on Mobile) */}
                                 <div className="lg:hidden mt-12 mb-6">
                                     <SectionHeader icon="fa-address-book" title={t.titles.contact} />
-                                    <div className="glass-dock rounded-[24px] p-4 shadow-dock flex justify-center items-center gap-4 flex-wrap">
+                                    {/* Updated: justify-between for equal spacing */}
+                                    <div className="glass-dock rounded-[24px] p-4 shadow-dock flex justify-between items-center px-4 sm:px-6">
                                         <SocialAppIcon icon="fa-phone" isMobile={true} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                         <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
