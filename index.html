@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V45 Taller Navbar</title>
+    <title>Anaghan's Profile - V47 Larger Language Text</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -250,26 +250,24 @@
                     {/* Fixed PDF Button */}
                     <button onClick={handleDownloadPDF} className={`fixed bottom-8 right-8 z-[60] bg-slate-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 transition-transform ${isGenerating ? 'pdf-hidden' : ''}`} title="Download PDF"><i className="fas fa-file-pdf text-2xl"></i></button>
 
-                    {/* Navbar - INCREASED HEIGHT (h-20) */}
+                    {/* Navbar */}
                     <div className={`w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all ${isGenerating ? 'pdf-hidden' : ''}`}>
-                        {/* Inner container height increased to h-20 (80px) */}
                         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
                                 <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-indigo-200" />
-                                {/* Profile Name Increased to text-xl */}
                                 <h1 className="font-bold text-xl text-slate-800 truncate">{t.headerName}</h1>
                             </div>
                             <div className="flex items-center gap-3">
-                                {/* Language Toggle Buttons - Padding p-1.5, Text text-sm */}
+                                {/* Language Toggle: Increased text size to text-base (16px) */}
                                 <div className="flex bg-gray-200 rounded-full p-1.5 border border-gray-300">
-                                    <button onClick={() => setLang('en')} className={`px-3 py-1 rounded-full text-sm font-bold transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
-                                    <button onClick={() => setLang('gu')} className={`px-3 py-1 rounded-full text-sm font-bold transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
+                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
+                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Main Container - Adjusted pt-28 to account for taller navbar */}
+                    {/* Main Container */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
