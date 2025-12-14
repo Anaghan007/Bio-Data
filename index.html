@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V50 6-Page Format</title>
+    <title>Anaghan's Profile - V51 Custom PDF Layout</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -30,10 +30,6 @@
                     },
                     colors: {
                         primary: '#6366f1',
-                    },
-                    boxShadow: {
-                        'dock': '0 20px 40px -5px rgba(0,0,0,0.15)',
-                        'icon-pop': '0 10px 20px -5px rgba(99, 102, 241, 0.4)',
                     },
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
@@ -88,7 +84,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* --- PDF SPECIFIC STYLES (Strict Pagination) --- */
+        /* --- PDF SPECIFIC LAYOUT --- */
         .pdf-layout {
             width: 100% !important;
             margin: 0 !important;
@@ -96,22 +92,13 @@
             background: white !important;
         }
 
-        /* Flatten the grid to a single column */
-        .pdf-layout .grid {
-            display: block !important;
-        }
+        .pdf-layout .grid { display: block !important; }
+        .pdf-layout .lg\:col-span-4, .pdf-layout .lg\:col-span-8 { width: 100% !important; margin: 0 !important; }
 
-        .pdf-layout .lg\:col-span-4,
-        .pdf-layout .lg\:col-span-8 {
-            width: 100% !important;
-            margin: 0 !important;
-        }
-
-        /* Define a Page Class */
+        /* The Page Container */
         .pdf-layout .pdf-page-section {
             width: 100% !important;
-            /* Using min-height to ensure centering but allowing expansion if needed */
-            min-height: 1050px !important; 
+            min-height: 1080px !important; /* Roughly A4 Height */
             display: flex !important;
             flex-direction: column !important;
             justify-content: center !important;
@@ -120,36 +107,34 @@
             page-break-after: always !important;
             break-after: page !important;
             box-sizing: border-box !important;
+            gap: 30px !important;
         }
 
-        /* Styling for the Cards inside PDF pages */
+        /* Reset Card Styles for PDF */
         .pdf-layout .glass-card {
             width: 100% !important;
             box-shadow: none !important;
             border: 1px solid #e2e8f0 !important;
             background: #ffffff !important;
+            margin: 0 !important;
         }
 
-        /* Adjust Gallery Grid for PDF */
+        /* Gallery Tweaks for PDF */
         .pdf-layout .gallery-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 20px !important;
         }
         .pdf-layout .aspect-square {
-            height: 350px !important; /* Fixed height for PDF images */
+            height: 280px !important; /* Reduced height to fit combined page */
         }
 
-        /* Show the specific PDF Connect Section */
-        .show-in-pdf-only {
-            display: none;
-        }
-        .pdf-layout .show-in-pdf-only {
-            display: flex !important;
-        }
+        /* Hide logic */
+        .show-in-pdf-only { display: none; }
+        .pdf-layout .show-in-pdf-only { display: flex !important; }
+        .pdf-layout .hide-in-pdf { display: none !important; }
         
-        .pdf-layout .hide-in-pdf {
-            display: none !important;
-        }
+        /* Hide Phone Number Text specific to PDF */
+        .pdf-layout .pdf-phone-text { display: none !important; }
     </style>
 </head>
 <body class="antialiased text-slate-800 bg-gray-50">
@@ -390,7 +375,6 @@
 
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
-                        {/* GRID for Desktop / FLEX for PDF */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
                             {/* --- PAGE 1: Intro & Personal Info --- */}
@@ -422,10 +406,10 @@
                                 </div>
                             </div>
 
-                            {/* RIGHT CONTENT WRAPPER */}
+                            {/* RIGHT CONTENT */}
                             <div className="lg:col-span-8 space-y-8 pdf-page-wrapper">
                                 
-                                {/* --- PAGE 2: Education --- */}
+                                {/* --- PAGE 2: Education + Family (COMBINED) --- */}
                                 <div className="pdf-page-section">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
                                         <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
@@ -435,10 +419,6 @@
                                             ))}
                                         </div>
                                     </div>
-                                </div>
-
-                                {/* --- PAGE 3: Family --- */}
-                                <div className="pdf-page-section">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
                                         <SectionHeader icon="fa-users" title={t.titles.fam} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -449,7 +429,7 @@
                                     </div>
                                 </div>
 
-                                {/* --- PAGE 4: Siblings --- */}
+                                {/* --- PAGE 3: Siblings (SEPARATE) --- */}
                                 <div className="pdf-page-section">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
                                         <SectionHeader icon="fa-user-group" title={t.titles.sib} />
@@ -461,7 +441,7 @@
                                     </div>
                                 </div>
 
-                                {/* --- PAGE 5: Gallery --- */}
+                                {/* --- PAGE 4: Gallery + Connect (COMBINED) --- */}
                                 <div className="pdf-page-section">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 w-full">
                                         <SectionHeader icon="fa-images" title={t.titles.gal} />
@@ -476,11 +456,9 @@
                                             ))}
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* --- PAGE 6: Connect With Me (Full Page for PDF) --- */}
-                                <div className="pdf-page-section show-in-pdf-only">
-                                    <div className="glass-card p-10 rounded-[30px] shadow-lg border border-white/50 w-full text-center flex flex-col items-center justify-center gap-8">
+                                    {/* Connect Section (PDF Only Version) */}
+                                    <div className="glass-card p-10 rounded-[30px] shadow-lg border border-white/50 w-full text-center flex flex-col items-center justify-center gap-8 show-in-pdf-only">
                                         <SectionHeader icon="fa-address-book" title={t.titles.contact} />
                                         <div className="flex gap-6 justify-center flex-wrap">
                                             <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} large={true} />
@@ -488,7 +466,8 @@
                                             <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} large={true} />
                                             <SocialAppIcon icon="fa-youtube" isBrand={true} href={commonData.social.youtube} large={true} />
                                         </div>
-                                        <p className="text-xl font-bold text-slate-600 mt-4">{commonData.mobileNumber}</p>
+                                        {/* Phone Text (Hidden via CSS in PDF) */}
+                                        <p className="text-xl font-bold text-slate-600 mt-4 pdf-phone-text">{commonData.mobileNumber}</p>
                                     </div>
                                 </div>
 
