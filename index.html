@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anaghan's Profile - V37 iOS Dock</title>
+    <title>Anaghan's Profile - V38 Final Gujarati Correction</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
     <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/man-avatar-6299539-5187871.png?f=webp">
@@ -154,8 +154,9 @@
                 ]
             },
             gu: {
-                headerName: "અનઘનની પ્રોફાઇલ",
-                welcomeTitle: "નમસ્તે, હું અનઘન છું",
+                // Corrected Surname here: અણઘણ
+                headerName: "અણઘણની પ્રોફાઇલ",
+                welcomeTitle: "નમસ્તે, હું અણઘણ છું",
                 welcomeSub: "ડિજિટલ માર્કેટર",
                 titles: {
                     info: "વ્યક્તિગત માહિતી",
@@ -166,7 +167,8 @@
                     contact: "મારી સાથે જોડાઓ"
                 },
                 infoData: [
-                    { label: "પૂરું નામ", value: "અનઘન સ્મિત અશોકભાઈ" },
+                    // Corrected Surname here: અણઘણ
+                    { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ" },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
                     { label: "ઉંમર", value: "૨૩ વર્ષ" },
                     { label: "ઊંચાઈ", value: "૫ ફૂટ ૧૦ ઇંચ" },
@@ -272,13 +274,15 @@
                         </div>
                     </div>
 
-                    {/* Main Container */}
+                    {/* Main Container - Full Width on Desktop */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-20 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         
+                        {/* Grid System: 1 Col Mobile, 12 Col Desktop */}
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR */}
+                            {/* LEFT SIDEBAR (Sticky on Desktop) */}
                             <div className="lg:col-span-4 space-y-6">
+                                {/* Profile Card */}
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 dark:border-slate-800 lg:sticky lg:top-24">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
@@ -288,7 +292,7 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 dark:text-indigo-300 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Desktop Social Icons */}
+                                    {/* Desktop Social Icons (Full Set) */}
                                     <div className="hidden lg:flex justify-center gap-3 mb-6 flex-wrap">
                                         <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
                                         <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
