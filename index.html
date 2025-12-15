@@ -6,12 +6,9 @@
     <title>Anaghan's Profile</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp">
-    <link rel="apple-touch-icon" href="https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp">
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <script src="https://cdn.tailwindcss.com"></script>
 
     <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -26,26 +23,13 @@
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
-                    colors: {
-                        primary: '#6366f1',
-                    },
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
-                        'zoom-in': 'zoomIn 0.3s ease-out forwards',
-                        'bounce-slight': 'bounceSlight 2s infinite',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
-                        },
-                        zoomIn: {
-                            '0%': { opacity: '0', transform: 'scale(0.9)' },
-                            '100%': { opacity: '1', transform: 'scale(1)' },
-                        },
-                        bounceSlight: {
-                             '0%, 100%': { transform: 'translateY(0)' },
-                             '50%': { transform: 'translateY(-5px)' },
                         }
                     }
                 }
@@ -60,57 +44,104 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(25px);
             -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        
-        /* --- PDF / PRINT SPECIFIC STYLES --- */
+
+        /* --- PDF / PRINT SETTINGS --- */
         @media print {
-            /* Basic Page Setup */
-            @page { margin: 0.5cm; size: auto; }
+            @page { margin: 0.5cm; size: A4 portrait; }
             
             body { 
-                background: white !important; 
+                background: white !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
-                color: black !important;
+                font-size: 12pt !important; /* Sets base size for consistency */
             }
 
-            /* Hide elements not needed in PDF */
-            .no-print-area, 
-            button.print-hidden,
-            .fixed.z-50.top-0 /* Navbar */ { 
-                display: none !important; 
-            }
+            .no-print, .fixed, button { display: none !important; }
 
-            /* Main Container Adjustment */
             #main-container {
                 padding-top: 0 !important;
-                padding-bottom: 0 !important;
                 max-width: 100% !important;
                 width: 100% !important;
+                margin-bottom: 0 !important;
             }
 
-            /* Remove Glass Effects for cleaner print */
+            .lg\:col-span-4, .lg\:col-span-8, .grid {
+                display: block !important;
+                width: 100% !important;
+            }
+
             .glass-card {
                 box-shadow: none !important;
-                border: 1px solid #ccc !important;
-                background: white !important;
-                backdrop-filter: none !important;
-                page-break-inside: avoid;
-                margin-bottom: 20px;
+                border: 1px solid #ddd !important;
             }
 
-            /* Flatten Layout (Force blocks instead of complex grids) */
-            .lg\:col-span-4, .lg\:col-span-8 {
-                width: 100% !important;
+            /* --- FORCED PAGE BREAKS --- */
+            .force-page-break {
+                break-before: page !important;
+                page-break-before: always !important;
                 display: block !important;
+                margin-top: 0 !important;
             }
+
+            /* --- PAGE 2 CONFIGURATION (Consistency Check) --- */
+            #page-2-container {
+                display: block !important;
+                zoom: 1 !important; /* No shrinking */
+            }
+            #page-2-container .glass-card {
+                margin-bottom: 15px !important;
+                padding: 20px !important;
+                break-inside: avoid !important;
+            }
+            /* I removed font-size overrides here. Now it uses the global Tailwind classes 
+               (text-xl, text-lg) just like Page 1, ensuring 100% matching fonts. */
             
-            /* Text adjustments */
-            h1, h2, h3, p { color: #000 !important; }
-            .text-indigo-600 { color: #4f46e5 !important; } 
-            
-            /* Ensure images print */
-            img { max-width: 100% !important; page-break-inside: avoid; }
+            #page-2-container .mb-6 { margin-bottom: 10px !important; }
+
+
+            /* --- PAGE 3 CONFIGURATION (NO 4th PAGE) --- */
+            #page-3-container {
+                height: 25.5cm !important; 
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 20px !important;
+                margin-bottom: 0 !important;
+                overflow: hidden !important; 
+                page-break-after: avoid !important; 
+            }
+
+            #page-3-container .gallery-print-grid {
+                flex-grow: 1 !important; 
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 1fr 1fr !important; 
+                gap: 20px !important;
+                margin-bottom: 0 !important;
+            }
+
+            #page-3-container .aspect-square {
+                aspect-ratio: unset !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+
+            /* --- PAGE 1 SIDEBAR --- */
+            .contact-section-print {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 15px !important;
+                justify-content: center !important;
+            }
+            .contact-section-print a {
+                border: 1px solid #ddd !important;
+            }
+            .info-print-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+            }
         }
     </style>
 </head>
@@ -122,7 +153,6 @@
         const { useState, useEffect } = React;
 
         const commonData = {
-            // PROFILE IMAGE
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
             mobileNumber: "8866722633",
             gallery: [
@@ -142,14 +172,7 @@
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "Hello, I'm Anaghan Smit",
                 welcomeSub: "Social Media Manager",
-                titles: {
-                    info: "Personal Information",
-                    edu: "Education",
-                    fam: "Family Background",
-                    sib: "Sibling Details",
-                    gal: "Photo Gallery",
-                    contact: "Connect With Me"
-                },
+                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery", contact: "Connect With Me" },
                 infoData: [
                     { label: "Full Name", value: "Anaghan Smit Ashokbhai" },
                     { label: "Date Of Birth", value: "16-10-2002" },
@@ -176,8 +199,6 @@
                 siblingData: [
                     { label: "Brother Name", value: "Darshil Ashokbhai Anaghan", fullWidth: true },
                     { label: "Relation", value: "Elder Brother" },
-                    { label: "Bachelor's", value: "B.Com (VNSGU)" },
-                    { label: "Master's", value: "MBA (LMU, London)" },
                     { label: "Occupation", value: "Job in Marketing" },
                 ]
             },
@@ -185,14 +206,7 @@
                 headerName: "અણઘણની પ્રોફાઇલ",
                 welcomeTitle: "નમસ્તે, હું અણઘણ છું",
                 welcomeSub: "સોશિયલ મીડિયા મેનેજર",
-                titles: {
-                    info: "વ્યક્તિગત માહિતી",
-                    edu: "શિક્ષણ",
-                    fam: "પારિવારિક વિગતો",
-                    sib: "ભાઈ-બહેનની વિગતો",
-                    gal: "ફોટો ગેલેરી",
-                    contact: "મારી સાથે જોડાઓ"
-                },
+                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી", contact: "મારી સાથે જોડાઓ" },
                 infoData: [
                     { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ" },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
@@ -219,33 +233,13 @@
                 siblingData: [
                     { label: "ભાઈનું નામ", value: "દર્શિલ અશોકભાઈ અણઘણ", fullWidth: true },
                     { label: "સંબંધ", value: "મોટો ભાઈ" },
-                    { label: "સ્નાતક", value: "B.Com (VNSGU)" },
-                    { label: "અનુસ્નાતક", value: "MBA (LMU, લંડન)" },
                     { label: "વ્યવસાય", value: "માર્કેટિંગ જોબ" },
                 ]
             }
         };
 
-        const PdfButton = () => {
-            const handlePrint = () => {
-                window.print();
-            };
-
-            return (
-                <button 
-                    onClick={handlePrint} 
-                    className="print-hidden fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group"
-                    title="Download as PDF"
-                >
-                    <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce-slight"></i>
-                    <span className="absolute -top-10 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">PDF</span>
-                </button>
-            );
-        };
-
         const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-icon-pop bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
-                <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/30 to-transparent rounded-t-2xl pointer-events-none"></div>
+            <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
             </a>
         );
@@ -259,152 +253,116 @@
 
         const cardStyle = "bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow";
         
-        const InfoCard = ({ label, value, fullWidth, lang }) => {
-            const labelClass = lang === 'gu' 
-                ? 'text-[15px] font-bold' 
-                : 'text-[11px] font-bold uppercase tracking-widest';
-            
-            return (
-                <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
-                    <p className={`${labelClass} text-slate-400 mb-1`}>{label}</p>
-                    <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
-                </div>
-            );
-        };
-
-        const Lightbox = ({ imgSrc, onClose }) => {
-            if (!imgSrc) return null;
-            return (
-                <div className="fixed inset-0 z-[100] bg-black animate-zoom-in flex items-center justify-center no-print-area" onClick={onClose}>
-                    <button className="absolute top-6 right-6 text-white/80 hover:text-white text-4xl z-50 drop-shadow-lg"><i className="fas fa-times"></i></button>
-                    <img src={imgSrc} className="w-full h-full object-contain" onClick={(e) => e.stopPropagation()} />
-                </div>
-            );
-        };
+        const InfoCard = ({ label, value, fullWidth, lang }) => (
+            <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
+                <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
+                <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
+            </div>
+        );
 
         const App = () => {
             const [lang, setLang] = useState('en');
             const [isLoaded, setIsLoaded] = useState(false);
-            const [selectedImg, setSelectedImg] = useState(null);
+            const t = translations[lang];
 
             useEffect(() => setIsLoaded(true), []);
-            const t = translations[lang];
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     
-                    <PdfButton />
+                    {/* PDF Button */}
+                    <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group no-print">
+                        <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce"></i>
+                    </button>
 
-                    <Lightbox imgSrc={selectedImg} onClose={() => setSelectedImg(null)} />
-                    
                     {/* Navbar */}
-                    <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 transition-all no-print-area">
-                        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+                    <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
+                        <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
-                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-indigo-200" />
-                                <h1 className="font-bold text-xl text-slate-800 truncate">{t.headerName}</h1>
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full" />
+                                <h1 className="font-bold text-xl text-slate-800">{t.headerName}</h1>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <div className="flex bg-gray-200 rounded-full p-1.5 border border-gray-300">
-                                    <button onClick={() => setLang('en')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>En</button>
-                                    <button onClick={() => setLang('gu')} className={`w-16 py-1 rounded-full text-base font-bold flex justify-center items-center transition-all ${lang === 'gu' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500'}`}>Gu</button>
-                                </div>
+                            <div className="flex bg-gray-200 rounded-full p-1.5">
+                                <button onClick={() => setLang('en')} className={`w-14 py-1 rounded-full font-bold ${lang === 'en' ? 'bg-white shadow text-indigo-600' : 'text-gray-500'}`}>En</button>
+                                <button onClick={() => setLang('gu')} className={`w-14 py-1 rounded-full font-bold ${lang === 'gu' ? 'bg-white shadow text-indigo-600' : 'text-gray-500'}`}>Gu</button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Main Container */}
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-                        
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* LEFT SIDEBAR (Contains Profile Info + Contact) */}
+                            {/* === PAGE 1: SIDEBAR / PERSONAL INFO === */}
                             <div className="lg:col-span-4 space-y-6">
-                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center border border-white/50 lg:sticky lg:top-28">
+                                <div className="glass-card p-8 rounded-[30px] shadow-xl text-center">
                                     <div className="relative inline-block mb-4 animate-float">
                                         <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
-                                            <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" alt="Avatar"/>
+                                            <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" />
                                         </div>
                                     </div>
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* Connect With Me - Now Visible on ALL Devices */}
                                     <div className="mb-8">
-                                        <div className="flex items-center justify-center gap-2 mb-4 opacity-80">
-                                            <i className="fas fa-link text-indigo-500"></i>
-                                            <span className="text-sm font-bold uppercase tracking-widest text-slate-500">{t.titles.contact}</span>
-                                        </div>
-                                        <div className="flex justify-center gap-3 flex-wrap">
-                                            <SocialAppIcon icon="fa-phone" isMobile={false} isBrand={false} href={`tel:${commonData.mobileNumber}`} />
+                                        <div className="flex justify-center gap-3 flex-wrap contact-section-print">
+                                            <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
                                             <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
                                             <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
                                         </div>
                                     </div>
 
-                                    {/* Personal Info Grid */}
                                     <div className="text-left border-t border-gray-100 pt-6">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
-                                        <div className="grid grid-cols-2 gap-3">
-                                            {t.infoData.map((item, i) => (
-                                                <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
-                                            ))}
+                                        <div className="grid grid-cols-2 gap-3 info-print-grid">
+                                            {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            {/* RIGHT CONTENT */}
+                            
+                            {/* Right Column Content */}
                             <div className="lg:col-span-8 space-y-8">
                                 
-                                {/* Education */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
-                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.educationData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />
-                                        ))}
+                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS (Strictly Grouped & Readable) === */}
+                                <div id="page-2-container" className="force-page-break space-y-8">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                        <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
+                                        </div>
+                                    </div>
+
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                        <SectionHeader icon="fa-users" title={t.titles.fam} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
+                                        </div>
+                                    </div>
+
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                        <SectionHeader icon="fa-user-group" title={t.titles.sib} />
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
+                                        </div>
                                     </div>
                                 </div>
 
-                                {/* Family */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
-                                    <SectionHeader icon="fa-users" title={t.titles.fam} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.familyData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} lang={lang} />
-                                        ))}
-                                    </div>
-                                </div>
 
-                                {/* Siblings */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
-                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        {t.siblingData.map((item, i) => (
-                                            <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />
-                                        ))}
-                                    </div>
-                                </div>
-
-                                {/* Gallery */}
-                                <div className="glass-card p-6 rounded-[30px] shadow-lg border border-white/50 break-inside-avoid">
+                                {/* === PAGE 3: GALLERY (Full Page Stretch) === */}
+                                <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px] shadow-lg">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-2 gap-4 gallery-print-grid">
                                         {commonData.gallery.map((img, i) => (
-                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors" onClick={() => setSelectedImg(img)}>
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors">
                                                 <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center no-print-area">
-                                                    <i className="fas fa-expand text-white text-2xl drop-shadow-md"></i>
-                                                </div>
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-
                 </div>
             );
         };
