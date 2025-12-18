@@ -47,7 +47,6 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* --- PDF / PRINT SETTINGS --- */
         @media print {
             @page { margin: 0.5cm; size: A4 portrait; }
             
@@ -58,7 +57,7 @@
                 font-size: 12pt !important;
             }
 
-            .no-print, .fixed, button { display: none !important; }
+            .no-print, .fixed, button, #pdf-btn { display: none !important; }
 
             #main-container {
                 padding-top: 0 !important;
@@ -92,7 +91,7 @@
                 padding: 20px !important;
                 break-inside: avoid !important;
             }
-
+            
             #page-3-container {
                 height: 25.5cm !important; 
                 display: flex !important;
@@ -109,13 +108,6 @@
                 grid-template-columns: 1fr 1fr !important;
                 grid-template-rows: 1fr 1fr !important; 
                 gap: 20px !important;
-                margin-bottom: 0 !important;
-            }
-
-            #page-3-container .aspect-square {
-                aspect-ratio: unset !important;
-                height: 100% !important;
-                width: 100% !important;
             }
 
             .contact-section-print {
@@ -142,13 +134,7 @@
         const commonData = {
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
             mobileNumber: "8866722633",
-            // --- UPDATED FOR LOCAL PC IMAGES ---
-            gallery: [
-                "img1.jpg",
-                "img2.jpg",
-                "img3.jpg",
-                "img4.jpg"
-            ],
+            gallery: ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"],
             social: {
                 whatsapp: "https://wa.me/918866722633",
                 instagram: "https://www.instagram.com/_.anaghan._009"
@@ -226,9 +212,9 @@
             }
         };
 
-        const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
-            <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
-                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
+        const SocialAppIcon = ({ icon, href, isBrand }) => (
+            <a href={href} target="_blank" className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1">
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white`}></i>
             </a>
         );
 
@@ -239,10 +225,8 @@
             </div>
         );
 
-        const cardStyle = "bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow";
-        
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
+            <div className={`bg-slate-50 p-4 rounded-2xl border border-slate-100 break-inside-avoid ${fullWidth ? 'col-span-2' : ''}`}>
                 <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
                 <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
@@ -255,15 +239,19 @@
 
             useEffect(() => setIsLoaded(true), []);
 
+            const handlePrint = () => {
+                setTimeout(() => {
+                    window.print();
+                }, 100);
+            };
+
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     
-                    {/* PDF Button */}
-                    <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group no-print">
-                        <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce"></i>
+                    <button id="pdf-btn" onClick={handlePrint} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all no-print">
+                        <i className="fas fa-file-pdf text-2xl"></i>
                     </button>
 
-                    {/* Navbar */}
                     <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
                         <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
@@ -277,10 +265,9 @@
                         </div>
                     </div>
 
-                    <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                    <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* === PAGE 1: SIDEBAR / PERSONAL INFO === */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center">
                                     <div className="relative inline-block mb-4 animate-float">
@@ -290,15 +277,11 @@
                                     </div>
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
-                                    
-                                    <div className="mb-8">
-                                        <div className="flex justify-center gap-3 flex-wrap contact-section-print">
-                                            <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
-                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
-                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
-                                        </div>
+                                    <div className="flex justify-center gap-3 flex-wrap contact-section-print mb-8">
+                                        <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
+                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
                                     </div>
-
                                     <div className="text-left border-t border-gray-100 pt-6">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3 info-print-grid">
@@ -308,26 +291,21 @@
                                 </div>
                             </div>
                             
-                            {/* Right Column Content */}
                             <div className="lg:col-span-8 space-y-8">
-                                
-                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS === */}
                                 <div id="page-2-container" className="force-page-break space-y-8">
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                    <div className="glass-card p-6 rounded-[30px]">
                                         <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                         </div>
                                     </div>
-
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                    <div className="glass-card p-6 rounded-[30px]">
                                         <SectionHeader icon="fa-users" title={t.titles.fam} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                         </div>
                                     </div>
-
-                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
+                                    <div className="glass-card p-6 rounded-[30px]">
                                         <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
@@ -335,24 +313,17 @@
                                     </div>
                                 </div>
 
-
-                                {/* === PAGE 3: GALLERY (LOads Local img1.jpg, img2.jpg etc) === */}
-                                <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px] shadow-lg">
+                                <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px]">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4 gallery-print-grid">
                                         {commonData.gallery.map((img, i) => (
-                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors">
-                                                <img 
-                                                    src={img} 
-                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
-                                                    onError={(e) => { e.target.src="https://via.placeholder.com/600x600?text=PC+Image+Missing"; }}
-                                                />
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden border shadow-sm">
+                                                <img src={img} className="w-full h-full object-cover" onError={(e) => { e.target.src="https://via.placeholder.com/600x600?text=PC+Image+Missing"; }} />
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
