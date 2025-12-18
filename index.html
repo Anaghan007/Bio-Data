@@ -48,7 +48,7 @@
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
             }
-            .no-print, .fixed, button, .lightbox-overlay { display: none !important; }
+            .no-print, .fixed, button, .lightbox-overlay, #print-btn-float { display: none !important; }
             
             #main-container { padding-top: 0 !important; width: 100% !important; max-width: 100% !important; }
             .lg\:col-span-4, .lg\:col-span-8, .grid { display: block !important; width: 100% !important; }
@@ -56,7 +56,7 @@
             /* Page 1 Fixes */
             .lg\:col-span-4 .glass-card { 
                 padding: 1.5rem !important; 
-                height: 28cm !important; /* Forces Page 1 container size */
+                height: 28cm !important; 
                 page-break-after: always !important;
             }
             .info-print-grid { 
@@ -64,7 +64,6 @@
                 grid-template-columns: 1fr 1fr !important; 
                 gap: 8px !important; 
             }
-            .info-print-grid > div { padding: 0.5rem !important; }
             .info-print-grid p { font-size: 10pt !important; }
 
             /* Page 2 Fixes */
@@ -78,6 +77,11 @@
     </style>
 </head>
 <body class="antialiased text-slate-800 bg-gray-50">
+
+    <button id="print-btn-float" onclick="window.print()" style="position: fixed; bottom: 30px; right: 30px; z-index: 999; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); display: flex; align-items: center; justify-content: center;" class="no-print">
+        <i class="fas fa-file-pdf" style="font-size: 24px;"></i>
+    </button>
+
     <div id="root"></div>
 
     <script type="text/babel">
@@ -164,17 +168,23 @@
             }
         };
 
-        const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-4 rounded-2xl border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
-                <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
-                <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
-            </div>
+        const SocialAppIcon = ({ icon, href, isBrand }) => (
+            <a href={href} target="_blank" className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1">
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white`}></i>
+            </a>
         );
 
         const SectionHeader = ({ title, icon }) => (
             <div className="flex items-center gap-3 mb-6 mt-2">
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
                 <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
+            </div>
+        );
+
+        const InfoCard = ({ label, value, fullWidth, lang }) => (
+            <div className={`bg-slate-50 p-4 rounded-2xl border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
+                <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
+                <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
         );
 
@@ -188,15 +198,12 @@
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen relative`}>
+                    
                     {selectedImg && (
                         <div className="lightbox-overlay fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out no-print" onClick={() => setSelectedImg(null)}>
                             <img src={selectedImg} className="max-w-full max-h-[90vh] rounded-xl shadow-2xl transition-all" />
                         </div>
                     )}
-
-                    <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer no-print active:scale-95 transition-all">
-                        <i className="fas fa-file-pdf text-2xl"></i>
-                    </button>
 
                     <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
                         <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
@@ -214,6 +221,7 @@
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
+                            {/* PAGE 1 Sidebar */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center">
                                     <div className="relative inline-block mb-4 animate-float">
@@ -223,6 +231,14 @@
                                     </div>
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
+                                    
+                                    {/* SOCIAL ICONS RESTORED */}
+                                    <div className="flex justify-center gap-3 mb-8">
+                                        <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
+                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                    </div>
+
                                     <div className="text-left border-t border-gray-100 pt-6">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
                                         <div className="grid grid-cols-2 gap-3 info-print-grid">
@@ -232,6 +248,7 @@
                                 </div>
                             </div>
                             
+                            {/* RIGHT CONTENT */}
                             <div className="lg:col-span-8 space-y-8">
                                 <div id="page-2-container" className="force-page-break space-y-8">
                                     <div className="glass-card p-6 rounded-[30px]">
