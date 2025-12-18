@@ -55,7 +55,7 @@
                 background: white !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
-                font-size: 12pt !important; /* Sets base size for consistency */
+                font-size: 12pt !important;
             }
 
             .no-print, .fixed, button { display: none !important; }
@@ -77,7 +77,6 @@
                 border: 1px solid #ddd !important;
             }
 
-            /* --- FORCED PAGE BREAKS --- */
             .force-page-break {
                 break-before: page !important;
                 page-break-before: always !important;
@@ -85,23 +84,15 @@
                 margin-top: 0 !important;
             }
 
-            /* --- PAGE 2 CONFIGURATION (Consistency Check) --- */
             #page-2-container {
                 display: block !important;
-                zoom: 1 !important; /* No shrinking */
             }
             #page-2-container .glass-card {
                 margin-bottom: 15px !important;
                 padding: 20px !important;
                 break-inside: avoid !important;
             }
-            /* I removed font-size overrides here. Now it uses the global Tailwind classes 
-               (text-xl, text-lg) just like Page 1, ensuring 100% matching fonts. */
-            
-            #page-2-container .mb-6 { margin-bottom: 10px !important; }
 
-
-            /* --- PAGE 3 CONFIGURATION (NO 4th PAGE) --- */
             #page-3-container {
                 height: 25.5cm !important; 
                 display: flex !important;
@@ -127,15 +118,11 @@
                 width: 100% !important;
             }
 
-            /* --- PAGE 1 SIDEBAR --- */
             .contact-section-print {
                 display: flex !important;
                 flex-direction: row !important;
                 gap: 15px !important;
                 justify-content: center !important;
-            }
-            .contact-section-print a {
-                border: 1px solid #ddd !important;
             }
             .info-print-grid {
                 display: grid !important;
@@ -155,11 +142,12 @@
         const commonData = {
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
             mobileNumber: "8866722633",
+            // --- UPDATED FOR LOCAL PC IMAGES ---
             gallery: [
-                "https://images.unsplash.com/photo-1462331940025-496dfa712568?w=1200&auto=format&fit=crop&q=90",
-                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=90",
-                "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200&auto=format&fit=crop&q=90",
-                "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=1200&auto=format&fit=crop&q=90"
+                "img1.jpg",
+                "img2.jpg",
+                "img3.jpg",
+                "img4.jpg"
             ],
             social: {
                 whatsapp: "https://wa.me/918866722633",
@@ -323,7 +311,7 @@
                             {/* Right Column Content */}
                             <div className="lg:col-span-8 space-y-8">
                                 
-                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS (Strictly Grouped & Readable) === */}
+                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS === */}
                                 <div id="page-2-container" className="force-page-break space-y-8">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg">
                                         <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
@@ -348,13 +336,17 @@
                                 </div>
 
 
-                                {/* === PAGE 3: GALLERY (Full Page Stretch) === */}
+                                {/* === PAGE 3: GALLERY (LOads Local img1.jpg, img2.jpg etc) === */}
                                 <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px] shadow-lg">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4 gallery-print-grid">
                                         {commonData.gallery.map((img, i) => (
                                             <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors">
-                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                                                <img 
+                                                    src={img} 
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+                                                    onError={(e) => { e.target.src="https://via.placeholder.com/600x600?text=PC+Image+Missing"; }}
+                                                />
                                             </div>
                                         ))}
                                     </div>
