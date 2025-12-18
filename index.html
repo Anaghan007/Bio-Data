@@ -54,8 +54,9 @@
         .float-avatar { animation: floating 4.5s ease-in-out infinite; }
         #main-container { width: 100%; max-width: 700px; margin: 0 auto; padding: 1rem; }
         .page-wrapper { margin-bottom: 2rem; width: 100%; }
-        .lang-switch-bg { background: #E8EBF2; padding: 4px; border-radius: 999px; display: flex; position: relative; width: 100px; }
-        .lang-btn { flex: 1; padding: 4px 0; font-size: 13px; font-weight: 700; z-index: 10; color: #A0AEC0; transition: color 0.3s; }
+        /* Language Switcher Width: 140px */
+        .lang-switch-bg { background: #E8EBF2; padding: 4px; border-radius: 999px; display: flex; position: relative; width: 140px; }
+        .lang-btn { flex: 1; padding: 4px 0; font-size: 14px; font-weight: 700; z-index: 10; color: #A0AEC0; transition: color 0.3s; }
         .lang-btn.active { color: #4A55E2; }
         .lang-toggle { position: absolute; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 999px; top: 4px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
@@ -165,11 +166,12 @@
             }
         };
 
+        // Label color changed to text-indigo-500 (Icon color)
+        // Value font weight set to font-semibold
         const InfoCard = ({ label, value, fullWidth, lang }) => (
             <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
-                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
-                {/* Increased inner text size here */}
-                <p className="text-[18px] md:text-[20px] font-bold text-slate-900 leading-tight">{value}</p>
+                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-500 mb-1`}>{label}</p>
+                <p className="text-[18px] md:text-[20px] font-semibold text-slate-900 leading-tight">{value}</p>
             </div>
         );
 
@@ -210,15 +212,15 @@
                     <Lightbox activeImg={selectedImg} onClose={() => setSelectedImg(null)} />
 
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
-                        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+                        <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <img src={commonData.avatar3D} className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 object-cover" />
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 object-cover" />
                                 <span className="text-xl font-extrabold text-slate-800 tracking-tight">{t.headerName}</span>
                             </div>
                             <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
                                 <div className={`lang-toggle ${lang === 'gu' ? 'toggle-gu' : ''}`}></div>
-                                <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`}>En</button>
-                                <button className={`lang-btn ${lang === 'gu' ? 'active' : ''}`}>Gu</button>
+                                <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`}>English</button>
+                                <button className={`lang-btn ${lang === 'gu' ? 'active' : ''}`}>ગુજરાતી</button>
                             </div>
                         </div>
                     </nav>
@@ -234,7 +236,6 @@
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    {/* Increased Name Font Size */}
                                     <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-2">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-bold text-[16px] mb-6">{t.welcomeSub}</p>
                                     <div className="flex items-center gap-2 mb-6 text-slate-700 font-bold text-lg">
