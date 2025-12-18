@@ -166,9 +166,10 @@
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-3 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
-                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[10px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
-                <p className="text-[14px] md:text-[16px] font-semibold text-slate-800 leading-tight">{value}</p>
+            <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
+                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
+                {/* Increased inner text size here */}
+                <p className="text-[18px] md:text-[20px] font-bold text-slate-900 leading-tight">{value}</p>
             </div>
         );
 
@@ -233,8 +234,9 @@
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-bold text-[14px] mb-6">{t.welcomeSub}</p>
+                                    {/* Increased Name Font Size */}
+                                    <h2 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-2">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 font-bold text-[16px] mb-6">{t.welcomeSub}</p>
                                     <div className="flex items-center gap-2 mb-6 text-slate-700 font-bold text-lg">
                                         <i className="fas fa-link text-indigo-500"></i>
                                         <span>{t.connectText}</span>
