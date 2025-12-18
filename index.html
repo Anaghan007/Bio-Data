@@ -31,7 +31,7 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* Force PDF to preserve colors and shadows */
+        /* High-quality PDF Colors */
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
@@ -44,7 +44,6 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        /* Floating Animation at 4.5s */
         @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
@@ -52,47 +51,64 @@
         }
         .float-avatar { animation: floating 4.5s ease-in-out infinite; }
 
-        /* Mobile & Web Scrolling Layout */
-        #main-container { width: 100%; max-width: 800px; margin: 0 auto; padding: 1rem; }
-        .page-wrapper { margin-bottom: 2.5rem; width: 100%; }
+        /* Web/Mobile Layout */
+        #main-container { width: 100%; max-width: 700px; margin: 0 auto; padding: 1rem; }
+        .page-wrapper { margin-bottom: 2rem; width: 100%; }
 
-        /* Language Toggle Switch */
+        /* Navigation & UI */
         .lang-switch-bg { background: #E8EBF2; padding: 4px; border-radius: 999px; display: flex; position: relative; width: 100px; }
         .lang-btn { flex: 1; padding: 4px 0; font-size: 13px; font-weight: 700; z-index: 10; color: #A0AEC0; transition: color 0.3s; }
         .lang-btn.active { color: #4A55E2; }
         .lang-toggle { position: absolute; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 999px; top: 4px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
 
-        /* Social Icons */
         .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
-        /* PDF / PRINT Version */
+        /* FIXED PDF VERSION (STRICT A4) */
         @media print {
             @page { margin: 0; size: A4 portrait; }
-            body { background: #f8fafc !important; }
+            body { background: #f1f5f9 !important; padding: 0 !important; margin: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
+            
             #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
             
             .page-wrapper {
-                height: 100vh !important;
+                height: 297mm !important; /* Strict A4 Height */
+                width: 210mm !important;  /* Strict A4 Width */
                 page-break-after: always !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important;
-                padding: 1.5cm !important;
-                margin-bottom: 0 !important;
+                justify-content: center !important; /* Vertical Center */
+                align-items: center !important;    /* Horizontal Center */
+                padding: 0 1.5cm !important;
+                margin: 0 !important;
+                overflow: hidden !important;
             }
-            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+
             .glass-card { 
+                width: 100% !important;
                 box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important; 
                 border: 1px solid #e2e8f0 !important; 
-                border-radius: 35px !important; 
+                border-radius: 40px !important; 
                 background: #ffffff !important; 
+                margin-bottom: 20px !important;
             }
+
+            .info-grid-print { 
+                display: grid !important; 
+                grid-template-columns: repeat(2, 1fr) !important; 
+                gap: 12px !important; 
+            }
+            
             .float-avatar { animation: none !important; transform: none !important; }
+            
+            /* Explicit color forcing for icons */
+            .text-indigo-600 { color: #4f46e5 !important; }
+            .bg-indigo-50 { background-color: #eef2ff !important; }
+            .text-slate-400 { color: #94a3b8 !important; }
         }
     </style>
 </head>
@@ -134,8 +150,8 @@
                     { label: "Income", value: "0 LPA" },
                 ],
                 educationData: [
-                    { label: "Bachelor's", value: "Bachelor in Computer Application (VNSGU)" },
-                    { label: "Master's", value: "MSc in Digital Marketing & Analytics (DBS, Ireland)" }
+                    { label: "Bachelor's", value: "BCA (VNSGU)" },
+                    { label: "Master's", value: "MSc in Digital Marketing (DBS, Ireland)" }
                 ],
                 familyData: [
                     { label: "Father Name", value: "Ashokbhai Ganeshbhai Anaghan" },
@@ -212,7 +228,6 @@
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                {/* Header Avatar Icon Restored */}
                                 <img src={commonData.avatar3D} className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 object-cover" />
                                 <span className="text-xl font-extrabold text-slate-800 tracking-tight">{t.headerName}</span>
                             </div>
@@ -227,11 +242,11 @@
                     <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print"><i className="fas fa-file-pdf text-xl"></i></button>
 
                     <div id="main-container">
-                        {/* Page 1: Bio and Personal Info */}
-                        <div className="page-wrapper flex flex-col gap-4">
-                            <div className="glass-card p-8 rounded-[40px] shadow-sm text-center flex flex-col items-center">
-                                <div className="float-avatar w-36 h-36 rounded-[50px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-4 flex items-center justify-center">
-                                    <div className="w-full h-full bg-white rounded-[47px] overflow-hidden flex items-center justify-center">
+                        {/* Page 1: BIO & PERSONAL INFO */}
+                        <div className="page-wrapper">
+                            <div className="glass-card p-8 text-center flex flex-col items-center">
+                                <div className="float-avatar w-32 h-32 rounded-[45px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-4 flex items-center justify-center">
+                                    <div className="w-full h-full bg-white rounded-[42px] overflow-hidden flex items-center justify-center">
                                         <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                     </div>
                                 </div>
@@ -248,7 +263,7 @@
                                 </div>
                             </div>
 
-                            <div className="glass-card p-8 rounded-[40px] shadow-sm">
+                            <div className="glass-card p-8">
                                 <SectionHeader icon="fa-user" title={t.titles.info} />
                                 <div className="info-grid-print grid grid-cols-1 md:grid-cols-2 gap-3">
                                     {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
@@ -256,21 +271,21 @@
                             </div>
                         </div>
 
-                        {/* Page 2: Education, Family, Sibling */}
-                        <div className="page-wrapper flex flex-col gap-4">
-                            <div className="glass-card p-7 rounded-[35px] shadow-sm">
+                        {/* Page 2: EDUCATION & FAMILY */}
+                        <div className="page-wrapper">
+                            <div className="glass-card p-7">
                                 <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                 <div className="grid grid-cols-1 gap-3">
                                     {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                 </div>
                             </div>
-                            <div className="glass-card p-7 rounded-[35px] shadow-sm">
+                            <div className="glass-card p-7">
                                 <SectionHeader icon="fa-users" title={t.titles.fam} />
                                 <div className="info-grid-print grid grid-cols-2 gap-3">
                                     {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                 </div>
                             </div>
-                            <div className="glass-card p-7 rounded-[35px] shadow-sm">
+                            <div className="glass-card p-7">
                                 <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                 <div className="info-grid-print grid grid-cols-2 gap-3">
                                     {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
@@ -278,9 +293,9 @@
                             </div>
                         </div>
 
-                        {/* Page 3: Gallery */}
+                        {/* Page 3: GALLERY */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-8 rounded-[40px] shadow-sm h-full flex flex-col">
+                            <div className="glass-card p-8 h-[80%] flex flex-col">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} />
                                 <div className="grid grid-cols-2 gap-4 flex-grow items-center">
                                     {commonData.gallery.map((img, i) => (
