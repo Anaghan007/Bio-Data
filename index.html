@@ -31,7 +31,6 @@
     <style>
         html { scroll-behavior: smooth; }
         
-        /* High-quality PDF Colors */
         * {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
@@ -42,6 +41,8 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 2.5rem; /* Full Section Rounding */
+            overflow: hidden;
         }
 
         @keyframes floating {
@@ -51,7 +52,6 @@
         }
         .float-avatar { animation: floating 4.5s ease-in-out infinite; }
 
-        /* Web/Mobile Layout */
         #main-container { width: 100%; max-width: 700px; margin: 0 auto; padding: 1rem; }
         .page-wrapper { margin-bottom: 2rem; width: 100%; }
 
@@ -62,12 +62,11 @@
         .lang-toggle { position: absolute; height: calc(100% - 8px); width: calc(50% - 4px); background: white; border-radius: 999px; top: 4px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
 
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
-        /* FIXED PDF VERSION (STRICT A4) */
         @media print {
             @page { margin: 0; size: A4 portrait; }
             body { background: #f1f5f9 !important; padding: 0 !important; margin: 0 !important; }
@@ -76,13 +75,13 @@
             #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
             
             .page-wrapper {
-                height: 297mm !important; /* Strict A4 Height */
-                width: 210mm !important;  /* Strict A4 Width */
+                height: 297mm !important; 
+                width: 210mm !important;  
                 page-break-after: always !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important; /* Vertical Center */
-                align-items: center !important;    /* Horizontal Center */
+                justify-content: center !important; 
+                align-items: center !important;    
                 padding: 0 1.5cm !important;
                 margin: 0 !important;
                 overflow: hidden !important;
@@ -104,11 +103,8 @@
             }
             
             .float-avatar { animation: none !important; transform: none !important; }
-            
-            /* Explicit color forcing for icons */
             .text-indigo-600 { color: #4f46e5 !important; }
             .bg-indigo-50 { background-color: #eef2ff !important; }
-            .text-slate-400 { color: #94a3b8 !important; }
         }
     </style>
 </head>
@@ -203,7 +199,7 @@
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-3 rounded-2xl border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
+            <div className={`bg-slate-50 p-3 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
                 <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[10px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
                 <p className="text-[16px] font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
@@ -242,7 +238,6 @@
                     <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print"><i className="fas fa-file-pdf text-xl"></i></button>
 
                     <div id="main-container">
-                        {/* Page 1: BIO & PERSONAL INFO */}
                         <div className="page-wrapper">
                             <div className="glass-card p-8 text-center flex flex-col items-center">
                                 <div className="float-avatar w-32 h-32 rounded-[45px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-4 flex items-center justify-center">
@@ -251,11 +246,15 @@
                                     </div>
                                 </div>
                                 <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
-                                <p className="text-indigo-600 font-bold text-xs uppercase tracking-widest mb-6">{t.welcomeSub}</p>
+                                {/* REVERTED TO ORIGINAL SIZE/STYLE */}
+                                <p className="text-indigo-600 font-bold text-[10px] uppercase tracking-widest mb-6">{t.welcomeSub}</p>
+                                
+                                {/* RESTORED CONNECT WITH ME SECTION */}
                                 <div className="flex items-center gap-2 mb-6 text-slate-700 font-bold text-lg">
                                     <i className="fas fa-link text-indigo-500"></i>
                                     <span>{t.connectText}</span>
                                 </div>
+
                                 <div className="flex gap-6 justify-center">
                                     <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone"><i className="fas fa-phone"></i></a>
                                     <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp"><i className="fab fa-whatsapp"></i></a>
@@ -271,7 +270,6 @@
                             </div>
                         </div>
 
-                        {/* Page 2: EDUCATION & FAMILY */}
                         <div className="page-wrapper">
                             <div className="glass-card p-7">
                                 <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
@@ -293,13 +291,12 @@
                             </div>
                         </div>
 
-                        {/* Page 3: GALLERY */}
                         <div className="page-wrapper">
                             <div className="glass-card p-8 h-[80%] flex flex-col">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} />
                                 <div className="grid grid-cols-2 gap-4 flex-grow items-center">
                                     {commonData.gallery.map((img, i) => (
-                                        <div key={i} className="aspect-[4/5] rounded-[25px] overflow-hidden border-2 border-slate-100 bg-slate-100 flex items-center justify-center text-slate-300 font-bold">Photo {i+1}</div>
+                                        <div key={i} className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-100 flex items-center justify-center text-slate-300 font-bold">Photo {i+1}</div>
                                     ))}
                                 </div>
                             </div>
