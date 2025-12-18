@@ -66,33 +66,36 @@
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
+        /* --- FINAL PRINT FIX FOR 3 PAGES --- */
         @media print {
             @page { margin: 0; size: A4 portrait; }
-            body { background: #f1f5f9 !important; padding: 0 !important; margin: 0 !important; }
+            html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
             
-            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; display: block !important; }
             
             .page-wrapper {
-                height: 297mm !important; 
-                width: 210mm !important;  
-                page-break-after: always !important;
+                height: 296mm !important; /* Slightly less than A4 to prevent bleed */
+                width: 210mm !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important; 
-                align-items: center !important;    
+                justify-content: center !important;
                 padding: 0 1.5cm !important;
                 margin: 0 !important;
+                page-break-after: always !important; /* Forces new page */
+                page-break-inside: avoid !important;
                 overflow: hidden !important;
             }
 
+            .page-wrapper:last-child {
+                page-break-after: avoid !important; /* Prevents blank 4th page */
+            }
+
             .glass-card { 
-                width: 100% !important;
-                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important; 
+                box-shadow: none !important; 
                 border: 1px solid #e2e8f0 !important; 
                 border-radius: 40px !important; 
                 background: #ffffff !important; 
-                margin-bottom: 20px !important;
             }
 
             .info-grid-print { 
@@ -234,7 +237,7 @@
                     <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print"><i className="fas fa-file-pdf text-xl"></i></button>
 
                     <div id="main-container">
-                        {/* UNIFIED PAGE 1: INTRO + PERSONAL INFO */}
+                        {/* PAGE 1: INTRO + PERSONAL INFO */}
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="p-8 text-center flex flex-col items-center">
@@ -267,30 +270,23 @@
                             </div>
                         </div>
 
-                        {/* UNIFIED PAGE 2: EDUCATION + FAMILY + SIBLINGS */}
+                        {/* PAGE 2: EDUCATION + FAMILY + SIBLINGS */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                {/* Education Sub-section */}
                                 <div className="p-7">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-3">
                                         {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                     </div>
                                 </div>
-                                
                                 <div className="mx-8 border-t border-slate-100 no-print"></div>
-
-                                {/* Family Sub-section */}
                                 <div className="p-7">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                     </div>
                                 </div>
-
                                 <div className="mx-8 border-t border-slate-100 no-print"></div>
-
-                                {/* Sibling Sub-section */}
                                 <div className="p-7">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
@@ -302,9 +298,9 @@
 
                         {/* PAGE 3: GALLERY */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-8 h-[80%] flex flex-col">
+                            <div className="glass-card p-8 h-full flex flex-col justify-center">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} />
-                                <div className="grid grid-cols-2 gap-4 flex-grow items-center">
+                                <div className="grid grid-cols-2 gap-4 items-center">
                                     {commonData.gallery.map((img, i) => (
                                         <div key={i} className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-100 flex items-center justify-center text-slate-300 font-bold">Photo {i+1}</div>
                                     ))}
