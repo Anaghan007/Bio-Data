@@ -23,9 +23,14 @@
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
-                    animation: { 'float': 'float 3s ease-in-out infinite' },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                    },
                     keyframes: {
-                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
                     }
                 }
             }
@@ -34,6 +39,7 @@
 
     <style>
         html { scroll-behavior: smooth; }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(25px);
@@ -41,46 +47,95 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* --- PDF / PRINT SETTINGS --- */
         @media print {
-            @page { margin: 0.4cm; size: A4 portrait; }
+            @page { margin: 0.5cm; size: A4 portrait; }
+            
             body { 
                 background: white !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
+                font-size: 12pt !important;
             }
-            .no-print, .fixed, button, .lightbox-overlay, #print-btn-float { display: none !important; }
-            
-            #main-container { padding-top: 0 !important; width: 100% !important; max-width: 100% !important; }
-            .lg\:col-span-4, .lg\:col-span-8, .grid { display: block !important; width: 100% !important; }
-            
-            /* Page 1 Fixes */
-            .lg\:col-span-4 .glass-card { 
-                padding: 1.5rem !important; 
-                height: 28cm !important; 
-                page-break-after: always !important;
-            }
-            .info-print-grid { 
-                display: grid !important; 
-                grid-template-columns: 1fr 1fr !important; 
-                gap: 8px !important; 
-            }
-            .info-print-grid p { font-size: 10pt !important; }
 
-            /* Page 2 Fixes */
-            .force-page-break { break-before: page !important; margin-top: 0 !important; }
-            #page-2-container .glass-card { margin-bottom: 12px !important; padding: 15px !important; break-inside: avoid !important; }
+            .no-print, .fixed, button { display: none !important; }
+
+            #main-container {
+                padding-top: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin-bottom: 0 !important;
+            }
+
+            .lg\:col-span-4, .lg\:col-span-8, .grid {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .glass-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            .force-page-break {
+                break-before: page !important;
+                page-break-before: always !important;
+                display: block !important;
+                margin-top: 0 !important;
+            }
+
+            #page-2-container {
+                display: block !important;
+                zoom: 1 !important;
+            }
+            #page-2-container .glass-card {
+                margin-bottom: 15px !important;
+                padding: 20px !important;
+                break-inside: avoid !important;
+            }
             
-            /* Page 3 Fixes */
-            #page-3-container { height: 26cm !important; display: flex !important; flex-direction: column !important; padding: 20px !important; }
-            .gallery-print-grid { display: grid !important; grid-template-columns: 1fr 1fr !important; gap: 15px !important; }
+            #page-2-container .mb-6 { margin-bottom: 10px !important; }
+
+            #page-3-container {
+                height: 25.5cm !important; 
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 20px !important;
+                margin-bottom: 0 !important;
+                overflow: hidden !important; 
+                page-break-after: avoid !important; 
+            }
+
+            #page-3-container .gallery-print-grid {
+                flex-grow: 1 !important; 
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 1fr 1fr !important; 
+                gap: 20px !important;
+                margin-bottom: 0 !important;
+            }
+
+            #page-3-container .aspect-square {
+                aspect-ratio: unset !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+
+            .contact-section-print {
+                display: flex !important;
+                flex-direction: row !important;
+                gap: 15px !important;
+                justify-content: center !important;
+            }
+            .info-print-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
+            }
         }
     </style>
 </head>
 <body class="antialiased text-slate-800 bg-gray-50">
-
-    <button id="print-btn-float" onclick="window.print()" style="position: fixed; bottom: 30px; right: 30px; z-index: 999; width: 65px; height: 65px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); display: flex; align-items: center; justify-content: center;" class="no-print">
-        <i class="fas fa-file-pdf" style="font-size: 24px;"></i>
-    </button>
 
     <div id="root"></div>
 
@@ -90,7 +145,13 @@
         const commonData = {
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
             mobileNumber: "8866722633",
-            gallery: ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"],
+            // LOCAL GALLERY IMAGES: Make sure these files are in the same folder as this HTML file
+            gallery: [
+                "img1.jpg",
+                "img2.jpg",
+                "img3.jpg",
+                "img4.jpg"
+            ],
             social: {
                 whatsapp: "https://wa.me/918866722633",
                 instagram: "https://www.instagram.com/_.anaghan._009"
@@ -102,7 +163,7 @@
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "Hello, I'm Anaghan Smit",
                 welcomeSub: "Social Media Manager",
-                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery" },
+                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery", contact: "Connect With Me" },
                 infoData: [
                     { label: "Full Name", value: "Anaghan Smit Ashokbhai" },
                     { label: "Date Of Birth", value: "16-10-2002" },
@@ -136,7 +197,7 @@
                 headerName: "અણઘણની પ્રોફાઇલ",
                 welcomeTitle: "નમસ્તે, હું અણઘણ છું",
                 welcomeSub: "સોશિયલ મીડિયા મેનેજર",
-                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી" },
+                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી", contact: "મારી સાથે જોડાઓ" },
                 infoData: [
                     { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ" },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
@@ -169,20 +230,22 @@
         };
 
         const SocialAppIcon = ({ icon, href, isBrand }) => (
-            <a href={href} target="_blank" className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1">
-                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white`}></i>
+            <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
+                <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
             </a>
         );
 
         const SectionHeader = ({ title, icon }) => (
-            <div className="flex items-center gap-3 mb-6 mt-2">
+            <div className="flex items-center gap-3 mb-6 mt-2 break-inside-avoid">
                 <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm"><i className={`fas ${icon} text-lg`}></i></div>
                 <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
             </div>
         );
 
+        const cardStyle = "bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow";
+        
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-4 rounded-2xl border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
+            <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
                 <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
                 <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
@@ -191,20 +254,19 @@
         const App = () => {
             const [lang, setLang] = useState('en');
             const [isLoaded, setIsLoaded] = useState(false);
-            const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
 
             useEffect(() => setIsLoaded(true), []);
 
             return (
-                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen relative`}>
+                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     
-                    {selectedImg && (
-                        <div className="lightbox-overlay fixed inset-0 z-[200] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 cursor-zoom-out no-print" onClick={() => setSelectedImg(null)}>
-                            <img src={selectedImg} className="max-w-full max-h-[90vh] rounded-xl shadow-2xl transition-all" />
-                        </div>
-                    )}
+                    {/* PDF Button */}
+                    <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group no-print">
+                        <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce"></i>
+                    </button>
 
+                    {/* Navbar */}
                     <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
                         <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
                             <div className="flex items-center gap-2">
@@ -218,10 +280,10 @@
                         </div>
                     </div>
 
-                    <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+                    <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
-                            {/* PAGE 1 Sidebar */}
+                            {/* === PAGE 1: SIDEBAR / PERSONAL INFO === */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center">
                                     <div className="relative inline-block mb-4 animate-float">
@@ -232,11 +294,12 @@
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    {/* SOCIAL ICONS RESTORED */}
-                                    <div className="flex justify-center gap-3 mb-8">
-                                        <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
-                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
-                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                    <div className="mb-8">
+                                        <div className="flex justify-center gap-3 flex-wrap contact-section-print">
+                                            <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
+                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                        </div>
                                     </div>
 
                                     <div className="text-left border-t border-gray-100 pt-6">
@@ -248,22 +311,26 @@
                                 </div>
                             </div>
                             
-                            {/* RIGHT CONTENT */}
+                            {/* Right Column Content */}
                             <div className="lg:col-span-8 space-y-8">
+                                
+                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS === */}
                                 <div id="page-2-container" className="force-page-break space-y-8">
-                                    <div className="glass-card p-6 rounded-[30px]">
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
                                         <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                         </div>
                                     </div>
-                                    <div className="glass-card p-6 rounded-[30px]">
+
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
                                         <SectionHeader icon="fa-users" title={t.titles.fam} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                         </div>
                                     </div>
-                                    <div className="glass-card p-6 rounded-[30px]">
+
+                                    <div className="glass-card p-6 rounded-[30px] shadow-lg">
                                         <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
@@ -271,17 +338,19 @@
                                     </div>
                                 </div>
 
-                                <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px]">
+                                {/* === PAGE 3: GALLERY === */}
+                                <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px] shadow-lg">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
                                     <div className="grid grid-cols-2 gap-4 gallery-print-grid">
                                         {commonData.gallery.map((img, i) => (
-                                            <div key={i} onClick={() => setSelectedImg(img)} className="aspect-square rounded-[24px] overflow-hidden border shadow-sm cursor-zoom-in">
-                                                <img src={img} className="w-full h-full object-cover" onError={(e) => { e.target.src="https://via.placeholder.com/600x600?text=PC+Image"; }} />
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors">
+                                                <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                             </div>
                                         ))}
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
