@@ -47,22 +47,100 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* --- PDF / PRINT SETTINGS --- */
         @media print {
             @page { margin: 0.5cm; size: A4 portrait; }
+            
             body { 
                 background: white !important;
                 -webkit-print-color-adjust: exact !important; 
                 print-color-adjust: exact !important;
-                font-size: 12pt !important;
+                font-size: 12pt !important; /* Sets base size for consistency */
             }
+
             .no-print, .fixed, button { display: none !important; }
-            #main-container { padding-top: 0 !important; max-width: 100% !important; width: 100% !important; }
-            .lg\:col-span-4, .lg\:col-span-8, .grid { display: block !important; width: 100% !important; }
-            .force-page-break { break-before: page !important; page-break-before: always !important; display: block !important; }
+
+            #main-container {
+                padding-top: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin-bottom: 0 !important;
+            }
+
+            .lg\:col-span-4, .lg\:col-span-8, .grid {
+                display: block !important;
+                width: 100% !important;
+            }
+
+            .glass-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            /* --- FORCED PAGE BREAKS --- */
+            .force-page-break {
+                break-before: page !important;
+                page-break-before: always !important;
+                display: block !important;
+                margin-top: 0 !important;
+            }
+
+            /* --- PAGE 2 CONFIGURATION (Consistency Check) --- */
+            #page-2-container {
+                display: block !important;
+                zoom: 1 !important; /* No shrinking */
+            }
+            #page-2-container .glass-card {
+                margin-bottom: 15px !important;
+                padding: 20px !important;
+                break-inside: avoid !important;
+            }
+            /* I removed font-size overrides here. Now it uses the global Tailwind classes 
+               (text-xl, text-lg) just like Page 1, ensuring 100% matching fonts. */
+            
+            #page-2-container .mb-6 { margin-bottom: 10px !important; }
+
+
+            /* --- PAGE 3 CONFIGURATION (NO 4th PAGE) --- */
+            #page-3-container {
+                height: 25.5cm !important; 
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 20px !important;
+                margin-bottom: 0 !important;
+                overflow: hidden !important; 
+                page-break-after: avoid !important; 
+            }
+
             #page-3-container .gallery-print-grid {
+                flex-grow: 1 !important; 
                 display: grid !important;
                 grid-template-columns: 1fr 1fr !important;
+                grid-template-rows: 1fr 1fr !important; 
+                gap: 20px !important;
+                margin-bottom: 0 !important;
+            }
+
+            #page-3-container .aspect-square {
+                aspect-ratio: unset !important;
+                height: 100% !important;
+                width: 100% !important;
+            }
+
+            /* --- PAGE 1 SIDEBAR --- */
+            .contact-section-print {
+                display: flex !important;
+                flex-direction: row !important;
                 gap: 15px !important;
+                justify-content: center !important;
+            }
+            .contact-section-print a {
+                border: 1px solid #ddd !important;
+            }
+            .info-print-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 10px !important;
             }
         }
     </style>
@@ -75,13 +153,13 @@
         const { useState, useEffect } = React;
 
         const commonData = {
-            // Using your uploaded photo as the avatar for a personalized feel
-            avatar: "https://r2.erweima.ai/ai_image/be56314f-3733-4632-9df7-2856f6426749.jpg",
+            avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
             mobileNumber: "8866722633",
             gallery: [
-                "https://r2.erweima.ai/ai_image/be56314f-3733-4632-9df7-2856f6426749.jpg", // 1.jpg
-                "https://r2.erweima.ai/ai_image/1360667e-5953-4886-9f44-8848148b6f36.jpg", // 2.jpg
-                "https://r2.erweima.ai/ai_image/f7266782-b36c-4861-a4b0-584766863004.jpg"  // 3.jpg
+                "https://images.unsplash.com/photo-1462331940025-496dfa712568?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200&auto=format&fit=crop&q=90",
+                "https://images.unsplash.com/photo-1543722530-d2c3201371e7?w=1200&auto=format&fit=crop&q=90"
             ],
             social: {
                 whatsapp: "https://wa.me/918866722633",
@@ -160,7 +238,7 @@
             }
         };
 
-        const SocialAppIcon = ({ icon, href, isBrand }) => (
+        const SocialAppIcon = ({ icon, href, isMobile, isBrand }) => (
             <a href={href} target="_blank" className="icon-3d relative group w-12 h-12 rounded-2xl flex items-center justify-center shadow-md bg-gradient-to-br from-indigo-500 to-purple-600 border border-white/20 transition-transform hover:-translate-y-1 hover:scale-110">
                 <i className={`${isBrand ? 'fa-brands' : 'fas'} ${icon} text-2xl text-white drop-shadow-md`}></i>
             </a>
@@ -173,8 +251,10 @@
             </div>
         );
 
+        const cardStyle = "bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow";
+        
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-4 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
+            <div className={`${cardStyle} ${fullWidth ? 'col-span-2' : ''} break-inside-avoid`}>
                 <p className={`${lang === 'gu' ? 'text-[15px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
                 <p className="text-lg font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
@@ -190,14 +270,16 @@
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen transition-colors duration-300`}>
                     
+                    {/* PDF Button */}
                     <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer hover:scale-110 active:scale-95 transition-all duration-300 group no-print">
                         <i className="fas fa-file-pdf text-2xl group-hover:animate-bounce"></i>
                     </button>
 
+                    {/* Navbar */}
                     <div className="w-full fixed top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200 no-print">
                         <div className="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-                            <div className="flex items-center gap-3">
-                                <img src={commonData.avatar} className="w-10 h-10 rounded-full object-cover border-2 border-indigo-500" />
+                            <div className="flex items-center gap-2">
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full" />
                                 <h1 className="font-bold text-xl text-slate-800">{t.headerName}</h1>
                             </div>
                             <div className="flex bg-gray-200 rounded-full p-1.5">
@@ -210,36 +292,42 @@
                     <div id="main-container" className={`max-w-7xl mx-auto pt-28 pb-24 px-4 sm:px-6 lg:px-8 transition-opacity duration-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                             
+                            {/* === PAGE 1: SIDEBAR / PERSONAL INFO === */}
                             <div className="lg:col-span-4 space-y-6">
                                 <div className="glass-card p-8 rounded-[30px] shadow-xl text-center">
                                     <div className="relative inline-block mb-4 animate-float">
-                                        <div className="w-44 h-44 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
-                                            <img src={commonData.avatar} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" />
+                                        <div className="w-40 h-40 mx-auto rounded-[40px] p-1 bg-gradient-to-tr from-indigo-500 to-purple-500 shadow-xl rotate-3">
+                                            <img src={commonData.avatar3D} className="w-full h-full object-cover rounded-[36px] bg-white -rotate-3" />
                                         </div>
                                     </div>
                                     <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-medium mb-6 uppercase tracking-wider">{t.welcomeSub}</p>
+                                    <p className="text-indigo-600 font-medium mb-6">{t.welcomeSub}</p>
                                     
-                                    <div className="flex justify-center gap-4 mb-8">
-                                        <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
-                                        <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
-                                        <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                    <div className="mb-8">
+                                        <div className="flex justify-center gap-3 flex-wrap contact-section-print">
+                                            <SocialAppIcon icon="fa-phone" href={`tel:${commonData.mobileNumber}`} />
+                                            <SocialAppIcon icon="fa-whatsapp" isBrand={true} href={commonData.social.whatsapp} />
+                                            <SocialAppIcon icon="fa-instagram" isBrand={true} href={commonData.social.instagram} />
+                                        </div>
                                     </div>
 
                                     <div className="text-left border-t border-gray-100 pt-6">
                                         <SectionHeader icon="fa-user" title={t.titles.info} />
-                                        <div className="grid grid-cols-2 gap-3">
+                                        <div className="grid grid-cols-2 gap-3 info-print-grid">
                                             {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             
+                            {/* Right Column Content */}
                             <div className="lg:col-span-8 space-y-8">
+                                
+                                {/* === PAGE 2: EDUCATION, FAMILY, SIBLINGS (Strictly Grouped & Readable) === */}
                                 <div id="page-2-container" className="force-page-break space-y-8">
                                     <div className="glass-card p-6 rounded-[30px] shadow-lg">
                                         <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                        <div className="grid grid-cols-1 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                         </div>
                                     </div>
@@ -259,12 +347,14 @@
                                     </div>
                                 </div>
 
+
+                                {/* === PAGE 3: GALLERY (Full Page Stretch) === */}
                                 <div id="page-3-container" className="force-page-break glass-card p-6 rounded-[30px] shadow-lg">
                                     <SectionHeader icon="fa-images" title={t.titles.gal} />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 gallery-print-grid">
+                                    <div className="grid grid-cols-2 gap-4 gallery-print-grid">
                                         {commonData.gallery.map((img, i) => (
-                                            <div key={i} className={`rounded-[24px] overflow-hidden shadow-md relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-all ${i === 0 ? 'sm:col-span-2 aspect-[16/9]' : 'aspect-square'}`}>
-                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                                            <div key={i} className="aspect-square rounded-[24px] overflow-hidden shadow-sm relative group cursor-pointer border-2 border-transparent hover:border-indigo-400 transition-colors">
+                                                <img src={img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                                             </div>
                                         ))}
                                     </div>
