@@ -193,10 +193,10 @@
             }
         };
 
-        // Value font weight set to font-medium (slightly decreased boldness)
+        // Heading Label color updated to text-indigo-400 (Light Icon color)
         const InfoCard = ({ label, value, fullWidth, lang }) => (
             <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
-                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-500 mb-1`}>{label}</p>
+                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
                 <p className="text-[18px] md:text-[20px] font-medium text-slate-900 leading-tight">{value}</p>
             </div>
         );
