@@ -180,7 +180,7 @@
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle }) => (
+        const SectionHeader = ({ title, icon, subtitle, subtitleClass = "" }) => (
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                 <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm">
@@ -189,7 +189,7 @@
                     <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
                 </div>
                 {subtitle && (
-                    <span className="text-indigo-600 font-bold text-[14px] tracking-normal">
+                    <span className={`text-indigo-600 font-bold text-[14px] tracking-normal ${subtitleClass}`}>
                         {subtitle}
                     </span>
                 )}
@@ -302,8 +302,13 @@
 
                         <div className="page-wrapper">
                             <div className="glass-card p-8 h-full flex flex-col">
-                                {/* The subtitle (Click For View Image) will now appear in PDF */}
-                                <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
+                                {/* Subtitle updated with no-print class */}
+                                <SectionHeader 
+                                    icon="fa-images" 
+                                    title={t.titles.gal} 
+                                    subtitle={t.clickToView} 
+                                    subtitleClass="no-print" 
+                                />
                                 
                                 <div className="grid grid-cols-2 gap-4 flex-grow items-center">
                                     {commonData.gallery.map((img, i) => (
