@@ -66,7 +66,6 @@
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
-        /* --- PRINT SPACE FILLING FIX --- */
         @media print {
             @page { margin: 0; size: A4 portrait; }
             html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
@@ -79,7 +78,7 @@
                 width: 210mm !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important; /* Centers content vertically */
+                justify-content: center !important;
                 padding: 1cm 1.5cm !important;
                 margin: 0 !important;
                 page-break-after: always !important;
@@ -90,10 +89,10 @@
             .page-wrapper:last-child { page-break-after: avoid !important; }
 
             .glass-card { 
-                height: 100% !important; /* Forces card to fill the wrapper height */
+                height: 100% !important; 
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-around !important; /* Distributes sections to fill space */
+                justify-content: space-around !important;
                 box-shadow: none !important; 
                 border: 1px solid #e2e8f0 !important; 
                 border-radius: 40px !important; 
@@ -107,7 +106,6 @@
                 gap: 12px !important; 
             }
             
-            /* Hide the visual dividers in print to make it look like one seamless page */
             .border-t { border-top: none !important; }
         }
     </style>
@@ -137,7 +135,7 @@
                 connectText: "Connect With Me",
                 titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery" },
                 infoData: [
-                    { label: "Full Name", value: "Anaghan Smit Ashokbhai" },
+                    { label: "Full Name", value: "Anaghan Smit Ashokbhai", fullWidth: true },
                     { label: "Date Of Birth", value: "16-10-2002" },
                     { label: "Age", value: "23 Years" },
                     { label: "Height", value: "5' 10\"" },
@@ -172,7 +170,7 @@
                 connectText: "મારી સાથે જોડાવા માટે",
                 titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી" },
                 infoData: [
-                    { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ" },
+                    { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
                     { label: "ઉંમર", value: "૨૩ વર્ષ" },
                     { label: "ઊંચાઈ", value: "૫ ફૂટ ૧૦ ઇંચ" },
@@ -203,9 +201,9 @@
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-3 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
+            <div className={`bg-slate-50 p-3 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
                 <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[10px] uppercase tracking-widest'} font-bold text-slate-400 mb-1`}>{label}</p>
-                <p className="text-[16px] font-semibold text-slate-800 leading-tight">{value}</p>
+                <p className="text-[14px] md:text-[16px] font-semibold text-slate-800 leading-tight">{value}</p>
             </div>
         );
 
@@ -268,8 +266,17 @@
                                 <div className="mx-8 border-t border-slate-100 no-print"></div>
                                 <div className="p-8 flex-1">
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
-                                    <div className="info-grid-print grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
+                                    {/* Grid updated to be 2 columns on mobile */}
+                                    <div className="info-grid-print grid grid-cols-2 gap-3">
+                                        {t.infoData.map((item, i) => (
+                                            <InfoCard 
+                                                key={i} 
+                                                label={item.label} 
+                                                value={item.value} 
+                                                lang={lang} 
+                                                fullWidth={item.fullWidth} 
+                                            />
+                                        ))}
                                     </div>
                                 </div>
                             </div>
