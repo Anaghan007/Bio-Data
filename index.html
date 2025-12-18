@@ -23,6 +23,15 @@
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
+                    animation: {
+                        'fade-in': 'fadeIn 0.25s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'scale(1.05)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
                 }
             }
         }
@@ -30,11 +39,7 @@
 
     <style>
         html { scroll-behavior: smooth; }
-        
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-        }
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -68,45 +73,11 @@
 
         @media print {
             @page { margin: 0; size: A4 portrait; }
-            html, body { height: auto !important; overflow: visible !important; margin: 0 !important; padding: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
-            
-            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; display: block !important; }
-            
-            .page-wrapper {
-                height: 297mm !important; 
-                width: 210mm !important;
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
-                padding: 1cm 1.5cm !important;
-                margin: 0 !important;
-                page-break-after: always !important;
-                page-break-inside: avoid !important;
-                overflow: hidden !important;
-            }
-
-            .page-wrapper:last-child { page-break-after: avoid !important; }
-
-            .glass-card { 
-                height: 100% !important; 
-                display: flex !important;
-                flex-direction: column !important;
-                justify-content: space-around !important;
-                box-shadow: none !important; 
-                border: 1px solid #e2e8f0 !important; 
-                border-radius: 40px !important; 
-                background: #ffffff !important; 
-                padding: 1cm !important;
-            }
-
-            .info-grid-print { 
-                display: grid !important; 
-                grid-template-columns: repeat(2, 1fr) !important; 
-                gap: 12px !important; 
-            }
-            
-            .border-t { border-top: none !important; }
+            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            .page-wrapper { height: 297mm !important; width: 210mm !important; display: flex !important; flex-direction: column !important; justify-content: center !important; padding: 1cm 1.5cm !important; margin: 0 !important; page-break-after: always !important; }
+            .glass-card { height: 100% !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; background: #ffffff !important; padding: 1cm !important; }
+            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
         }
     </style>
 </head>
@@ -115,7 +86,7 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
         const commonData = {
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
@@ -216,13 +187,42 @@
             </div>
         );
 
+        // --- UPDATED LIGHTBOX: CLOSES ON ANY CLICK ---
+        const Lightbox = ({ activeImg, onClose }) => {
+            if (!activeImg) return null;
+            
+            return (
+                <div 
+                    className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/60 backdrop-blur-2xl p-6 animate-fade-in no-print cursor-zoom-out"
+                    onClick={onClose}
+                >
+                    <div 
+                        className="max-w-4xl w-full max-h-[80vh] rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white/20 bg-white flex items-center justify-center"
+                    >
+                        <div className="w-full h-[60vh] bg-slate-100 flex flex-col items-center justify-center text-slate-400">
+                             <i className="fas fa-image text-7xl mb-6 text-slate-200"></i>
+                             <span className="text-3xl font-extrabold tracking-tight text-slate-600">{activeImg}</span>
+                             <p className="mt-4 text-sm font-bold uppercase tracking-widest opacity-40">Click anywhere to close</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [lang, setLang] = useState('en');
+            const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
+
+            useEffect(() => {
+                document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
+            }, [selectedImg]);
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen`}>
                     
+                    <Lightbox activeImg={selectedImg} onClose={() => setSelectedImg(null)} />
+
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -240,7 +240,6 @@
                     <button onClick={() => window.print()} className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print"><i className="fas fa-file-pdf text-xl"></i></button>
 
                     <div id="main-container">
-                        {/* PAGE 1: INTRO + PERSONAL INFO */}
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="p-8 text-center flex flex-col items-center flex-1 justify-center">
@@ -266,23 +265,15 @@
                                 <div className="mx-8 border-t border-slate-100 no-print"></div>
                                 <div className="p-8 flex-1">
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
-                                    {/* Grid updated to be 2 columns on mobile */}
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.infoData.map((item, i) => (
-                                            <InfoCard 
-                                                key={i} 
-                                                label={item.label} 
-                                                value={item.value} 
-                                                lang={lang} 
-                                                fullWidth={item.fullWidth} 
-                                            />
+                                            <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />
                                         ))}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {/* PAGE 2: EDUCATION + FAMILY + SIBLINGS */}
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="p-7 flex-1">
@@ -308,13 +299,23 @@
                             </div>
                         </div>
 
-                        {/* PAGE 3: GALLERY */}
                         <div className="page-wrapper">
                             <div className="glass-card p-8 h-full flex flex-col">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} />
                                 <div className="grid grid-cols-2 gap-4 flex-grow items-center">
                                     {commonData.gallery.map((img, i) => (
-                                        <div key={i} className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-100 flex items-center justify-center text-slate-300 font-bold">Photo {i+1}</div>
+                                        <div 
+                                            key={i} 
+                                            onClick={() => setSelectedImg(`Photo ${i+1}`)}
+                                            className="group relative aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-100 flex items-center justify-center text-slate-300 font-bold cursor-zoom-in transition-all hover:scale-[1.02] active:scale-95"
+                                        >
+                                            Photo {i+1}
+                                            <div className="absolute inset-0 bg-indigo-600/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center text-indigo-600 shadow-lg translate-y-2 group-hover:translate-y-0 transition-transform">
+                                                    <i className="fas fa-search-plus"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
