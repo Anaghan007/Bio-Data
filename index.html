@@ -78,7 +78,7 @@
                 width: 210mm !important; 
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
-                padding: 12mm 15mm 15mm 15mm !important; 
+                padding: 10mm 15mm 15mm 15mm !important; 
                 display: flex !important;
                 flex-direction: column !important;
                 margin: 0 !important;
@@ -253,17 +253,17 @@
                         {/* PAGE 1 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="p-8 text-center print:p-2">
-                                    <div className="animate-floating w-32 h-32 rounded-[45px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto print:w-20 print:h-20 print:mb-2 print:animate-none">
-                                        <div className="w-full h-full bg-white rounded-[42px] print:rounded-[33px] overflow-hidden">
+                                <div className="p-8 text-center print:p-4">
+                                    {/* SHARED EMOJI SIZE & STYLE */}
+                                    <div className="animate-floating w-32 h-32 rounded-[45px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto print:w-28 print:h-28 print:animate-none print:mb-4">
+                                        <div className="w-full h-full bg-white rounded-[42px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
                                     <h2 className="text-4xl font-extrabold text-slate-900 mb-2 print:text-2xl">{t.welcomeTitle}</h2>
                                     <p className="text-indigo-600 font-bold text-lg mb-4 print:mb-6 print:text-base">{t.welcomeSub}</p>
                                     
-                                    {/* ADDED SPACING IN PDF WITH print:mt-4 */}
-                                    <div className="flex items-center justify-center gap-2 mb-4 text-slate-700 font-bold text-lg print:text-base print:mb-4 print:mt-4">
+                                    <div className="flex items-center justify-center gap-2 mb-4 text-slate-700 font-bold text-lg print:text-base print:mb-4">
                                         <i className="fas fa-link text-indigo-500"></i>
                                         <span>{t.connectText}</span>
                                     </div>
