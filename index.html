@@ -33,19 +33,8 @@
         * { box-sizing: border-box; }
         
         /* --- WEBSITE VIEW STYLES --- */
-        #main-container { 
-            width: 100%; 
-            max-width: 750px; 
-            margin: 0 auto; 
-            padding: 1rem; 
-        }
-
-        .page-wrapper { 
-            margin-bottom: 2rem; 
-            width: 100%; 
-            display: block; /* Normal flow on web */
-        }
-
+        #main-container { width: 100%; max-width: 750px; margin: 0 auto; padding: 1rem; }
+        .page-wrapper { margin-bottom: 2rem; width: 100%; }
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -56,15 +45,13 @@
             padding-bottom: 2rem;
         }
 
-        /* Language Toggle UI */
         .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
         .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; cursor: pointer; }
         .lang-btn.active { color: #4A55E2; }
-        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.2s; }
-        .social-btn:active { transform: scale(0.9); }
+        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .btn-phone { background: white; color: #007AFF; border: 1px solid #edf2f7; }
         .btn-whatsapp { background: #25D366; color: white; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; }
@@ -79,11 +66,11 @@
             #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; }
             
             .page-wrapper { 
-                height: 297mm !important; /* Fixed A4 Height only on print */
+                height: 297mm !important; 
                 width: 210mm !important; 
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
-                padding: 15mm !important;
+                padding: 18mm !important; /* Increased outer page padding */
                 display: flex !important;
                 flex-direction: column !important;
                 margin: 0 !important;
@@ -96,12 +83,15 @@
                 flex: 1 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-evenly !important; /* Spread sections vertically */
-                padding: 10mm !important;
+                justify-content: space-evenly !important; 
+                padding: 8mm !important; /* Internal card padding */
                 background: white !important;
             }
 
-            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+            /* Specifically for Page 1 to prevent bottom hug */
+            .page-1-content { justify-content: flex-start !important; gap: 10mm !important; }
+
+            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
         }
     </style>
 </head>
@@ -195,18 +185,18 @@
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'} mb-2 print:mb-0`}>
-                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
-                <p className="text-[18px] md:text-[20px] font-medium text-slate-900 leading-tight">{value}</p>
+            <div className={`bg-slate-50 p-3 rounded-[1.2rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'} print:p-2`}>
+                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[10px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
+                <p className="text-[17px] md:text-[19px] font-medium text-slate-900 leading-tight">{value}</p>
             </div>
         );
 
         const SectionHeader = ({ title, icon }) => (
-            <div className="flex items-center gap-3 mb-5 mt-4 print:mt-0">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm">
-                    <i className={`fas ${icon} text-base`}></i>
+            <div className="flex items-center gap-3 mb-4 mt-2 print:mt-0">
+                <div className="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm">
+                    <i className={`fas ${icon} text-sm`}></i>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-800 tracking-tight">{title}</h2>
+                <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
             </div>
         );
 
@@ -217,7 +207,6 @@
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen pb-10 print:pb-0`}>
                     
-                    {/* NAVBAR - Sticky on Web, Gone on Print */}
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
@@ -232,32 +221,31 @@
                         </div>
                     </nav>
 
-                    {/* PDF FAB BUTTON */}
-                    <button onClick={() => window.print()} className="fixed bottom-8 right-8 z-[100] w-16 h-16 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print hover:bg-indigo-700 transition-colors">
+                    <button onClick={() => window.print()} className="fixed bottom-8 right-8 z-[100] w-16 h-16 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print hover:bg-indigo-700">
                         <i className="fas fa-file-pdf text-2xl"></i>
                     </button>
 
                     <div id="main-container">
                         {/* PAGE 1: Intro + Info */}
                         <div className="page-wrapper">
-                            <div className="glass-card">
-                                <div className="p-8 text-center">
-                                    <div className="w-28 h-28 rounded-[40px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto">
-                                        <div className="w-full h-full bg-white rounded-[38px] overflow-hidden">
+                            <div className="glass-card page-1-content">
+                                <div className="p-4 text-center print:pt-0">
+                                    <div className="w-24 h-24 rounded-[35px] p-[2px] bg-gradient-to-tr from-blue-500 to-pink-500 shadow-xl mb-4 mx-auto overflow-hidden">
+                                        <div className="w-full h-full bg-white rounded-[33px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <h2 className="text-4xl font-extrabold text-slate-900 mb-2">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-bold text-lg mb-8">{t.welcomeSub}</p>
-                                    <div className="flex gap-6 justify-center mb-4">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram"><i className="fab fa-instagram"></i></a>
+                                    <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 font-bold mb-4">{t.welcomeSub}</p>
+                                    <div className="flex gap-4 justify-center">
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone scale-75"><i className="fas fa-phone"></i></a>
+                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp scale-75"><i className="fab fa-whatsapp"></i></a>
+                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram scale-75"><i className="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
-                                <div className="px-8">
+                                <div className="px-6 print:pb-4">
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                    <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
                                     </div>
                                 </div>
@@ -267,21 +255,21 @@
                         {/* PAGE 2: Education + Family + Siblings */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="px-8 pt-8">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                    <div className="grid grid-cols-1 gap-4">
+                                    <div className="grid grid-cols-1 gap-3">
                                         {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                    <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8 pb-8">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                    <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
                                     </div>
                                 </div>
@@ -294,7 +282,7 @@
                                 <SectionHeader icon="fa-images" title={t.titles.gal} />
                                 <div className="grid grid-cols-2 gap-6 flex-grow content-center items-center">
                                     {commonData.gallery.map((img, i) => (
-                                        <div key={i} className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center shadow-sm">
+                                        <div key={i} className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center shadow-sm">
                                             <img src={img} className="w-full h-full object-cover" onError={(e) => { 
                                                     e.target.style.display = 'none';
                                                     e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+1}</span>`;
