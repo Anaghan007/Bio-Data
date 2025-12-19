@@ -312,14 +312,14 @@
                             </div>
                         </div>
 
-                        {/* GALLERY PAGE 1 - With Header */}
+                        {/* GALLERY PAGE 1 - Fixed Zoom Issue */}
                         <div className="page-wrapper">
                             <div className="glass-card p-10 print:p-6 flex flex-col h-full">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="flex flex-col gap-6 flex-grow overflow-hidden">
                                     {galleryPart1.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
-                                            <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { 
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-100/50 flex items-center justify-center cursor-zoom-in group relative">
+                                            <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                     e.target.style.display = 'none';
                                                     e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+1}</span>`;
                                                 }}
@@ -330,13 +330,13 @@
                             </div>
                         </div>
 
-                        {/* GALLERY PAGE 2 - NO Header/Subtitle */}
+                        {/* GALLERY PAGE 2 - Fixed Zoom Issue */}
                         <div className="page-wrapper">
                             <div className="glass-card p-10 print:p-6 flex flex-col h-full">
                                 <div className="flex flex-col gap-6 flex-grow overflow-hidden">
                                     {galleryPart2.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
-                                            <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { 
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-100/50 flex items-center justify-center cursor-zoom-in group relative">
+                                            <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                     e.target.style.display = 'none';
                                                     e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+3}</span>`;
                                                 }}
