@@ -23,13 +23,6 @@
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
-                    animation: { 'fade-in': 'fadeIn 0.2s ease-out' },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'scale(1.02)' },
-                            '100%': { opacity: '1', transform: 'scale(1)' },
-                        }
-                    }
                 }
             }
         }
@@ -39,79 +32,64 @@
         html { scroll-behavior: smooth; }
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; box-sizing: border-box; }
         
+        /* Glass card styling for Screen */
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.5);
             border-radius: 2.5rem; 
             overflow: hidden;
         }
 
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-15px); }
-            100% { transform: translateY(0px); }
-        }
-        .float-avatar { animation: floating 4.5s ease-in-out infinite; }
-        
         #main-container { width: 100%; max-width: 700px; margin: 0 auto; padding: 1rem; }
-        .page-wrapper { margin-bottom: 2rem; width: 100%; }
+        .page-wrapper { margin-bottom: 2.5rem; width: 100%; }
         
-        .lang-switch-bg { 
-            background: #E8EBF2; 
-            padding: 6px; 
-            border-radius: 999px; 
-            display: flex; 
-            position: relative; 
-            width: 170px; 
-            height: 48px;  
-            align-items: center;
-        }
-        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; transition: color 0.3s; }
+        /* Language Toggle */
+        .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
+        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; }
         .lang-btn.active { color: #4A55E2; }
-        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
         .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
         @media print {
-            @page { 
-                margin: 0; 
-                size: A4 portrait; 
-            }
+            @page { margin: 0; size: A4 portrait; }
             body { background: white !important; margin: 0 !important; padding: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
             
-            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
+            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; }
             
+            /* The secret to preventing overlaps: avoid vh units, use fixed sheet sizes with margin buffers */
             .page-wrapper { 
+                height: 297mm !important; /* Fixed A4 Height */
+                width: 210mm !important;  /* Fixed A4 Width */
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
-                padding: 1cm !important;
-                margin: 0 !important;
-                height: 100vh !important;
+                padding: 15mm !important;
                 display: flex !important;
                 flex-direction: column !important;
+                justify-content: flex-start !important;
                 overflow: hidden !important;
+                position: relative !important;
             }
 
             .glass-card { 
-                box-shadow: none !important; 
-                border: 1px solid #e2e8f0 !important; 
+                border: 1px solid #E2E8F0 !important; 
                 background: white !important; 
                 border-radius: 2rem !important;
-                flex: 1 !important; /* Forces card to take up available space in wrapper */
+                flex-grow: 1 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-around !important;
-                margin: 0 !important;
+                justify-content: space-evenly !important; /* Spread sections vertically */
+                box-shadow: none !important;
+                padding: 10mm !important;
             }
 
-            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
+            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
             .print-no-border { border: none !important; }
         }
     </style>
@@ -206,53 +184,32 @@
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
-            <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
-                <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
-                <p className="text-[18px] md:text-[20px] font-medium text-slate-900 leading-tight">{value}</p>
+            <div className={`bg-slate-50 p-3 rounded-[1.2rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
+                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[10px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
+                <p className="text-[17px] md:text-[19px] font-medium text-slate-900 leading-tight">{value}</p>
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle, subtitleClass = "" }) => (
-            <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm">
-                        <i className={`fas ${icon} text-base`}></i>
-                    </div>
-                    <h2 className="text-xl font-bold text-slate-800 tracking-tight">{title}</h2>
+        const SectionHeader = ({ title, icon }) => (
+            <div className="flex items-center gap-3 mb-4">
+                <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
+                    <i className={`fas ${icon} text-sm`}></i>
                 </div>
-                {subtitle && <span className={`text-indigo-600 font-bold text-[14px] ${subtitleClass}`}>{subtitle}</span>}
+                <h2 className="text-xl font-bold text-slate-800">{title}</h2>
             </div>
         );
-
-        const Lightbox = ({ activeImg, onClose }) => {
-            if (!activeImg) return null;
-            return (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4 no-print cursor-zoom-out" onClick={onClose}>
-                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden bg-white">
-                        <img src={activeImg} className="w-full h-full object-contain max-h-[85vh] block mx-auto" />
-                    </div>
-                </div>
-            );
-        };
 
         const App = () => {
             const [lang, setLang] = useState('en');
-            const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
 
-            useEffect(() => {
-                document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
-            }, [selectedImg]);
-
             return (
-                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen`}>
-                    <Lightbox activeImg={selectedImg} onClose={() => setSelectedImg(null)} />
-
+                <div className={lang === 'gu' ? 'font-gujarati' : 'font-sans'}>
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200" />
-                                <span className="text-xl font-extrabold text-slate-800 tracking-tight">{t.headerName}</span>
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full" />
+                                <span className="text-xl font-extrabold text-slate-800">{t.headerName}</span>
                             </div>
                             <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
                                 <div className={`lang-toggle ${lang === 'gu' ? 'toggle-gu' : ''}`}></div>
@@ -268,21 +225,21 @@
                         {/* PAGE 1 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="p-6 text-center flex flex-col items-center justify-center">
-                                    <div className="float-avatar w-28 h-28 rounded-[40px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-4">
-                                        <div className="w-full h-full bg-white rounded-[38px] overflow-hidden">
+                                <div className="text-center p-6">
+                                    <div className="w-24 h-24 rounded-[35px] p-[2px] bg-gradient-to-tr from-blue-500 to-pink-500 shadow-xl mb-4 mx-auto overflow-hidden">
+                                        <div className="w-full h-full bg-white rounded-[33px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-bold text-[15px] mb-4">{t.welcomeSub}</p>
+                                    <h2 className="text-3xl font-extrabold text-slate-900 mb-1">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 font-bold mb-4">{t.welcomeSub}</p>
                                     <div className="flex gap-4 justify-center">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone scale-90"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp scale-90"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram scale-90"><i className="fab fa-instagram"></i></a>
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone scale-75"><i className="fas fa-phone"></i></a>
+                                        <a href={commonData.social.whatsapp} className="social-btn btn-whatsapp scale-75"><i className="fab fa-whatsapp"></i></a>
+                                        <a href={commonData.social.instagram} className="social-btn btn-instagram scale-75"><i className="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
-                                <div className="px-8 py-4">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
@@ -294,19 +251,19 @@
                         {/* PAGE 2 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="px-8 py-6">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-3">
                                         {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8 py-6">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8 py-6">
+                                <div className="px-6">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="info-grid-print grid grid-cols-2 gap-3">
                                         {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
@@ -317,14 +274,14 @@
 
                         {/* PAGE 3 */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-8">
-                                <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} subtitleClass="no-print" />
-                                <div className="grid grid-cols-2 gap-6 flex-grow items-center content-center">
+                            <div className="glass-card p-6">
+                                <SectionHeader icon="fa-images" title={t.titles.gal} />
+                                <div className="grid grid-cols-2 gap-6 flex-grow content-center items-center">
                                     {commonData.gallery.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="group relative aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 cursor-zoom-in flex items-center justify-center">
+                                        <div key={i} className="aspect-[4/5] rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center">
                                             <img src={img} className="w-full h-full object-cover" onError={(e) => { 
                                                     e.target.style.display = 'none';
-                                                    e.target.parentElement.innerHTML = `<span class="text-[#cbd5e1] font-bold text-xl">Photo ${i+1}</span>`;
+                                                    e.target.parentElement.innerHTML = `<span class="text-[#cbd5e1] font-bold">Photo ${i+1}</span>`;
                                                 }}
                                             />
                                         </div>
