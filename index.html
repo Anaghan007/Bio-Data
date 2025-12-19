@@ -6,7 +6,6 @@
     <title>Anaghan's Profile</title>
     
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp">
-    
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +22,14 @@
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
+                    animation: { 
+                        'fade-in': 'fadeIn 0.2s ease-out',
+                        'floating': 'floating 4.5s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0', transform: 'scale(1.02)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
+                        floating: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } }
+                    }
                 }
             }
         }
@@ -33,29 +40,30 @@
         * { box-sizing: border-box; }
         
         /* --- WEBSITE VIEW STYLES --- */
-        #main-container { width: 100%; max-width: 750px; margin: 0 auto; padding: 1rem; }
-        .page-wrapper { margin-bottom: 2.5rem; width: 100%; display: block; }
+        body { background-color: #f8fafc; }
+        #main-container { width: 100%; max-width: 720px; margin: 0 auto; padding: 1.5rem; }
+        .page-wrapper { margin-bottom: 3rem; width: 100%; display: block; }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 2.5rem; 
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             overflow: hidden;
-            padding-bottom: 2rem;
         }
 
         .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
-        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; cursor: pointer; }
+        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; cursor: pointer; text-align: center; transition: color 0.3s; }
         .lang-btn.active { color: #4A55E2; }
         .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.2s; }
-        .social-btn:active { transform: scale(0.9); }
-        .btn-phone { background: white; color: #007AFF; border: 1px solid #edf2f7; }
-        .btn-whatsapp { background: #25D366; color: white; }
-        .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); color: white; }
+        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .social-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+        .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
+        .btn-whatsapp { background: #25D366 !important; color: white !important; }
+        .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
 
         /* --- PDF / PRINT ONLY STYLES --- */
         @media print {
@@ -70,7 +78,7 @@
                 width: 210mm !important; 
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
-                padding: 12mm 15mm 15mm 15mm !important; /* Added 15mm bottom padding buffer */
+                padding: 12mm 15mm 15mm 15mm !important; 
                 display: flex !important;
                 flex-direction: column !important;
                 margin: 0 !important;
@@ -79,26 +87,24 @@
             .glass-card { 
                 border: 1px solid #E2E8F0 !important; 
                 box-shadow: none !important;
-                border-radius: 2rem !important;
+                border-radius: 2.2rem !important;
                 flex: 1 !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-evenly !important; 
-                padding: 8mm 10mm !important; /* Slightly reduced inner padding for better fit */
+                padding: 10mm !important;
                 background: white !important;
             }
-
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 10px !important; }
-            .print-no-border { border: none !important; }
         }
     </style>
 </head>
-<body class="antialiased text-slate-800 bg-gray-50">
+<body class="antialiased text-slate-800">
 
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
 
         const commonData = {
             avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
@@ -113,6 +119,7 @@
                 welcomeTitle: "Hello, I'm Smit Anaghan",
                 welcomeSub: "(Social Media Manager)",
                 connectText: "Connect With Me",
+                clickToView: "(Click For View Image)",
                 titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery" },
                 infoData: [
                     { label: "Full Name", value: "Anaghan Smit Ashokbhai", fullWidth: true },
@@ -148,6 +155,7 @@
                 welcomeTitle: "નમસ્તે, હું સ્મિત અણઘણ છું",
                 welcomeSub: "(સોશિયલ મીડિયા મેનેજર)",
                 connectText: "મારી સાથે જોડાવા માટે",
+                clickToView: "(ફોટો જોવા માટે ક્લિક કરો)",
                 titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી" },
                 infoData: [
                     { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
@@ -187,21 +195,41 @@
             </div>
         );
 
-        const SectionHeader = ({ title, icon }) => (
-            <div className="flex items-center gap-3 mb-4 mt-2 print:mt-0 print:mb-3">
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm print:w-8 print:h-8">
-                    <i className={`fas ${icon} text-base print:text-sm`}></i>
+        const SectionHeader = ({ title, icon, subtitle }) => (
+            <div className="flex items-center justify-between mb-5 mt-2 print:mt-0 print:mb-3">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm print:w-8 print:h-8">
+                        <i className={`fas ${icon} text-base print:text-sm`}></i>
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-800 tracking-tight print:text-xl">{title}</h2>
                 </div>
-                <h2 className="text-2xl font-bold text-slate-800 tracking-tight print:text-xl">{title}</h2>
+                {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
             </div>
         );
 
+        const Lightbox = ({ activeImg, onClose }) => {
+            if (!activeImg) return null;
+            return (
+                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4 animate-fade-in no-print cursor-zoom-out" onClick={onClose}>
+                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-white/20 bg-white">
+                        <img src={activeImg} className="w-full h-full object-contain max-h-[85vh] block mx-auto" />
+                    </div>
+                </div>
+            );
+        };
+
         const App = () => {
             const [lang, setLang] = useState('en');
+            const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
 
+            useEffect(() => {
+                document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
+            }, [selectedImg]);
+
             return (
-                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'} min-h-screen pb-10 print:pb-0`}>
+                <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'}`}>
+                    <Lightbox activeImg={selectedImg} onClose={() => setSelectedImg(null)} />
                     
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
@@ -217,29 +245,36 @@
                         </div>
                     </nav>
 
-                    <button onClick={() => window.print()} className="fixed bottom-8 right-8 z-[100] w-16 h-16 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print hover:bg-indigo-700 transition-colors">
+                    <button onClick={() => window.print()} className="fixed bottom-8 right-8 z-[100] w-16 h-16 bg-indigo-600 rounded-full shadow-2xl flex items-center justify-center text-white no-print hover:scale-110 transition-transform">
                         <i className="fas fa-file-pdf text-2xl"></i>
                     </button>
 
                     <div id="main-container">
-                        {/* PAGE 1: Optimized for Vertical Space */}
+                        {/* PAGE 1 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="p-6 text-center print:p-2">
-                                    <div className="w-24 h-24 rounded-[35px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-4 mx-auto print:w-20 print:h-20 print:mb-2">
-                                        <div className="w-full h-full bg-white rounded-[33px] overflow-hidden">
+                                <div className="p-8 text-center print:p-2">
+                                    <div className="animate-floating w-32 h-32 rounded-[45px] p-[3px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto print:w-20 print:h-20 print:mb-2 print:animate-none">
+                                        <div className="w-full h-full bg-white rounded-[42px] print:rounded-[33px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <h2 className="text-3xl font-extrabold text-slate-900 mb-1 print:text-2xl">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-bold text-lg mb-4 print:mb-2 print:text-base">{t.welcomeSub}</p>
-                                    <div className="flex gap-6 justify-center mb-2 print:gap-4">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone print:scale-75"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp print:scale-75"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram print:scale-75"><i className="fab fa-instagram"></i></a>
+                                    <h2 className="text-4xl font-extrabold text-slate-900 mb-2 print:text-2xl">{t.welcomeTitle}</h2>
+                                    <p className="text-indigo-600 font-bold text-lg mb-4 print:mb-6 print:text-base">{t.welcomeSub}</p>
+                                    
+                                    {/* ADDED SPACING IN PDF WITH print:mt-4 */}
+                                    <div className="flex items-center justify-center gap-2 mb-4 text-slate-700 font-bold text-lg print:text-base print:mb-4 print:mt-4">
+                                        <i className="fas fa-link text-indigo-500"></i>
+                                        <span>{t.connectText}</span>
+                                    </div>
+
+                                    <div className="flex gap-6 justify-center mb-2">
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone"><i className="fas fa-phone"></i></a>
+                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp"><i className="fab fa-whatsapp"></i></a>
+                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram"><i className="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
-                                <div className="px-8 print:px-6">
+                                <div className="px-8 pb-10 print:px-6 print:pb-0">
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
                                         {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
@@ -248,22 +283,22 @@
                             </div>
                         </div>
 
-                        {/* PAGE 2: Stable Layout */}
+                        {/* PAGE 2 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="px-8 pt-6 print:pt-4">
+                                <div className="px-8 pt-10 print:pt-4">
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-4 print:gap-2">
                                         {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8 print:px-6">
+                                <div className="px-8 py-8 print:px-6 print:py-0">
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
                                         {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
                                     </div>
                                 </div>
-                                <div className="px-8 pb-6 print:pb-4">
+                                <div className="px-8 pb-10 print:px-6 print:pb-4">
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
                                         {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
@@ -272,14 +307,14 @@
                             </div>
                         </div>
 
-                        {/* PAGE 3: Gallery */}
+                        {/* PAGE 3 */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-8 print:p-6">
-                                <SectionHeader icon="fa-images" title={t.titles.gal} />
+                            <div className="glass-card p-10 print:p-6">
+                                <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="grid grid-cols-2 gap-6 flex-grow content-center items-center print:gap-4">
                                     {commonData.gallery.map((img, i) => (
-                                        <div key={i} className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center shadow-sm">
-                                            <img src={img} className="w-full h-full object-cover" onError={(e) => { 
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group">
+                                            <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { 
                                                     e.target.style.display = 'none';
                                                     e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+1}</span>`;
                                                 }}
