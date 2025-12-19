@@ -38,6 +38,7 @@
     <style>
         html { scroll-behavior: smooth; }
         * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
@@ -46,12 +47,14 @@
             border-radius: 2.5rem; 
             overflow: hidden;
         }
+
         @keyframes floating {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-15px); }
             100% { transform: translateY(0px); }
         }
         .float-avatar { animation: floating 4.5s ease-in-out infinite; }
+        
         #main-container { width: 100%; max-width: 700px; margin: 0 auto; padding: 1rem; }
         .page-wrapper { margin-bottom: 2rem; width: 100%; }
         
@@ -91,13 +94,56 @@
         .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
+
         @media print {
-            @page { margin: 0; size: A4 portrait; }
+            @page { 
+                margin: 0; 
+                size: A4 portrait; 
+            }
+            body { 
+                background: white !important; 
+                margin: 0 !important;
+                padding: 0 !important;
+            }
             .no-print, nav, button.fixed { display: none !important; }
-            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; margin: 0 !important; }
-            .page-wrapper { height: 297mm !important; width: 210mm !important; display: flex !important; flex-direction: column !important; justify-content: center !important; padding: 1cm 1.5cm !important; margin: 0 !important; page-break-after: always !important; }
-            .glass-card { height: 100% !important; box-shadow: none !important; border: 1px solid #e2e8f0 !important; background: #ffffff !important; padding: 1cm !important; }
-            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+            
+            #main-container { 
+                max-width: none !important; 
+                width: 100% !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+            }
+            
+            /* Each page-wrapper is forced to a new sheet without overlapping */
+            .page-wrapper { 
+                page-break-before: always !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                padding: 1.5cm !important;
+                margin: 0 !important;
+                height: 100vh !important;
+                display: block !important;
+                position: relative !important;
+            }
+
+            /* Prevent the first page from creating a blank page at the start */
+            .page-wrapper:first-of-type {
+                page-break-before: auto !important;
+            }
+
+            .glass-card { 
+                box-shadow: none !important; 
+                border: 1px solid #e2e8f0 !important; 
+                background: #ffffff !important; 
+                border-radius: 2rem !important;
+                height: auto !important;
+            }
+
+            .info-grid-print { 
+                display: grid !important; 
+                grid-template-columns: repeat(2, 1fr) !important; 
+                gap: 12px !important; 
+            }
         }
     </style>
 </head>
@@ -193,7 +239,6 @@
             }
         };
 
-        // Heading Label color updated to text-indigo-400 (Light Icon color)
         const InfoCard = ({ label, value, fullWidth, lang }) => (
             <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'}`}>
                 <p className={`${lang === 'gu' ? 'text-[13px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
