@@ -92,7 +92,7 @@
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: space-evenly !important; 
-                padding: 8mm 10mm !important;
+                padding: 10mm !important;
                 background: white !important;
             }
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
@@ -120,7 +120,7 @@
                 welcomeSub: "(Social Media Manager)",
                 connectText: "Connect With Me",
                 clickToView: "(Click For View Image)",
-                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Photo Gallery" },
+                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" },
                 infoData: [
                     { label: "Full Name", value: "Anaghan Smit Ashokbhai", fullWidth: true },
                     { label: "Date Of Birth", value: "16-10-2002" },
@@ -156,7 +156,7 @@
                 welcomeSub: "(સોશિયલ મીડિયા મેનેજર)",
                 connectText: "મારી સાથે જોડાવા માટે",
                 clickToView: "(ફોટો જોવા માટે ક્લિક કરો)",
-                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ફોટો ગેલેરી" },
+                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" },
                 infoData: [
                     { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
                     { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
@@ -195,17 +195,20 @@
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle }) => (
-            <div className="flex items-center justify-between mb-5 mt-2 print:mt-0 print:mb-2">
-                <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm print:w-7 print:h-7">
-                        <i className={`fas ${icon} text-base print:text-xs`}></i>
+        const SectionHeader = ({ title, icon, subtitle, hide = false }) => {
+            if (hide) return null;
+            return (
+                <div className="flex items-center justify-between mb-5 mt-2 print:mt-0 print:mb-2">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm print:w-7 print:h-7">
+                            <i className={`fas ${icon} text-base print:text-xs`}></i>
+                        </div>
+                        <h2 className="text-2xl font-bold text-slate-800 tracking-tight print:text-lg">{title}</h2>
                     </div>
-                    <h2 className="text-2xl font-bold text-slate-800 tracking-tight print:text-lg">{title}</h2>
+                    {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
                 </div>
-                {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
-            </div>
-        );
+            );
+        };
 
         const Lightbox = ({ activeImg, onClose }) => {
             if (!activeImg) return null;
@@ -226,6 +229,9 @@
             useEffect(() => {
                 document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
             }, [selectedImg]);
+
+            const galleryPart1 = commonData.gallery.slice(0, 2);
+            const galleryPart2 = commonData.gallery.slice(2, 4);
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'}`}>
@@ -254,7 +260,6 @@
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="p-8 text-center print:p-3">
-                                    {/* INCREASED EMOJI SIZE FOR BOTH */}
                                     <div className="animate-floating w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto print:w-36 print:h-36 print:animate-none print:mb-3 print:rounded-[50px]">
                                         <div className="w-full h-full bg-white rounded-[51px] print:rounded-[46px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
@@ -269,9 +274,9 @@
                                     </div>
 
                                     <div className="flex gap-6 justify-center mb-2 print:gap-4">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone print:scale-90"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp print:scale-90"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram print:scale-90"><i className="fab fa-instagram"></i></a>
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone"><i className="fas fa-phone"></i></a>
+                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp"><i className="fab fa-whatsapp"></i></a>
+                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram"><i className="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
                                 <div className="px-8 pb-10 print:px-6 print:pb-0">
@@ -307,16 +312,33 @@
                             </div>
                         </div>
 
-                        {/* PAGE 3 */}
+                        {/* GALLERY PAGE 1 - With Header */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-10 print:p-6">
+                            <div className="glass-card p-10 print:p-6 flex flex-col h-full">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
-                                <div className="grid grid-cols-2 gap-6 flex-grow content-center items-center print:gap-4">
-                                    {commonData.gallery.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="aspect-[4/5] rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group">
+                                <div className="flex flex-col gap-6 flex-grow overflow-hidden">
+                                    {galleryPart1.map((img, i) => (
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { 
                                                     e.target.style.display = 'none';
                                                     e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+1}</span>`;
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* GALLERY PAGE 2 - NO Header/Subtitle */}
+                        <div className="page-wrapper">
+                            <div className="glass-card p-10 print:p-6 flex flex-col h-full">
+                                <div className="flex flex-col gap-6 flex-grow overflow-hidden">
+                                    {galleryPart2.map((img, i) => (
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
+                                            <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onError={(e) => { 
+                                                    e.target.style.display = 'none';
+                                                    e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+3}</span>`;
                                                 }}
                                             />
                                         </div>
