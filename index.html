@@ -102,7 +102,6 @@
             margin-right: -0.01em;
         }
 
-        /* Language specific adjustments for "hello" */
         .font-pacific { font-family: 'Pacifico', cursive; }
         .font-guj { font-family: 'Noto Sans Gujarati', sans-serif; font-weight: 700; }
 
@@ -212,7 +211,6 @@
         ];
 
         const AnimatedHello = ({ text, lang }) => {
-            // Fix for Gujarati: Don't split "નમસ્તે" into letters as it breaks conjunct characters
             if (lang === 'gu') {
                 return (
                     <div className="hello-container">
@@ -222,7 +220,6 @@
                     </div>
                 );
             }
-            // English letter-by-letter split
             const chars = text.split("");
             return (
                 <div className="hello-container font-pacific">
@@ -298,7 +295,7 @@
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="text-center flex flex-col gap-4">
-                                    <div className="animate-floating w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-2 mx-auto print:w-44 print:h-44 print:animate-none">
+                                    <div className="w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-2 mx-auto print:w-44 print:h-44">
                                         <div className="w-full h-full bg-white rounded-[51px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
