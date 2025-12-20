@@ -81,15 +81,24 @@
             gap: 2rem;
         }
 
-        /* FIX: Visual Seamless Merge for Website only */
+        /* FIX: Equal spacing between 4 images on website */
         @media screen {
             .gallery-wrapper-1 { margin-bottom: 0 !important; }
-            .gallery-card-1 { border-bottom: none !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+            .gallery-card-1 { 
+                border-bottom: none !important; 
+                border-bottom-left-radius: 0 !important; 
+                border-bottom-right-radius: 0 !important;
+                padding-bottom: 0.75rem !important; /* Half of the standard 1.5rem gap */
+            }
             
             .gallery-wrapper-2 { margin-top: 0 !important; }
-            .gallery-card-2 { border-top: none !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; padding-top: 0 !important; }
+            .gallery-card-2 { 
+                border-top: none !important; 
+                border-top-left-radius: 0 !important; 
+                border-top-right-radius: 0 !important; 
+                padding-top: 0.75rem !important; /* Half of the standard 1.5rem gap */
+            }
             .gallery-card-2 .web-hide { display: none !important; }
-            .gallery-card-2 .web-gap-fix { padding-top: 1.5rem; }
         }
 
         .hello-container {
@@ -173,7 +182,6 @@
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
             .char { color: #334155 !important; opacity: 1 !important; font-size: 3rem; }
 
-            /* FIX FOR ZOOMED IMAGES IN PDF */
             .gallery-print-box {
                 height: 105mm !important;
                 width: 100% !important;
@@ -185,7 +193,7 @@
                 overflow: hidden !important;
             }
             .gallery-print-box img {
-                object-fit: contain !important; /* Prevents zooming/cropping */
+                object-fit: contain !important;
                 width: 100% !important;
                 height: 100% !important;
             }
@@ -383,11 +391,11 @@
                             </div>
                         </div>
 
-                        {/* PAGE 3 */}
+                        {/* PAGE 3 - Gallery Part 1 */}
                         <div className="page-wrapper gallery-wrapper-1">
                             <div className="glass-card gallery-card-1">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
-                                <div className="flex flex-col gap-6 flex-grow">
+                                <div className="flex flex-col gap-6">
                                     {commonData.gallery.slice(0, 2).map((img, i) => (
                                         <div key={i} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
@@ -400,11 +408,11 @@
                             </div>
                         </div>
 
-                        {/* PAGE 4 */}
+                        {/* PAGE 4 - Gallery Part 2 */}
                         <div className="page-wrapper gallery-wrapper-2">
                             <div className="glass-card gallery-card-2">
                                 <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
-                                <div className="flex flex-col gap-6 flex-grow print:justify-center web-gap-fix">
+                                <div className="flex flex-col gap-6 print:justify-center">
                                     {commonData.gallery.slice(2, 4).map((img, i) => (
                                         <div key={i + 2} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
