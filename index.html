@@ -21,7 +21,6 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // 1. PWA Manifest Configuration
         const manifestData = {
             "name": "Anaghan's Profile",
             "short_name": "Anaghan",
@@ -29,19 +28,16 @@
             "display": "standalone",
             "background_color": "#f8fafc",
             "theme_color": "#4f46e5",
-            "icons": [
-                {
-                    "src": "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "any maskable"
-                }
-            ]
+            "icons": [{
+                "src": "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }]
         };
         const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
 
-        // 2. Tailwind Configuration
         tailwind.config = {
             theme: {
                 extend: {
@@ -85,8 +81,24 @@
         .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .social-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.15); }
+        /* SOCIAL ICONS: All movement and floating removed */
+        .social-btn { 
+            width: 3.5rem; 
+            height: 3.5rem; 
+            border-radius: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.5rem; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: none !important; /* Removes all transition animations */
+            transform: none !important; /* Ensures no movement */
+        }
+        .social-btn:hover, .social-btn:active {
+            transform: none !important; /* Stays still on hover/click */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; /* Keeps shadow consistent */
+        }
+
         .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
         .btn-whatsapp { background: #25D366 !important; color: white !important; }
         .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
@@ -372,7 +384,6 @@
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
 
-        // 3. Service Worker Registration (Required for PWA Install Prompt)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
