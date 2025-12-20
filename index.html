@@ -42,9 +42,7 @@
             theme: {
                 extend: {
                     colors: {
-                        slate: {
-                            150: '#f1f5f9',
-                        }
+                        slate: { 150: '#f1f5f9' }
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
@@ -81,6 +79,17 @@
             display: flex;
             flex-direction: column;
             gap: 2rem;
+        }
+
+        /* FIX: Visual Seamless Merge for Website only */
+        @media screen {
+            .gallery-wrapper-1 { margin-bottom: 0 !important; }
+            .gallery-card-1 { border-bottom: none !important; border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+            
+            .gallery-wrapper-2 { margin-top: 0 !important; }
+            .gallery-card-2 { border-top: none !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; padding-top: 0 !important; }
+            .gallery-card-2 .web-hide { display: none !important; }
+            .gallery-card-2 .web-gap-fix { padding-top: 1.5rem; } /* Matches the internal gap-6 (1.5rem) */
         }
 
         .hello-container {
@@ -159,9 +168,18 @@
 
             .page-wrapper:nth-child(1) .glass-card { justify-content: space-between !important; }
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 12mm !important; }
+            .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
             .char { color: #334155 !important; opacity: 1 !important; font-size: 3rem; }
+
+            .gallery-print-box {
+                height: 105mm !important;
+                width: 100% !important;
+                margin-bottom: 5mm !important;
+                object-fit: cover !important;
+            }
+            .hide-header-print { display: none !important; }
         }
     </style>
 </head>
@@ -239,8 +257,8 @@
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle }) => (
-            <div className="flex items-center justify-between mb-3">
+        const SectionHeader = ({ title, icon, subtitle, className }) => (
+            <div className={`flex items-center justify-between mb-3 ${className}`}>
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-indigo-600 print:w-8 print:h-8"><i className={`fas ${icon} print:text-sm`}></i></div>
                     <h2 className="text-2xl font-bold text-slate-800 print:text-xl">{title}</h2>
@@ -326,22 +344,13 @@
                             </div>
                         </div>
 
-                        {/* PAGE 2 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div>
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-4">
-                                        <InfoCard 
-                                            label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} 
-                                            value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} 
-                                            fullWidth={true} lang={lang} 
-                                        />
-                                        <InfoCard 
-                                            label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} 
-                                            value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} 
-                                            fullWidth={true} lang={lang} 
-                                        />
+                                        <InfoCard label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} fullWidth={true} lang={lang} />
                                     </div>
                                 </div>
                                 <div>
@@ -365,15 +374,32 @@
                         </div>
 
                         {/* PAGE 3 */}
-                        <div className="page-wrapper">
-                            <div className="glass-card">
+                        <div className="page-wrapper gallery-wrapper-1">
+                            <div className="glass-card gallery-card-1">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
-                                <div className="grid grid-cols-2 gap-5 flex-grow">
-                                    {commonData.gallery.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="aspect-square rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
-                                            <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
+                                <div className="flex flex-col gap-6 flex-grow">
+                                    {commonData.gallery.slice(0, 2).map((img, i) => (
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
+                                            <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                 e.target.style.display = 'none';
                                                 e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+1}</span>`;
+                                            }} />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* PAGE 4 */}
+                        <div className="page-wrapper gallery-wrapper-2">
+                            <div className="glass-card gallery-card-2">
+                                <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
+                                <div className="flex flex-col gap-6 flex-grow print:justify-center web-gap-fix">
+                                    {commonData.gallery.slice(2, 4).map((img, i) => (
+                                        <div key={i + 2} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
+                                            <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
+                                                e.target.style.display = 'none';
+                                                e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+3}</span>`;
                                             }} />
                                         </div>
                                     ))}
