@@ -141,7 +141,7 @@
         .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: #334155; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .light-mode .lang-toggle { background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         
-        .toggle-gu, .toggle-dark { transform: translateX(100%); }
+        .toggle-gu, .toggle-sun { transform: translateX(100%); }
         
         .social-btn { 
             width: 3.5rem; 
@@ -226,7 +226,7 @@
         }
     </style>
 </head>
-<body class="antialiased light-mode">
+<body class="antialiased">
 
     <div id="root"></div>
 
@@ -325,7 +325,7 @@
 
         const App = () => {
             const [lang, setLang] = useState('en');
-            const [theme, setTheme] = useState('light');
+            const [theme, setTheme] = useState('dark'); // Dark mode default
             const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
 
@@ -346,11 +346,11 @@
                                 <span className={`text-xl font-extrabold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{t.headerName}</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                {/* MODE SWITCHER - Sun First, Moon Second */}
-                                <div className="lang-switch-bg cursor-pointer !w-[100px]" onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-                                    <div className={`lang-toggle ${theme === 'dark' ? 'toggle-dark' : ''}`}></div>
-                                    <button className={`lang-btn ${theme === 'light' ? 'active' : ''}`}><i className="fas fa-sun"></i></button>
+                                {/* MODE SWITCHER - Moon First, Sun Second */}
+                                <div className="lang-switch-bg cursor-pointer !w-[100px]" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+                                    <div className={`lang-toggle ${theme === 'light' ? 'toggle-sun' : ''}`}></div>
                                     <button className={`lang-btn ${theme === 'dark' ? 'active' : ''}`}><i className="fas fa-moon"></i></button>
+                                    <button className={`lang-btn ${theme === 'light' ? 'active' : ''}`}><i className="fas fa-sun"></i></button>
                                 </div>
                                 {/* LANG SWITCHER */}
                                 <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
