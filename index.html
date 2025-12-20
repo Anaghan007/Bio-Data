@@ -84,7 +84,6 @@
         }
 
         .hello-container {
-            font-family: 'Pacifico', cursive;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -102,6 +101,10 @@
             line-height: 1.6;
             margin-right: -0.01em;
         }
+
+        /* Language specific adjustments for "hello" */
+        .font-pacific { font-family: 'Pacifico', cursive; }
+        .font-guj { font-family: 'Noto Sans Gujarati', sans-serif; font-weight: 700; }
 
         .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
         .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; cursor: pointer; text-align: center; transition: color 0.3s; }
@@ -196,9 +199,9 @@
 
         const infoData = (t) => [
             { label: t === 'en' ? "Full Name" : "પૂરું નામ", value: t === 'en' ? "Anaghan Smit Ashokbhai" : "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
-            { label: t === 'en' ? "Date Of Birth" : "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
+            { label: t === 'en' ? "Date Of Birth" : "જન્મ તારીખ", value: t === 'en' ? "16-10-2002" : "૧૬-૧૦-૨૦૦૨" },
             { label: t === 'en' ? "Age" : "ઉંમર", value: t === 'en' ? "23 Years" : "૨૩ વર્ષ" },
-            { label: t === 'en' ? "Height" : "ઊંચાઈ", value: "૫' ૧૦\"" },
+            { label: t === 'en' ? "Height" : "ઊંચાઈ", value: t === 'en' ? "5' 10\"" : "૫' ૧૦\"" },
             { label: t === 'en' ? "Caste" : "જ્ઞાતિ", value: t === 'en' ? "Patel (Leuva)" : "પટેલ (લેઉવા)" },
             { label: t === 'en' ? "Village" : "ગામ", value: t === 'en' ? "Sagapara" : "સાગાપરા" },
             { label: t === 'en' ? "District" : "જીલ્લો", value: t === 'en' ? "Bhavnagar" : "ભાવનગર" },
@@ -208,10 +211,21 @@
             { label: t === 'en' ? "Income" : "આવક", value: t === 'en' ? "0 LPA" : "0 લાખ / વર્ષ" },
         ];
 
-        const AnimatedHello = ({ text }) => {
+        const AnimatedHello = ({ text, lang }) => {
+            // Fix for Gujarati: Don't split "નમસ્તે" into letters as it breaks conjunct characters
+            if (lang === 'gu') {
+                return (
+                    <div className="hello-container">
+                        <span className="char animate-simple-appear opacity-100 font-guj" style={{ fontSize: '3.5rem' }}>
+                            {text}
+                        </span>
+                    </div>
+                );
+            }
+            // English letter-by-letter split
             const chars = text.split("");
             return (
-                <div className="hello-container">
+                <div className="hello-container font-pacific">
                     {chars.map((char, index) => (
                         <span key={index} className="char animate-simple-appear" style={{ animationDelay: `${index * 0.1}s` }}>
                             {char === " " ? "\u00A0" : char}
@@ -281,7 +295,6 @@
                     </button>
 
                     <div id="main-container">
-                        {/* PAGE 1 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div className="text-center flex flex-col gap-4">
@@ -290,13 +303,12 @@
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <AnimatedHello text={t.welcomeTitle} />
+                                    <AnimatedHello text={t.welcomeTitle} lang={lang} />
                                     <div className="flex items-center justify-center gap-2 text-slate-700 font-bold text-lg print:text-base">
                                         <i className="fas fa-link text-indigo-500"></i>
                                         <span>{t.connectText}</span>
                                     </div>
                                     <div className="flex gap-6 justify-center">
-                                        {/* Phone button: border-slate-300 makes the border slightly darker */}
                                         <a href={`tel:${commonData.mobileNumber}`} className="social-btn bg-slate-150 text-blue-500 border border-slate-300 shadow-sm">
                                             <i className="fas fa-phone"></i>
                                         </a>
@@ -378,19 +390,6 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                const swCode = `
-                    self.addEventListener('install', (e) => self.skipWaiting());
-                    self.addEventListener('activate', (e) => e.waitUntil(clients.claim()));
-                    self.addEventListener('fetch', (e) => e.respondWith(fetch(e.request)));
-                `;
-                const swBlob = new Blob([swCode], { type: 'text/javascript' });
-                const swUrl = URL.createObjectURL(swBlob);
-                navigator.serviceWorker.register(swUrl);
-            });
-        }
     </script>
 </body>
 </html>
