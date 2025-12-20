@@ -89,7 +89,7 @@
             .gallery-wrapper-2 { margin-top: 0 !important; }
             .gallery-card-2 { border-top: none !important; border-top-left-radius: 0 !important; border-top-right-radius: 0 !important; padding-top: 0 !important; }
             .gallery-card-2 .web-hide { display: none !important; }
-            .gallery-card-2 .web-gap-fix { padding-top: 1.5rem; } /* Matches the internal gap-6 (1.5rem) */
+            .gallery-card-2 .web-gap-fix { padding-top: 1.5rem; }
         }
 
         .hello-container {
@@ -173,11 +173,21 @@
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
             .char { color: #334155 !important; opacity: 1 !important; font-size: 3rem; }
 
+            /* FIX FOR ZOOMED IMAGES IN PDF */
             .gallery-print-box {
                 height: 105mm !important;
                 width: 100% !important;
                 margin-bottom: 5mm !important;
-                object-fit: cover !important;
+                background: #f8fafc !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                overflow: hidden !important;
+            }
+            .gallery-print-box img {
+                object-fit: contain !important; /* Prevents zooming/cropping */
+                width: 100% !important;
+                height: 100% !important;
             }
             .hide-header-print { display: none !important; }
         }
@@ -225,7 +235,7 @@
             { label: t === 'en' ? "Taluka" : "તાલુકો", value: t === 'en' ? "Chorashi" : "ચોર્યાસી" },
             { label: t === 'en' ? "City" : "શહેર", value: t === 'en' ? "Surat, Gujarat" : "સુરત, ગુજરાત" },
             { label: t === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ", value: t === 'en' ? "Social Media Manager" : "સોશિયલ મીડિયા મેનેજર" },
-            { label: t === 'en' ? "Income" : "આવક", value: t === 'en' ? "0 LPA" : "0 લાખ / વર્ષ" },
+            { label: t === 'en' ? "Income" : "આવક", value: t === 'en' ? "0 LPA" : "૦ લાખ / વર્ષ" },
         ];
 
         const AnimatedHello = ({ text, lang }) => {
@@ -357,7 +367,7 @@
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4">
                                         <InfoCard label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value={lang === 'en' ? "Ashokbhai Ganeshbhai Anaghan" : "અશોકભાઈ ગણેશભાઈ અણઘણ"} lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value={lang === 'en' ? "Textile Business" : "ટેક્સટાઇલ બિઝનેસ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value={lang === 'en' ? "Textile Business Owner" : "ટેક્સટાઇલ બિઝનેસ માલિક"} lang={lang} />
                                         <InfoCard label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value={lang === 'en' ? "Jayshriben Ashokbhai Anaghan" : "જયશ્રીબેન અશોકભાઈ અણઘણ"} lang={lang} />
                                         <InfoCard label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value={lang === 'en' ? "Housewife" : "ગૃહિણી"} lang={lang} />
                                     </div>
@@ -379,7 +389,7 @@
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="flex flex-col gap-6 flex-grow">
                                     {commonData.gallery.slice(0, 2).map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                 e.target.style.display = 'none';
                                                 e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+1}</span>`;
@@ -396,7 +406,7 @@
                                 <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="flex flex-col gap-6 flex-grow print:justify-center web-gap-fix">
                                     {commonData.gallery.slice(2, 4).map((img, i) => (
-                                        <div key={i + 2} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
+                                        <div key={i + 2} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                 e.target.style.display = 'none';
                                                 e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+3}</span>`;
