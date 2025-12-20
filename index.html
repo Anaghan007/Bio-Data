@@ -41,13 +41,18 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    colors: {
+                        slate: {
+                            150: '#f1f5f9',
+                        }
+                    },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
                     animation: { 
-                        'floating': 'floating 0s ease-in-out infinite',
-                        'simple-appear': 'simpleAppear 0.01s forwards'
+                        'floating': 'floating 3s ease-in-out infinite',
+                        'simple-appear': 'simpleAppear 0.5s forwards'
                     },
                     keyframes: {
                         floating: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } },
@@ -92,7 +97,6 @@
         .char {
             display: inline-block;
             opacity: 0;
-            /* Updated to match the light grey/slate of the Connect text */
             color: #334155; 
             font-size: 4rem; 
             line-height: 1.6;
@@ -105,7 +109,19 @@
         .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s; }
+        .social-btn { 
+            width: 3.5rem; 
+            height: 3.5rem; 
+            border-radius: 1.2rem; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.4rem; 
+            transition: all 0.3s; 
+        }
+
+        .social-btn i.fa-whatsapp { font-size: 2.1rem; }
+        .social-btn i.fa-instagram { font-size: 1.9rem; }
 
         @media print {
             @page { margin: 0; size: A4 portrait; }
@@ -179,17 +195,17 @@
         };
 
         const infoData = (t) => [
-            { label: t === 'en' ? "Full Name" : "પૂરું નામ", value: "Anaghan Smit Ashokbhai", fullWidth: true },
+            { label: t === 'en' ? "Full Name" : "પૂરું નામ", value: t === 'en' ? "Anaghan Smit Ashokbhai" : "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
             { label: t === 'en' ? "Date Of Birth" : "જન્મ તારીખ", value: "16-10-2002" },
-            { label: t === 'en' ? "Age" : "ઉંમર", value: "23 Years" },
+            { label: t === 'en' ? "Age" : "ઉંમર", value: t === 'en' ? "23 Years" : "૨૩ વર્ષ" },
             { label: t === 'en' ? "Height" : "ઊંચાઈ", value: "5' 10\"" },
-            { label: t === 'en' ? "Caste" : "જ્ઞાતિ", value: "Patel (Leuva)" },
-            { label: t === 'en' ? "Village" : "ગામ", value: "Sagapara" },
-            { label: t === 'en' ? "District" : "જીલ્લો", value: "Bhavnagar" },
-            { label: t === 'en' ? "Taluka" : "તાલુકો", value: "Chorashi" },
-            { label: t === 'en' ? "City" : "શહેર", value: "Surat, Gujarat" },
-            { label: t === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ", value: "Social Media Manager" },
-            { label: t === 'en' ? "Income" : "આવક", value: "0 LPA" },
+            { label: t === 'en' ? "Caste" : "જ્ઞાતિ", value: t === 'en' ? "Patel (Leuva)" : "પટેલ (લેઉવા)" },
+            { label: t === 'en' ? "Village" : "ગામ", value: t === 'en' ? "Sagapara" : "સાગાપરા" },
+            { label: t === 'en' ? "District" : "જીલ્લો", value: t === 'en' ? "Bhavnagar" : "ભાવનગર" },
+            { label: t === 'en' ? "Taluka" : "તાલુકો", value: t === 'en' ? "Chorashi" : "ચોર્યાસી" },
+            { label: t === 'en' ? "City" : "શહેર", value: t === 'en' ? "Surat, Gujarat" : "સુરત, ગુજરાત" },
+            { label: t === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ", value: t === 'en' ? "Social Media Manager" : "સોશિયલ મીડિયા મેનેજર" },
+            { label: t === 'en' ? "Income" : "આવક", value: t === 'en' ? "0 LPA" : "૦ લાખ / વર્ષ" },
         ];
 
         const AnimatedHello = ({ text }) => {
@@ -197,7 +213,7 @@
             return (
                 <div className="hello-container">
                     {chars.map((char, index) => (
-                        <span key={index} className="char animate-simple-appear" style={{ animationDelay: `${index * 0.4}s` }}>
+                        <span key={index} className="char animate-simple-appear" style={{ animationDelay: `${index * 0.1}s` }}>
                             {char === " " ? "\u00A0" : char}
                         </span>
                     ))}
@@ -280,9 +296,16 @@
                                         <span>{t.connectText}</span>
                                     </div>
                                     <div className="flex gap-6 justify-center">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn bg-white text-blue-500 border border-slate-100"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn bg-[#25D366] text-white"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white"><i className="fab fa-instagram"></i></a>
+                                        {/* Phone button: border-slate-300 makes the border slightly darker */}
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn bg-slate-150 text-blue-500 border border-slate-300 shadow-sm">
+                                            <i className="fas fa-phone"></i>
+                                        </a>
+                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn bg-[#25D366] text-white">
+                                            <i className="fab fa-whatsapp"></i>
+                                        </a>
+                                        <a href={commonData.social.instagram} target="_blank" className="social-btn bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white">
+                                            <i className="fab fa-instagram"></i>
+                                        </a>
                                     </div>
                                 </div>
                                 <div>
@@ -300,25 +323,33 @@
                                 <div>
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-4">
-                                        <InfoCard label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value="Bachelor in Computer Application (BCA), (VNSGU)" fullWidth={true} lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value="MSc in Digital Marketing (DBS, Ireland)" fullWidth={true} lang={lang} />
+                                        <InfoCard 
+                                            label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} 
+                                            value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} 
+                                            fullWidth={true} lang={lang} 
+                                        />
+                                        <InfoCard 
+                                            label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} 
+                                            value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} 
+                                            fullWidth={true} lang={lang} 
+                                        />
                                     </div>
                                 </div>
                                 <div>
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4">
-                                        <InfoCard label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value="Ashokbhai Ganeshbhai Anaghan" lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value="Textile Business Owner" lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value="Jayshriben Ashokbhai Anaghan" lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value="Housewife" lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value={lang === 'en' ? "Ashokbhai Ganeshbhai Anaghan" : "અશોકભાઈ ગણેશભાઈ અણઘણ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value={lang === 'en' ? "Textile Business Owner" : "ટેક્સટાઇલ બિઝનેસ માલિક"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value={lang === 'en' ? "Jayshriben Ashokbhai Anaghan" : "જયશ્રીબેન અશોકભાઈ અણઘણ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value={lang === 'en' ? "Housewife" : "ગૃહિણી"} lang={lang} />
                                     </div>
                                 </div>
                                 <div>
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
                                     <div className="info-grid-print grid grid-cols-2 gap-4">
-                                        <InfoCard label={lang === 'en' ? "Brother Name" : "ભાઈનું નામ"} value="Darshil Ashokbhai Anaghan" fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Brother Name" : "ભાઈનું નામ"} value={lang === 'en' ? "Darshil Ashokbhai Anaghan" : "દર્શિલ અશોકભાઈ અણઘણ"} fullWidth={true} lang={lang} />
                                         <InfoCard label={lang === 'en' ? "Relation" : "સંબંધ"} value={lang === 'en' ? "Elder Brother" : "મોટો ભાઈ"} lang={lang} />
-                                        <InfoCard label={lang === 'en' ? "Occupation" : "વ્યવસાય"} value={lang === 'en' ? "Job in Marketing" : "માર્કેટિંગ જોબ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Occupation" : "વ્યવસાય"} value={lang === 'en' ? "Job in Marketing" : "માર્કેટિંગમાં નોકરી"} lang={lang} />
                                     </div>
                                 </div>
                             </div>
