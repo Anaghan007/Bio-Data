@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anaghan's Profile</title>
     
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#4f46e5">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp">
@@ -26,8 +27,8 @@
             "short_name": "Anaghan",
             "start_url": "./",
             "display": "standalone",
-            "background_color": "#000000",
-            "theme_color": "#000000",
+            "background_color": "#f8fafc",
+            "theme_color": "#4f46e5",
             "icons": [{
                 "src": "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
                 "sizes": "512x512",
@@ -42,7 +43,7 @@
             theme: {
                 extend: {
                     colors: {
-                        slate: { 150: '#1e293b' }
+                        slate: { 150: '#f1f5f9' }
                     },
                     fontFamily: {
                         sans: ['Outfit', 'sans-serif'],
@@ -65,30 +66,23 @@
         html { scroll-behavior: smooth; }
         * { box-sizing: border-box; }
         
-        body { background-color: #000000; color: #f8fafc; transition: background-color 0.3s; }
-        body.light-mode { background-color: #f1f5f9; color: #0f172a; }
-
+        body { background-color: #f8fafc; }
         #main-container { width: 100%; max-width: 720px; margin: 0 auto; padding: 1.5rem; }
         .page-wrapper { margin-bottom: 2rem; width: 100%; display: block; }
         
         .glass-card {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 2.5rem; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
             padding: 2rem;
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        .light-mode .glass-card {
-            background: #ffffff;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        }
-
+        /* FIX: Equal spacing between 4 images on website */
         @media screen {
             .gallery-wrapper-1 { margin-bottom: 0 !important; }
             .gallery-card-1 { 
@@ -121,27 +115,20 @@
         .char {
             display: inline-block;
             opacity: 0;
-            color: #f8fafc; 
+            color: #334155; 
             font-size: 4rem; 
             line-height: 1.6;
             margin-right: -0.01em;
         }
-        .light-mode .char { color: #334155 !important; }
 
         .font-pacific { font-family: 'Pacifico', cursive; }
         .font-guj { font-family: 'Noto Sans Gujarati', sans-serif; font-weight: 700; }
 
-        .lang-switch-bg { background: #1e293b; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
-        .light-mode .lang-switch-bg { background: #e2e8f0; border: 1px solid rgba(0,0,0,0.1); }
-        
-        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #64748b; cursor: pointer; text-align: center; transition: color 0.3s; }
-        .lang-btn.active { color: #818cf8; }
-        .light-mode .lang-btn.active { color: #4f46e5; }
-
-        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: #334155; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .light-mode .lang-toggle { background: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        
-        .toggle-gu, .toggle-sun { transform: translateX(100%); }
+        .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
+        .lang-btn { flex: 1; padding: 6px 0; font-size: 16px; font-weight: 700; z-index: 10; color: #A0AEC0; cursor: pointer; text-align: center; transition: color 0.3s; }
+        .lang-btn.active { color: #4A55E2; }
+        .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .toggle-gu { transform: translateX(100%); }
         
         .social-btn { 
             width: 3.5rem; 
@@ -159,16 +146,10 @@
 
         @media print {
             @page { margin: 0; size: A4 portrait; }
-            * { 
-                -webkit-print-color-adjust: exact !important; 
-                print-color-adjust: exact !important; 
-                color-adjust: exact !important;
-            }
-            
-            body { background-color: #000000 !important; color: #f8fafc !important; padding: 0 !important; margin: 0 !important; }
-            body.light-mode { background-color: #f1f5f9 !important; color: #0f172a !important; }
-            
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
+            
             #main-container { max-width: none !important; width: 210mm !important; padding: 0 !important; margin: 0 !important; }
             
             .page-wrapper { 
@@ -186,47 +167,42 @@
             .glass-card { 
                 width: 100% !important;
                 height: 100% !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important; 
+                border: 1px solid #E2E8F0 !important; 
                 box-shadow: none !important;
                 border-radius: 2.2rem !important;
                 display: flex !important;
                 flex-direction: column !important;
                 padding: 12mm !important;
-                background: rgba(15, 23, 42, 0.95) !important;
-                color: #f8fafc !important;
+                background: white !important;
             }
-            body.light-mode .glass-card { background: #ffffff !important; border: 1px solid rgba(0,0,0,0.1) !important; color: #0f172a !important; }
 
             .page-wrapper:nth-child(1) .glass-card { justify-content: space-between !important; }
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 12mm !important; }
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
-            
-            .info-card-print { background: #0f172a !important; border: 1px solid rgba(255, 255, 255, 0.05) !important; }
-            body.light-mode .info-card-print { background: #f8fafc !important; border: 1px solid rgba(0,0,0,0.05) !important; }
-            
-            .char { color: #f8fafc !important; opacity: 1 !important; font-size: 3rem; }
-            body.light-mode .char { color: #334155 !important; }
+            .char { color: #334155 !important; opacity: 1 !important; font-size: 3rem; }
 
             .gallery-print-box {
                 height: 105mm !important;
                 width: 100% !important;
                 margin-bottom: 5mm !important;
-                background: #0f172a !important;
+                background: #f8fafc !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 overflow: hidden !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
             }
-            body.light-mode .gallery-print-box { background: #f1f5f9 !important; border: 1px solid rgba(0,0,0,0.1) !important; }
-            .gallery-print-box img { object-fit: contain !important; width: 100% !important; height: 100% !important; }
+            .gallery-print-box img {
+                object-fit: contain !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
             .hide-header-print { display: none !important; }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased text-slate-800">
 
     <div id="root"></div>
 
@@ -293,30 +269,28 @@
             );
         };
 
-        const InfoCard = ({ label, value, fullWidth, lang, theme }) => (
-            <div className={`p-4 rounded-[1.5rem] border info-card-print ${fullWidth ? 'col-span-2' : 'col-span-1'} print:p-2.5 ${theme === 'light' ? 'bg-slate-50 border-slate-200' : 'bg-[#0f172a] border-white/5'}`}>
-                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[11px] uppercase tracking-widest'} font-bold ${theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'} mb-1`}>{label}</p>
-                <p className={`text-[18px] md:text-[20px] font-medium leading-tight print:text-[16px] ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{value}</p>
+        const InfoCard = ({ label, value, fullWidth, lang }) => (
+            <div className={`bg-slate-50 p-4 rounded-[1.5rem] border border-slate-100 ${fullWidth ? 'col-span-2' : 'col-span-1'} print:p-2.5`}>
+                <p className={`${lang === 'gu' ? 'text-[12px]' : 'text-[11px] uppercase tracking-widest'} font-bold text-indigo-400 mb-1`}>{label}</p>
+                <p className="text-[18px] md:text-[20px] font-medium text-slate-900 leading-tight print:text-[16px]">{value}</p>
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle, className, theme }) => (
+        const SectionHeader = ({ title, icon, subtitle, className }) => (
             <div className={`flex items-center justify-between mb-3 ${className}`}>
                 <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center print:w-8 print:h-8 ${theme === 'light' ? 'bg-slate-200 text-indigo-600' : 'bg-white/5 text-indigo-400'}`}>
-                        <i className={`fas ${icon} print:text-sm`}></i>
-                    </div>
-                    <h2 className={`text-2xl font-bold print:text-xl ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{title}</h2>
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-indigo-600 print:w-8 print:h-8"><i className={`fas ${icon} print:text-sm`}></i></div>
+                    <h2 className="text-2xl font-bold text-slate-800 print:text-xl">{title}</h2>
                 </div>
-                {subtitle && <span className={`${theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'} font-bold text-[14px] no-print`}>{subtitle}</span>}
+                {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
             </div>
         );
 
         const Lightbox = ({ activeImg, onClose }) => {
             if (!activeImg) return null;
             return (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90 backdrop-blur-xl p-4 no-print" onClick={onClose}>
-                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden bg-slate-900 shadow-2xl">
+                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4 no-print" onClick={onClose}>
+                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden bg-white shadow-2xl">
                         <img src={activeImg} className="w-full h-full object-contain block mx-auto" />
                     </div>
                 </div>
@@ -325,39 +299,27 @@
 
         const App = () => {
             const [lang, setLang] = useState('en');
-            const [theme, setTheme] = useState('dark'); // Dark mode default
             const [selectedImg, setSelectedImg] = useState(null);
             const t = translations[lang];
 
             useEffect(() => {
                 document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
-                if(theme === 'light') document.body.classList.add('light-mode');
-                else document.body.classList.remove('light-mode');
-            }, [selectedImg, theme]);
+            }, [selectedImg]);
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'}`}>
                     <Lightbox activeImg={selectedImg} onClose={() => setSelectedImg(null)} />
                     
-                    <nav className={`sticky top-0 z-[100] border-b border-white/5 no-print ${theme === 'light' ? 'bg-white/80' : 'bg-black/80'} backdrop-blur-md`}>
+                    <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-white/10" />
-                                <span className={`text-xl font-extrabold ${theme === 'light' ? 'text-slate-800' : 'text-white'}`}>{t.headerName}</span>
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-slate-200" />
+                                <span className="text-xl font-extrabold text-slate-800">{t.headerName}</span>
                             </div>
-                            <div className="flex items-center gap-2">
-                                {/* MODE SWITCHER - Moon First, Sun Second */}
-                                <div className="lang-switch-bg cursor-pointer !w-[100px]" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-                                    <div className={`lang-toggle ${theme === 'light' ? 'toggle-sun' : ''}`}></div>
-                                    <button className={`lang-btn ${theme === 'dark' ? 'active' : ''}`}><i className="fas fa-moon"></i></button>
-                                    <button className={`lang-btn ${theme === 'light' ? 'active' : ''}`}><i className="fas fa-sun"></i></button>
-                                </div>
-                                {/* LANG SWITCHER */}
-                                <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
-                                    <div className={`lang-toggle ${lang === 'gu' ? 'toggle-gu' : ''}`}></div>
-                                    <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`}>English</button>
-                                    <button className={`lang-btn ${lang === 'gu' ? 'active' : ''}`}>ગુજરાતી</button>
-                                </div>
+                            <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
+                                <div className={`lang-toggle ${lang === 'gu' ? 'toggle-gu' : ''}`}></div>
+                                <button className={`lang-btn ${lang === 'en' ? 'active' : ''}`}>English</button>
+                                <button className={`lang-btn ${lang === 'gu' ? 'active' : ''}`}>ગુજરાતી</button>
                             </div>
                         </div>
                     </nav>
@@ -371,17 +333,17 @@
                             <div className="glass-card">
                                 <div className="text-center flex flex-col gap-4">
                                     <div className="w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-2 mx-auto print:w-44 print:h-44">
-                                        <div className={`w-full h-full rounded-[51px] overflow-hidden ${theme === 'light' ? 'bg-white' : 'bg-black'}`}>
+                                        <div className="w-full h-full bg-white rounded-[51px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
                                     <AnimatedHello text={t.welcomeTitle} lang={lang} />
-                                    <div className={`flex items-center justify-center gap-2 font-bold text-lg print:text-base ${theme === 'light' ? 'text-slate-600' : 'text-slate-300'}`}>
-                                        <i className={`fas fa-link ${theme === 'light' ? 'text-indigo-600' : 'text-indigo-400'}`}></i>
+                                    <div className="flex items-center justify-center gap-2 text-slate-700 font-bold text-lg print:text-base">
+                                        <i className="fas fa-link text-indigo-500"></i>
                                         <span>{t.connectText}</span>
                                     </div>
                                     <div className="flex gap-6 justify-center">
-                                        <a href={`tel:${commonData.mobileNumber}`} className={`social-btn border border-white/5 shadow-sm ${theme === 'light' ? 'bg-slate-200 text-indigo-600' : 'bg-slate-800 text-indigo-400'}`}>
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn bg-slate-150 text-blue-500 border border-slate-300 shadow-sm">
                                             <i className="fas fa-phone"></i>
                                         </a>
                                         <a href={commonData.social.whatsapp} target="_blank" className="social-btn bg-[#25D366] text-white">
@@ -393,9 +355,9 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <SectionHeader icon="fa-user" title={t.titles.info} theme={theme} />
-                                    <div className="grid grid-cols-2 gap-4 info-grid-print">
-                                        {infoData(lang).map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} theme={theme} />)}
+                                    <SectionHeader icon="fa-user" title={t.titles.info} />
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        {infoData(lang).map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
                                     </div>
                                 </div>
                             </div>
@@ -404,27 +366,27 @@
                         <div className="page-wrapper">
                             <div className="glass-card">
                                 <div>
-                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} theme={theme} />
-                                    <div className="grid grid-cols-2 gap-4 info-grid-print">
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} fullWidth={true} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} fullWidth={true} lang={lang} />
+                                    <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} fullWidth={true} lang={lang} />
                                     </div>
                                 </div>
                                 <div>
-                                    <SectionHeader icon="fa-users" title={t.titles.fam} theme={theme} />
-                                    <div className="grid grid-cols-2 gap-4 info-grid-print">
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value={lang === 'en' ? "Ashokbhai Ganeshbhai Anaghan" : "અશોકભાઈ ગણેશભાઈ અણઘણ"} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value={lang === 'en' ? "Textile Business" : "ટેક્સટાઇલ બિઝનેસ"} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value={lang === 'en' ? "Jayshriben Ashokbhai Anaghan" : "જયશ્રીબેન અશોકભાઈ અણઘણ"} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value={lang === 'en' ? "Housewife" : "ગૃહિણી"} lang={lang} />
+                                    <SectionHeader icon="fa-users" title={t.titles.fam} />
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value={lang === 'en' ? "Ashokbhai Ganeshbhai Anaghan" : "અશોકભાઈ ગણેશભાઈ અણઘણ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value={lang === 'en' ? "Textile Business" : "ટેક્સટાઇલ બિઝનેસ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value={lang === 'en' ? "Jayshriben Ashokbhai Anaghan" : "જયશ્રીબેન અશોકભાઈ અણઘણ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value={lang === 'en' ? "Housewife" : "ગૃહિણી"} lang={lang} />
                                     </div>
                                 </div>
                                 <div>
-                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} theme={theme} />
-                                    <div className="grid grid-cols-2 gap-4 info-grid-print">
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Brother Name" : "ભાઈનું નામ"} value={lang === 'en' ? "Darshil Ashokbhai Anaghan" : "દર્શિલ અશોકભાઈ અણઘણ"} fullWidth={true} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Relation" : "સંબંધ"} value={lang === 'en' ? "Elder Brother" : "મોટો ભાઈ"} lang={lang} />
-                                        <InfoCard theme={theme} label={lang === 'en' ? "Occupation" : "વ્યવસાય"} value={lang === 'en' ? "Job in Marketing" : "માર્કેટિંગમાં નોકરી"} lang={lang} />
+                                    <SectionHeader icon="fa-user-group" title={t.titles.sib} />
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Brother Name" : "ભાઈનું નામ"} value={lang === 'en' ? "Darshil Ashokbhai Anaghan" : "દર્શિલ અશોકભાઈ અણઘણ"} fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Relation" : "સંબંધ"} value={lang === 'en' ? "Elder Brother" : "મોટો ભાઈ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Occupation" : "વ્યવસાય"} value={lang === 'en' ? "Job in Marketing" : "માર્કેટિંગમાં નોકરી"} lang={lang} />
                                     </div>
                                 </div>
                             </div>
@@ -432,13 +394,13 @@
 
                         <div className="page-wrapper gallery-wrapper-1">
                             <div className="glass-card gallery-card-1">
-                                <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} theme={theme} />
+                                <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="flex flex-col gap-6">
                                     {commonData.gallery.slice(0, 2).map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className={`w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 flex items-center justify-center cursor-zoom-in group relative shadow-sm ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/5'}`}>
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                 e.target.style.display = 'none';
-                                                e.target.parentElement.innerHTML = `<span class="text-slate-500 font-bold">Image ${i+1}</span>`;
+                                                e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+1}</span>`;
                                             }} />
                                         </div>
                                     ))}
@@ -448,13 +410,13 @@
 
                         <div className="page-wrapper gallery-wrapper-2">
                             <div className="glass-card gallery-card-2">
-                                <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} theme={theme} />
+                                <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
                                 <div className="flex flex-col gap-6 print:justify-center">
                                     {commonData.gallery.slice(2, 4).map((img, i) => (
-                                        <div key={i + 2} onClick={() => setSelectedImg(img)} className={`w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 flex items-center justify-center cursor-zoom-in group relative shadow-sm ${theme === 'light' ? 'bg-white border-slate-200' : 'bg-slate-900 border-white/5'}`}>
+                                        <div key={i + 2} onClick={() => setSelectedImg(img)} className="w-full aspect-[4/5] print:aspect-auto gallery-print-box rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative shadow-sm">
                                             <img src={img} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
                                                 e.target.style.display = 'none';
-                                                e.target.parentElement.innerHTML = `<span class="text-slate-500 font-bold">Image ${i+3}</span>`;
+                                                e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+3}</span>`;
                                             }} />
                                         </div>
                                     ))}
