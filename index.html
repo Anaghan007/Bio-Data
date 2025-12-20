@@ -12,7 +12,7 @@
     
     <link rel="manifest" id="pwa-manifest">
 
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -46,12 +46,12 @@
                         gujarati: ['Noto Sans Gujarati', 'sans-serif'],
                     },
                     animation: { 
-                        'fade-in': 'fadeIn 0.2s ease-out',
-                        'floating': 'floating 4.5s ease-in-out infinite'
+                        'floating': 'floating 4.5s ease-in-out infinite',
+                        'simple-appear': 'simpleAppear 0.01s forwards'
                     },
                     keyframes: {
-                        fadeIn: { '0%': { opacity: '0', transform: 'scale(1.02)' }, '100%': { opacity: '1', transform: 'scale(1)' } },
-                        floating: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } }
+                        floating: { '0%, 100%': { transform: 'translateY(0px)' }, '50%': { transform: 'translateY(-15px)' } },
+                        simpleAppear: { '0%': { opacity: '0' }, '100%': { opacity: '1' } }
                     }
                 }
             }
@@ -64,7 +64,7 @@
         
         body { background-color: #f8fafc; }
         #main-container { width: 100%; max-width: 720px; margin: 0 auto; padding: 1.5rem; }
-        .page-wrapper { margin-bottom: 3rem; width: 100%; display: block; }
+        .page-wrapper { margin-bottom: 2rem; width: 100%; display: block; }
         
         .glass-card {
             background: rgba(255, 255, 255, 0.95);
@@ -72,7 +72,31 @@
             border: 1px solid rgba(226, 232, 240, 0.8);
             border-radius: 2.5rem; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hello-container {
+            font-family: 'Pacifico', cursive;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90px;
+            overflow: visible !important;
+            margin-top: -10px;
+            margin-bottom: -10px;
+        }
+
+        .char {
+            display: inline-block;
+            opacity: 0;
+            /* Updated to match the light grey/slate of the Connect text */
+            color: #334155; 
+            font-size: 4rem; 
+            line-height: 1.6;
+            margin-right: -0.01em;
         }
 
         .lang-switch-bg { background: #E8EBF2; padding: 6px; border-radius: 999px; display: flex; position: relative; width: 170px; height: 48px; align-items: center; }
@@ -81,55 +105,45 @@
         .lang-toggle { position: absolute; height: calc(100% - 12px); width: calc(50% - 6px); background: white; border-radius: 999px; top: 6px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .toggle-gu { transform: translateX(100%); }
         
-        /* SOCIAL ICONS: All movement and floating removed */
-        .social-btn { 
-            width: 3.5rem; 
-            height: 3.5rem; 
-            border-radius: 1.2rem; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            font-size: 1.5rem; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: none !important; /* Removes all transition animations */
-            transform: none !important; /* Ensures no movement */
-        }
-        .social-btn:hover, .social-btn:active {
-            transform: none !important; /* Stays still on hover/click */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1) !important; /* Keeps shadow consistent */
-        }
-
-        .btn-phone { background: white !important; color: #007AFF !important; border: 1px solid #edf2f7 !important; }
-        .btn-whatsapp { background: #25D366 !important; color: white !important; }
-        .btn-instagram { background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%) !important; color: white !important; }
+        .social-btn { width: 3.5rem; height: 3.5rem; border-radius: 1.2rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: all 0.3s; }
 
         @media print {
             @page { margin: 0; size: A4 portrait; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { background: white !important; }
+            body { background: white !important; padding: 0 !important; margin: 0 !important; }
             .no-print, nav, button.fixed { display: none !important; }
-            #main-container { max-width: none !important; width: 100% !important; padding: 0 !important; }
+            
+            #main-container { max-width: none !important; width: 210mm !important; padding: 0 !important; margin: 0 !important; }
+            
             .page-wrapper { 
                 height: 297mm !important; 
                 width: 210mm !important; 
                 page-break-after: always !important;
-                padding: 10mm 15mm 15mm 15mm !important; 
+                padding: 15mm 20mm !important; 
+                margin: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                margin: 0 !important;
+                justify-content: center !important; 
+                align-items: center !important;
             }
+            
             .glass-card { 
+                width: 100% !important;
+                height: 100% !important;
                 border: 1px solid #E2E8F0 !important; 
                 box-shadow: none !important;
                 border-radius: 2.2rem !important;
-                flex: 1 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: space-evenly !important; 
-                padding: 10mm !important;
+                padding: 12mm !important;
                 background: white !important;
             }
-            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
+
+            .page-wrapper:nth-child(1) .glass-card { justify-content: space-between !important; }
+            .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 12mm !important; }
+
+            .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
+            .char { color: #334155 !important; opacity: 1 !important; font-size: 3rem; }
         }
     </style>
 </head>
@@ -150,76 +164,45 @@
         const translations = {
             en: {
                 headerName: "Anaghan's Profile",
-                welcomeTitle: "Hello, I'm Smit Anaghan",
-                welcomeSub: "(Social Media Manager)",
+                welcomeTitle: "hello",
                 connectText: "Click to Connect With Me",
                 clickToView: "(Click For View Image)",
-                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" },
-                infoData: [
-                    { label: "Full Name", value: "Anaghan Smit Ashokbhai", fullWidth: true },
-                    { label: "Date Of Birth", value: "16-10-2002" },
-                    { label: "Age", value: "23 Years" },
-                    { label: "Height", value: "5' 10\"" },
-                    { label: "Caste", value: "Patel (Leuva)" },
-                    { label: "Village", value: "Sagapara" },
-                    { label: "District", value: "Bhavnagar" },
-                    { label: "Taluka", value: "Chorashi" },
-                    { label: "City", value: "Surat, Gujarat" },
-                    { label: "Job Title", value: "Social Media Manager" },
-                    { label: "Income", value: "0 LPA" },
-                ],
-                educationData: [
-                    { label: "Bachelor's", value: "Bachelor in Computer Application (BCA) , (VNSGU)" },
-                    { label: "Master's", value: "MSc in Digital Marketing (DBS, Ireland)" }
-                ],
-                familyData: [
-                    { label: "Father Name", value: "Ashokbhai Ganeshbhai Anaghan" },
-                    { label: "Father Occupation", value: "Textile Business Owner" },
-                    { label: "Mother Name", value: "Jayshriben Ashokbhai Anaghan" },
-                    { label: "Mother Occupation", value: "Housewife" },
-                ],
-                siblingData: [
-                    { label: "Brother Name", value: "Darshil Ashokbhai Anaghan", fullWidth: true },
-                    { label: "Relation", value: "Elder Brother" },
-                    { label: "Occupation", value: "Job in Marketing" },
-                ]
+                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" }
             },
             gu: {
                 headerName: "અણઘણ ની પ્રોફાઈલ",
-                welcomeTitle: "નમસ્તે, હું સ્મિત અણઘણ છું",
-                welcomeSub: "(સોશિયલ મીડિયા મેનેજર)",
+                welcomeTitle: "નમસ્તે",
                 connectText: "મારી સાથે જોડાવા માટે ક્લિક કરો",
                 clickToView: "(ફોટો જોવા માટે ક્લિક કરો)",
-                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" },
-                infoData: [
-                    { label: "પૂરું નામ", value: "અણઘણ સ્મિત અશોકભાઈ", fullWidth: true },
-                    { label: "જન્મ તારીખ", value: "૧૬-૧૦-૨૦૦૨" },
-                    { label: "ઉંમર", value: "૨૩ વર્ષ" },
-                    { label: "ઊંચાઈ", value: "૫ ફૂટ ૧૦ ઇંચ" },
-                    { label: "જ્ઞાતિ", value: "પટેલ (લેઉવા)" },
-                    { label: "ગામ", value: "સગાપરા" },
-                    { label: "જીલ્લો", value: "ભાવનગર" },
-                    { label: "તાલુકો", value: "ચોર્યાસી" },
-                    { label: "શહેર", value: "સુરત, ગુજરાત" },
-                    { label: "વ્યવસાય", value: "સોશિયલ મીડિયા મેનેજર" },
-                    { label: "આવક", value: "0 લાખ / વર્ષ" },
-                ],
-                educationData: [
-                    { label: "સ્નાતક", value: "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (VNSGU)" },
-                    { label: "અનુસ્નાતક", value: "MSc ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)" }
-                ],
-                familyData: [
-                    { label: "પિતાનું નામ", value: "અશોકભાઈ ગણેશભાઈ અણઘણ" },
-                    { label: "પિતાનો વ્યવસાય", value: "ટેક્સટાઈલ બિઝનેસ" },
-                    { label: "માતાનું નામ", value: "જયશ્રીબેન અશોકભાઈ અણઘણ" },
-                    { label: "માતાનો વ્યવસાય", value: "ગૃહિણી" },
-                ],
-                siblingData: [
-                    { label: "ભાઈનું નામ", value: "દર્શિલ અશોકભાઈ અણઘણ", fullWidth: true },
-                    { label: "સંબંધ", value: "મોટો ભાઈ" },
-                    { label: "વ્યવસાય", value: "માર્કેટિંગ જોબ" },
-                ]
+                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" }
             }
+        };
+
+        const infoData = (t) => [
+            { label: t === 'en' ? "Full Name" : "પૂરું નામ", value: "Anaghan Smit Ashokbhai", fullWidth: true },
+            { label: t === 'en' ? "Date Of Birth" : "જન્મ તારીખ", value: "16-10-2002" },
+            { label: t === 'en' ? "Age" : "ઉંમર", value: "23 Years" },
+            { label: t === 'en' ? "Height" : "ઊંચાઈ", value: "5' 10\"" },
+            { label: t === 'en' ? "Caste" : "જ્ઞાતિ", value: "Patel (Leuva)" },
+            { label: t === 'en' ? "Village" : "ગામ", value: "Sagapara" },
+            { label: t === 'en' ? "District" : "જીલ્લો", value: "Bhavnagar" },
+            { label: t === 'en' ? "Taluka" : "તાલુકો", value: "Chorashi" },
+            { label: t === 'en' ? "City" : "શહેર", value: "Surat, Gujarat" },
+            { label: t === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ", value: "Social Media Manager" },
+            { label: t === 'en' ? "Income" : "આવક", value: "0 LPA" },
+        ];
+
+        const AnimatedHello = ({ text }) => {
+            const chars = text.split("");
+            return (
+                <div className="hello-container">
+                    {chars.map((char, index) => (
+                        <span key={index} className="char animate-simple-appear" style={{ animationDelay: `${index * 0.4}s` }}>
+                            {char === " " ? "\u00A0" : char}
+                        </span>
+                    ))}
+                </div>
+            );
         };
 
         const InfoCard = ({ label, value, fullWidth, lang }) => (
@@ -229,27 +212,22 @@
             </div>
         );
 
-        const SectionHeader = ({ title, icon, subtitle, hide = false }) => {
-            if (hide) return null;
-            return (
-                <div className="flex items-center justify-between mb-5 mt-2 print:mt-0 print:mb-2">
-                    <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 shadow-sm print:w-7 print:h-7">
-                            <i className={`fas ${icon} text-base print:text-xs`}></i>
-                        </div>
-                        <h2 className="text-2xl font-bold text-slate-800 tracking-tight print:text-lg">{title}</h2>
-                    </div>
-                    {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
+        const SectionHeader = ({ title, icon, subtitle }) => (
+            <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-indigo-600 print:w-8 print:h-8"><i className={`fas ${icon} print:text-sm`}></i></div>
+                    <h2 className="text-2xl font-bold text-slate-800 print:text-xl">{title}</h2>
                 </div>
-            );
-        };
+                {subtitle && <span className="text-indigo-600 font-bold text-[14px] no-print">{subtitle}</span>}
+            </div>
+        );
 
         const Lightbox = ({ activeImg, onClose }) => {
             if (!activeImg) return null;
             return (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4 animate-fade-in no-print cursor-zoom-out" onClick={onClose}>
-                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl border-2 border-white/20 bg-white">
-                        <img src={activeImg} className="w-full h-full object-contain max-h-[85vh] block mx-auto" />
+                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-900/80 backdrop-blur-xl p-4 no-print" onClick={onClose}>
+                    <div className="max-w-4xl w-full max-h-[90vh] rounded-[2rem] overflow-hidden bg-white shadow-2xl">
+                        <img src={activeImg} className="w-full h-full object-contain block mx-auto" />
                     </div>
                 </div>
             );
@@ -263,9 +241,6 @@
             useEffect(() => {
                 document.body.style.overflow = selectedImg ? 'hidden' : 'unset';
             }, [selectedImg]);
-
-            const galleryPart1 = commonData.gallery.slice(0, 2);
-            const galleryPart2 = commonData.gallery.slice(2, 4);
 
             return (
                 <div className={`${lang === 'gu' ? 'font-gujarati' : 'font-sans'}`}>
@@ -290,87 +265,76 @@
                     </button>
 
                     <div id="main-container">
+                        {/* PAGE 1 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="p-8 text-center print:p-3">
-                                    <div className="animate-floating w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-6 mx-auto print:w-36 print:h-36 print:animate-none print:mb-3 print:rounded-[50px]">
-                                        <div className="w-full h-full bg-white rounded-[51px] print:rounded-[46px] overflow-hidden">
+                                <div className="text-center flex flex-col gap-4">
+                                    <div className="animate-floating w-40 h-40 rounded-[55px] p-[4px] bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 shadow-xl mb-2 mx-auto print:w-44 print:h-44 print:animate-none">
+                                        <div className="w-full h-full bg-white rounded-[51px] overflow-hidden">
                                             <img src={commonData.avatar3D} className="w-full h-full object-cover" />
                                         </div>
                                     </div>
-                                    <h2 className="text-4xl font-extrabold text-slate-900 mb-2 print:text-2xl">{t.welcomeTitle}</h2>
-                                    <p className="text-indigo-600 font-bold text-lg mb-4 print:mb-4 print:text-base">{t.welcomeSub}</p>
-                                    
-                                    <div className="flex items-center justify-center gap-2 mb-4 text-slate-700 font-bold text-lg print:text-base print:mb-3">
+                                    <AnimatedHello text={t.welcomeTitle} />
+                                    <div className="flex items-center justify-center gap-2 text-slate-700 font-bold text-lg print:text-base">
                                         <i className="fas fa-link text-indigo-500"></i>
                                         <span>{t.connectText}</span>
                                     </div>
-
-                                    <div className="flex gap-6 justify-center mb-2 print:gap-4">
-                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn btn-phone"><i className="fas fa-phone"></i></a>
-                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn btn-whatsapp"><i className="fab fa-whatsapp"></i></a>
-                                        <a href={commonData.social.instagram} target="_blank" className="social-btn btn-instagram"><i className="fab fa-instagram"></i></a>
+                                    <div className="flex gap-6 justify-center">
+                                        <a href={`tel:${commonData.mobileNumber}`} className="social-btn bg-white text-blue-500 border border-slate-100"><i className="fas fa-phone"></i></a>
+                                        <a href={commonData.social.whatsapp} target="_blank" className="social-btn bg-[#25D366] text-white"><i className="fab fa-whatsapp"></i></a>
+                                        <a href={commonData.social.instagram} target="_blank" className="social-btn bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white"><i className="fab fa-instagram"></i></a>
                                     </div>
                                 </div>
-                                <div className="px-8 pb-10 print:px-6 print:pb-0">
+                                <div>
                                     <SectionHeader icon="fa-user" title={t.titles.info} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
-                                        {t.infoData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        {infoData(lang).map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} fullWidth={item.fullWidth} />)}
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        {/* PAGE 2 */}
                         <div className="page-wrapper">
                             <div className="glass-card">
-                                <div className="px-8 pt-10 print:pt-4">
+                                <div>
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
-                                    <div className="grid grid-cols-1 gap-4 print:gap-2">
-                                        {t.educationData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={true} lang={lang} />)}
+                                    <div className="grid grid-cols-1 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value="Bachelor in Computer Application (BCA), (VNSGU)" fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value="MSc in Digital Marketing (DBS, Ireland)" fullWidth={true} lang={lang} />
                                     </div>
                                 </div>
-                                <div className="px-8 py-8 print:px-6 print:py-1">
+                                <div>
                                     <SectionHeader icon="fa-users" title={t.titles.fam} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
-                                        {t.familyData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} lang={lang} />)}
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Father Name" : "પિતાનું નામ"} value="Ashokbhai Ganeshbhai Anaghan" lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Father Occupation" : "પિતાનો વ્યવસાય"} value="Textile Business Owner" lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Name" : "માતાનું નામ"} value="Jayshriben Ashokbhai Anaghan" lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Mother Occupation" : "માતાનો વ્યવસાય"} value="Housewife" lang={lang} />
                                     </div>
                                 </div>
-                                <div className="px-8 pb-10 print:px-6 print:pb-4">
+                                <div>
                                     <SectionHeader icon="fa-user-group" title={t.titles.sib} />
-                                    <div className="info-grid-print grid grid-cols-2 gap-4 print:gap-2">
-                                        {t.siblingData.map((item, i) => <InfoCard key={i} label={item.label} value={item.value} fullWidth={item.fullWidth} lang={lang} />)}
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Brother Name" : "ભાઈનું નામ"} value="Darshil Ashokbhai Anaghan" fullWidth={true} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Relation" : "સંબંધ"} value={lang === 'en' ? "Elder Brother" : "મોટો ભાઈ"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Occupation" : "વ્યવસાય"} value={lang === 'en' ? "Job in Marketing" : "માર્કેટિંગ જોબ"} lang={lang} />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        {/* PAGE 3 */}
                         <div className="page-wrapper">
-                            <div className="glass-card p-10 print:p-6 flex flex-col h-full">
+                            <div className="glass-card">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
-                                <div className="flex flex-col gap-6 flex-grow overflow-hidden">
-                                    {galleryPart1.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-100/50 flex items-center justify-center cursor-zoom-in group relative">
+                                <div className="grid grid-cols-2 gap-5 flex-grow">
+                                    {commonData.gallery.map((img, i) => (
+                                        <div key={i} onClick={() => setSelectedImg(img)} className="aspect-square rounded-[2rem] overflow-hidden border-2 border-slate-100 bg-slate-50 flex items-center justify-center cursor-zoom-in group relative">
                                             <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
-                                                    e.target.style.display = 'none';
-                                                    e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+1}</span>`;
-                                                }}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="page-wrapper">
-                            <div className="glass-card p-10 print:p-6 flex flex-col h-full">
-                                <div className="flex flex-col gap-6 flex-grow overflow-hidden">
-                                    {galleryPart2.map((img, i) => (
-                                        <div key={i} onClick={() => setSelectedImg(img)} className="flex-1 rounded-[2.5rem] overflow-hidden border-2 border-slate-100 bg-slate-100/50 flex items-center justify-center cursor-zoom-in group relative">
-                                            <img src={img} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={(e) => { 
-                                                    e.target.style.display = 'none';
-                                                    e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Photo ${i+3}</span>`;
-                                                }}
-                                            />
+                                                e.target.style.display = 'none';
+                                                e.target.parentElement.innerHTML = `<span class="text-slate-300 font-bold">Image ${i+1}</span>`;
+                                            }} />
                                         </div>
                                     ))}
                                 </div>
