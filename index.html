@@ -88,7 +88,7 @@
                 border-bottom: none !important; 
                 border-bottom-left-radius: 0 !important; 
                 border-bottom-right-radius: 0 !important;
-                padding-bottom: 0.75rem !important; /* Half of the standard 1.5rem gap */
+                padding-bottom: 0.75rem !important;
             }
             
             .gallery-wrapper-2 { margin-top: 0 !important; }
@@ -96,7 +96,7 @@
                 border-top: none !important; 
                 border-top-left-radius: 0 !important; 
                 border-top-right-radius: 0 !important; 
-                padding-top: 0.75rem !important; /* Half of the standard 1.5rem gap */
+                padding-top: 0.75rem !important;
             }
             .gallery-card-2 .web-hide { display: none !important; }
         }
@@ -220,14 +220,14 @@
                 headerName: "Anaghan's Profile",
                 welcomeTitle: "hello",
                 connectText: "Click to Connect With Me",
-                clickToView: "(Click For View Image)",
+                clickToView: "(Click on image to view in full Screen)",
                 titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" }
             },
             gu: {
                 headerName: "અણઘણ ની પ્રોફાઈલ",
                 welcomeTitle: "નમસ્તે",
                 connectText: "મારી સાથે જોડાવા માટે ક્લિક કરો",
-                clickToView: "(ફોટો જોવા માટે ક્લિક કરો)",
+                clickToView: "(આખો ફોટો જોવા માટે તેના પર ક્લિક કરો)",
                 titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" }
             }
         };
@@ -391,7 +391,6 @@
                             </div>
                         </div>
 
-                        {/* PAGE 3 - Gallery Part 1 */}
                         <div className="page-wrapper gallery-wrapper-1">
                             <div className="glass-card gallery-card-1">
                                 <SectionHeader icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
@@ -408,7 +407,6 @@
                             </div>
                         </div>
 
-                        {/* PAGE 4 - Gallery Part 2 */}
                         <div className="page-wrapper gallery-wrapper-2">
                             <div className="glass-card gallery-card-2">
                                 <SectionHeader className="hide-header-print web-hide" icon="fa-images" title={t.titles.gal} subtitle={t.clickToView} />
