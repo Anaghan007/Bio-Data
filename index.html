@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // --- PWA CONFIGURATION (FIXED) ---
+        // --- PWA CONFIGURATION ---
         const manifestData = {
             "name": "Anaghan's Profile",
             "short_name": "Anaghan",
@@ -42,29 +42,27 @@
         // REGISTER SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log("SW registration failed:", err));
             });
         }
 
-        // AUTO-PROMPT LOGIC
+        // UPDATED AUTO-PROMPT LOGIC (IMMEDIATE ATTEMPT)
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent default browser bar from showing
             e.preventDefault();
             deferredPrompt = e;
             
-            // Trigger popup on first interaction to comply with browser security
-            const triggerPrompt = () => {
-                if (deferredPrompt) {
-                    deferredPrompt.prompt();
-                    deferredPrompt.userChoice.then(() => {
-                        deferredPrompt = null;
-                        window.removeEventListener('scroll', triggerPrompt);
-                        window.removeEventListener('click', triggerPrompt);
-                    });
-                }
-            };
-            window.addEventListener('scroll', triggerPrompt, { once: true });
-            window.addEventListener('click', triggerPrompt, { once: true });
+            // Trigger immediately upon finding the event
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
         });
 
         tailwind.config = {
