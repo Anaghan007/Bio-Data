@@ -81,7 +81,9 @@
             gap: 2rem;
         }
 
-        /* FIX: Equal spacing between 4 images on website */
+        /* Incremental gap for the 4-section container on website */
+        .details-card-web { gap: 2.75rem !important; }
+
         @media screen {
             .gallery-wrapper-1 { margin-bottom: 0 !important; }
             .gallery-card-1 { 
@@ -159,7 +161,6 @@
                 margin: 0 !important;
                 display: flex !important;
                 flex-direction: column !important;
-                justify-content: center !important; 
                 align-items: center !important;
             }
             
@@ -175,8 +176,13 @@
                 background: white !important;
             }
 
-            .page-wrapper:nth-child(1) .glass-card { justify-content: space-between !important; }
-            .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 12mm !important; }
+            .page-wrapper:nth-child(1) { justify-content: flex-start !important; padding-top: 25mm !important; }
+            .page-wrapper:nth-child(1) .glass-card { justify-content: flex-start !important; gap: 16mm !important; }
+            
+            /* Keep Page 2 tight for PDF to fit 4 sections */
+            .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 8mm !important; }
+            .details-card-web { gap: 8mm !important; } /* Override web gap for PDF */
+
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
@@ -190,7 +196,7 @@
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
-                overflow: hidden !important;
+                overflow: hidden;
             }
             .gallery-print-box img {
                 object-fit: contain !important;
@@ -221,14 +227,14 @@
                 welcomeTitle: "hello",
                 connectText: "Click to Connect With Me",
                 clickToView: "(Click on image to view in full Screen)",
-                titles: { info: "Personal Information", edu: "Education", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" }
+                titles: { info: "Personal Information", edu: "Education", prof: "Professional Details", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" }
             },
             gu: {
                 headerName: "અણઘણ ની પ્રોફાઈલ",
                 welcomeTitle: "નમસ્તે",
                 connectText: "મારી સાથે જોડાવા માટે ક્લિક કરો",
                 clickToView: "(આખો ફોટો જોવા માટે તેના પર ક્લિક કરો)",
-                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" }
+                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", prof: "વ્યવસાયિક વિગતો", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" }
             }
         };
 
@@ -242,8 +248,6 @@
             { label: t === 'en' ? "District" : "જીલ્લો", value: t === 'en' ? "Bhavnagar" : "ભાવનગર" },
             { label: t === 'en' ? "Taluka" : "તાલુકો", value: t === 'en' ? "Chorashi" : "ચોર્યાસી" },
             { label: t === 'en' ? "City" : "શહેર", value: t === 'en' ? "Surat, Gujarat" : "સુરત, ગુજરાત" },
-            { label: t === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ", value: t === 'en' ? "Social Media Manager" : "સોશિયલ મીડિયા મેનેજર" },
-            { label: t === 'en' ? "Income" : "આવક", value: t === 'en' ? "0 LPA" : "0 લાખ / વર્ષ" },
         ];
 
         const AnimatedHello = ({ text, lang }) => {
@@ -363,12 +367,19 @@
                         </div>
 
                         <div className="page-wrapper">
-                            <div className="glass-card">
+                            <div className="glass-card details-card-web">
                                 <div>
                                     <SectionHeader icon="fa-graduation-cap" title={t.titles.edu} />
                                     <div className="grid grid-cols-1 gap-4">
                                         <InfoCard label={lang === 'en' ? "Bachelor's" : "સ્નાતક"} value={lang === 'en' ? "Bachelor in Computer Application (BCA), (VNSGU)" : "બેચલર ઇન કોમ્પ્યુટર એપ્લિકેશન (BCA), (VNSGU)"} fullWidth={true} lang={lang} />
                                         <InfoCard label={lang === 'en' ? "Master's" : "અનુસ્નાતક"} value={lang === 'en' ? "MSc in Digital Marketing (DBS, Ireland)" : "એમ.એસસી ઇન ડિજિટલ માર્કેટિંગ (DBS, આયર્લેન્ડ)"} fullWidth={true} lang={lang} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <SectionHeader icon="fa-briefcase" title={t.titles.prof} />
+                                    <div className="info-grid-print grid grid-cols-2 gap-4">
+                                        <InfoCard label={lang === 'en' ? "Job Position" : "વ્યવસાયની સ્થિતિ"} value={lang === 'en' ? "Social Media Manager" : "સોશિયલ મીડિયા મેનેજર"} lang={lang} />
+                                        <InfoCard label={lang === 'en' ? "Income" : "આવક"} value={lang === 'en' ? "0 LPA" : "0 લાખ / વર્ષ"} lang={lang} />
                                     </div>
                                 </div>
                                 <div>
