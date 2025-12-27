@@ -81,7 +81,6 @@
             gap: 2rem;
         }
 
-        /* Incremental gap for the 4-section container on website */
         .details-card-web { gap: 2.75rem !important; }
 
         @media screen {
@@ -178,10 +177,8 @@
 
             .page-wrapper:nth-child(1) { justify-content: flex-start !important; padding-top: 25mm !important; }
             .page-wrapper:nth-child(1) .glass-card { justify-content: flex-start !important; gap: 16mm !important; }
-            
-            /* Keep Page 2 tight for PDF to fit 4 sections */
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 8mm !important; }
-            .details-card-web { gap: 8mm !important; } /* Override web gap for PDF */
+            .details-card-web { gap: 8mm !important; }
 
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
@@ -227,14 +224,28 @@
                 welcomeTitle: "hello",
                 connectText: "Click to Connect With Me",
                 clickToView: "(Click on image to view in full Screen)",
-                titles: { info: "Personal Information", edu: "Education", prof: "Professional Details", fam: "Family Background", sib: "Sibling Details", gal: "Gallery" }
+                titles: { 
+                    info: "Personal Information", 
+                    edu: "Education", 
+                    prof: "Job Details", // Updated
+                    fam: "Family Background", 
+                    sib: "Sibling Details", 
+                    gal: "Gallery" 
+                }
             },
             gu: {
                 headerName: "અણઘણ ની પ્રોફાઈલ",
                 welcomeTitle: "નમસ્તે",
                 connectText: "મારી સાથે જોડાવા માટે ક્લિક કરો",
                 clickToView: "(આખો ફોટો જોવા માટે તેના પર ક્લિક કરો)",
-                titles: { info: "વ્યક્તિગત માહિતી", edu: "શિક્ષણ", prof: "વ્યવસાયિક વિગતો", fam: "પારિવારિક વિગતો", sib: "ભાઈ-બહેનની વિગતો", gal: "ગેલેરી" }
+                titles: { 
+                    info: "વ્યક્તિગત માહિતી", 
+                    edu: "શિક્ષણ", 
+                    prof: "નોકરીની વિગતો", // Updated
+                    fam: "પારિવારિક વિગતો", 
+                    sib: "ભાઈ-બહેનની વિગતો", 
+                    gal: "ગેલેરી" 
+                }
             }
         };
 
