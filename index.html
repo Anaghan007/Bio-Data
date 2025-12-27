@@ -21,7 +21,8 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // PWA Configuration
+        // --- START PWA AUTO-FIX ---
+        // This generates the manifest and service worker inside one file
         const manifestData = {
             "name": "Anaghan's Profile",
             "short_name": "Anaghan",
@@ -33,18 +34,33 @@
                 "src": "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
                 "sizes": "512x512",
                 "type": "image/png",
-                "purpose": "any maskable"
+                "purpose": "any"
             }]
         };
-        const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-        document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
+        const mBlob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
+        document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(mBlob));
 
-        // REGISTER SERVICE WORKER (Fixes the Install Popup)
+        const swContent = `self.addEventListener('fetch', e => e.respondWith(fetch(e.request)));`;
+        const sBlob = new Blob([swContent], {type: 'application/javascript'});
+        const swUrl = URL.createObjectURL(sBlob);
+
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
-            });
+            navigator.serviceWorker.register(swUrl, { scope: './' });
         }
+
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            // Auto-trigger the popup after 2 seconds
+            setTimeout(() => {
+                if (deferredPrompt) {
+                    deferredPrompt.prompt();
+                    deferredPrompt.userChoice.then(() => { deferredPrompt = null; });
+                }
+            }, 2000);
+        });
+        // --- END PWA AUTO-FIX ---
 
         tailwind.config = {
             theme: {
@@ -187,7 +203,6 @@
             .page-wrapper:nth-child(1) .glass-card { justify-content: flex-start !important; gap: 16mm !important; }
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 8mm !important; }
             .details-card-web { gap: 8mm !important; }
-
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
