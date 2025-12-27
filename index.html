@@ -21,6 +21,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
+        // PWA Configuration
         const manifestData = {
             "name": "Anaghan's Profile",
             "short_name": "Anaghan",
@@ -37,6 +38,13 @@
         };
         const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
+
+        // REGISTER SERVICE WORKER (Fixes the Install Popup)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+            });
+        }
 
         tailwind.config = {
             theme: {
@@ -227,7 +235,7 @@
                 titles: { 
                     info: "Personal Information", 
                     edu: "Education", 
-                    prof: "Job Details", // Updated
+                    prof: "Job Details", 
                     fam: "Family Background", 
                     sib: "Sibling Details", 
                     gal: "Gallery" 
@@ -241,7 +249,7 @@
                 titles: { 
                     info: "વ્યક્તિગત માહિતી", 
                     edu: "શિક્ષણ", 
-                    prof: "નોકરીની વિગતો", // Updated
+                    prof: "નોકરીની વિગતો", 
                     fam: "પારિવારિક વિગતો", 
                     sib: "ભાઈ-બહેનની વિગતો", 
                     gal: "ગેલેરી" 
