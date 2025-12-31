@@ -8,9 +8,11 @@
     <meta name="theme-color" content="#4f46e5">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/png" href="avatar.png">
     
-    <link rel="manifest" id="pwa-manifest">
+    <link rel="icon" type="image/png" href="avatar.png">
+    <link rel="apple-touch-icon" href="avatar.png">
+    
+    <link rel="manifest" href='data:application/manifest+json;base64,ewogICJuYW1lIjogIkFuYWdoYW4ncyBQcm9maWxlIiwKICAic2hvcnRfbmFtZSI6ICJBbmFnaGFuIiwKICAic3RhcnRfdXJsIjogIi4vIiwKICAic2NvcGUiOiAiLi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmOGZhZmMiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiYXZhdGFyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIiwKICAgICAgInB1cnBvc2UiOiAiYW55IG1hc2thYmxlIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJhdmF0YXIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9'>
 
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Noto+Sans+Gujarati:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -21,45 +23,28 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // --- 1. DYNAMIC MANIFEST (For App Identity) ---
-        const manifestData = {
-            "name": "Anaghan's Profile",
-            "short_name": "Anaghan",
-            "start_url": "./index.html",
-            "display": "standalone",
-            "background_color": "#f8fafc",
-            "theme_color": "#4f46e5",
-            "icons": [{
-                "src": "avatar.png",
-                "sizes": "512x512",
-                "type": "image/png",
-                "purpose": "any maskable"
-            }]
-        };
-        const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-        document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
-
-        // --- 2. INLINE SERVICE WORKER (Triggers the install pop-up) ---
+        // --- PWA SERVICE WORKER ---
         if ('serviceWorker' in navigator) {
-            const swCode = `
-                const CACHE_NAME = 'anaghan-cache-v1';
-                self.addEventListener('install', (e) => {
-                    self.skipWaiting();
-                });
-                self.addEventListener('fetch', (e) => {
-                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
-                });
-            `;
-            const swBlob = new Blob([swCode], {type: 'application/javascript'});
-            const swUrl = URL.createObjectURL(swBlob);
-            navigator.serviceWorker.register(swUrl).catch(err => console.log("SW failed", err));
+            window.addEventListener('load', () => {
+                const swCode = `
+                    self.addEventListener('install', (event) => {
+                        self.skipWaiting();
+                    });
+                    self.addEventListener('fetch', (event) => {
+                        event.respondWith(fetch(event.request));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(err => console.log("SW failed:", err));
+            });
         }
 
-        // --- 3. AUTO-PROMPT LOGIC (Browser Pop-up) ---
+        // AUTO-PROMPT LOGIC
+        let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            // This event triggers the browser's own "Install App" banner
-            // We don't preventDefault() here so the browser handles the pop-up naturally
-            console.log('Install prompt is ready');
+            e.preventDefault();
+            deferredPrompt = e;
+            // The browser will now show the install prompt when appropriate
         });
 
         tailwind.config = {
@@ -203,6 +188,7 @@
             .page-wrapper:nth-child(1) .glass-card { justify-content: flex-start !important; gap: 16mm !important; }
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 8mm !important; }
             .details-card-web { gap: 8mm !important; }
+
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
