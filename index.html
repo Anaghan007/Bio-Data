@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#4f46e5">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="icon" type="image/png" href="https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp">
+    <link rel="icon" type="image/png" href="avatar.png">
     
     <link rel="manifest" id="pwa-manifest">
 
@@ -30,7 +30,7 @@
             "background_color": "#f8fafc",
             "theme_color": "#4f46e5",
             "icons": [{
-                "src": "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
+                "src": "avatar.png",
                 "sizes": "512x512",
                 "type": "image/png",
                 "purpose": "any maskable"
@@ -39,27 +39,19 @@
         const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
 
-        // REGISTER SERVICE WORKER
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').catch(err => console.log("SW registration failed:", err));
             });
         }
 
-        // UPDATED AUTO-PROMPT LOGIC (IMMEDIATE ATTEMPT)
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent default browser bar from showing
             e.preventDefault();
             deferredPrompt = e;
-            
-            // Trigger immediately upon finding the event
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    }
                     deferredPrompt = null;
                 });
             }
@@ -239,7 +231,7 @@
         const { useState, useEffect } = React;
 
         const commonData = {
-            avatar3D: "https://cdn3d.iconscout.com/3d/premium/thumb/cool-male-avatar-6299533-5187865.png?f=webp",
+            avatar3D: "avatar.png",
             mobileNumber: "8866722633",
             gallery: ["img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"],
             social: { whatsapp: "https://wa.me/918866722633", instagram: "https://www.instagram.com/_.anaghan._009" }
