@@ -21,7 +21,7 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script>
-        // --- PWA CONFIGURATION ---
+        // --- 1. DYNAMIC MANIFEST (For App Identity) ---
         const manifestData = {
             "name": "Anaghan's Profile",
             "short_name": "Anaghan",
@@ -39,30 +39,27 @@
         const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
 
-        // REGISTER SERVICE WORKER
+        // --- 2. INLINE SERVICE WORKER (Triggers the install pop-up) ---
         if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js').catch(err => console.log("SW registration failed:", err));
-            });
+            const swCode = `
+                const CACHE_NAME = 'anaghan-cache-v1';
+                self.addEventListener('install', (e) => {
+                    self.skipWaiting();
+                });
+                self.addEventListener('fetch', (e) => {
+                    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+                });
+            `;
+            const swBlob = new Blob([swCode], {type: 'application/javascript'});
+            const swUrl = URL.createObjectURL(swBlob);
+            navigator.serviceWorker.register(swUrl).catch(err => console.log("SW failed", err));
         }
 
-        // UPDATED AUTO-PROMPT LOGIC (IMMEDIATE ATTEMPT)
-        let deferredPrompt;
+        // --- 3. AUTO-PROMPT LOGIC (Browser Pop-up) ---
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent default browser bar from showing
-            e.preventDefault();
-            deferredPrompt = e;
-            
-            // Trigger immediately upon finding the event
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    }
-                    deferredPrompt = null;
-                });
-            }
+            // This event triggers the browser's own "Install App" banner
+            // We don't preventDefault() here so the browser handles the pop-up naturally
+            console.log('Install prompt is ready');
         });
 
         tailwind.config = {
@@ -206,7 +203,6 @@
             .page-wrapper:nth-child(1) .glass-card { justify-content: flex-start !important; gap: 16mm !important; }
             .page-wrapper:nth-child(2) .glass-card { justify-content: space-evenly !important; gap: 8mm !important; }
             .details-card-web { gap: 8mm !important; }
-
             .page-wrapper:nth-child(4) .glass-card { justify-content: center !important; }
 
             .info-grid-print { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 15px !important; }
@@ -354,7 +350,7 @@
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-slate-200 object-cover" />
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-slate-200" />
                                 <span className="text-xl font-extrabold text-slate-800">{t.headerName}</span>
                             </div>
                             <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
