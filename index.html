@@ -29,19 +29,12 @@
             "display": "standalone",
             "background_color": "#f8fafc",
             "theme_color": "#4f46e5",
-            "icons": [
-                {
-                    "src": "avatar.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                },
-                {
-                    "src": "avatar.png",
-                    "sizes": "512x512",
-                    "type": "image/png",
-                    "purpose": "any maskable"
-                }
-            ]
+            "icons": [{
+                "src": "avatar.png",
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }]
         };
         const blob = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
         document.querySelector('#pwa-manifest').setAttribute('href', URL.createObjectURL(blob));
@@ -361,7 +354,7 @@
                     <nav className="sticky top-0 z-[100] bg-white/80 backdrop-blur-md border-b border-slate-100 no-print">
                         <div className="max-w-4xl mx-auto px-4 h-20 flex items-center justify-between">
                             <div className="flex items-center gap-3">
-                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-slate-200" />
+                                <img src={commonData.avatar3D} className="w-10 h-10 rounded-full border border-slate-200 object-cover" />
                                 <span className="text-xl font-extrabold text-slate-800">{t.headerName}</span>
                             </div>
                             <div className="lang-switch-bg cursor-pointer" onClick={() => setLang(lang === 'en' ? 'gu' : 'en')}>
